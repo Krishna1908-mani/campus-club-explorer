@@ -11,6 +11,9 @@ import {
   HeartHandshake,
   ArrowRight,
   Grid,
+  BookOpen,
+  Globe,
+  Gamepad2,
 } from 'lucide-react';
 import { apiService } from '../services/api.js';
 
@@ -34,6 +37,7 @@ export const Categories = () => {
 
   const getIcon = (slug) => {
     switch (slug) {
+      case 'coding-tech':
       case 'coding-technology':
         return <Code2 className="w-8 h-8 text-[#800020] dark:text-[#D9A0AE]" />;
       case 'entrepreneurship':
@@ -44,10 +48,15 @@ export const Categories = () => {
         return <Palette className="w-8 h-8 text-[#C2185B]" />;
       case 'music-dance':
         return <Music className="w-8 h-8 text-[#990033]" />;
+      case 'literature-media':
+        return <BookOpen className="w-8 h-8 text-[#800020] dark:text-[#D9A0AE]" />;
+      case 'social-impact':
+      case 'social-service':
+        return <Globe className="w-8 h-8 text-[#15803D]" />;
+      case 'gaming-strategy':
+        return <Gamepad2 className="w-8 h-8 text-[#C5A46D]" />;
       case 'photography-media':
         return <Camera className="w-8 h-8 text-[#C5A46D]" />;
-      case 'social-service':
-        return <HeartHandshake className="w-8 h-8 text-[#15803D]" />;
       default:
         return <Sparkles className="w-8 h-8 text-[#800020]" />;
     }
