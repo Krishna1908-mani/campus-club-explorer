@@ -130,7 +130,7 @@ export const Events = () => {
                   </div>
                   <div className="flex items-center gap-1.5 font-medium">
                     <MapPin className="w-4 h-4 text-[#C5A46D]" />
-                    <span>{spotlightEvent.location || 'Campus Auditorium'}</span>
+                    <span>{spotlightEvent.venue || spotlightEvent.location || 'Campus Auditorium'}</span>
                   </div>
                 </div>
               </div>
