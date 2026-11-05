@@ -41,10 +41,16 @@ export const AuthController = {
 
       // If Supabase Auth is configured:
       if (isSupabaseConfigured && supabase) {
+        const frontendBaseUrl = (process.env.FRONTEND_URL || 'http://localhost:5173')
+          .split(',')[0]
+          .trim()
+          .replace(/\/+$/, '');
+
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
+            emailRedirectTo: `${frontendBaseUrl}/login`,
             data: {
               full_name,
               student_id: student_id || null,
