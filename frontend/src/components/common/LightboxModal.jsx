@@ -84,3 +84,4 @@ export const LightboxModal = ({ isOpen, images = [], currentIndex = 0, onClose, 
 };
 
 export default LightboxModal;
+

@@ -15,6 +15,9 @@ export const MembershipController = {
         data: membership,
       });
     } catch (error) {
+      if (error.message && error.message.includes('already have')) {
+        return res.status(400).json({ success: false, message: error.message });
+      }
       next(error);
     }
   },

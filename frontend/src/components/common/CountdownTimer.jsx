@@ -66,3 +66,4 @@ export const CountdownTimer = ({ targetDate, label = 'Starts In' }) => {
 };
 
 export default CountdownTimer;
+

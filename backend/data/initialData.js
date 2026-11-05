@@ -182,7 +182,7 @@ export const initialClubs = [
     full_description: 'Apex FC represents the university in inter-university leagues, state championships, and 7-a-side weekend tournaments. We operate varsity teams as well as open recreation leagues for beginners wanting to stay fit and build teamwork.',
     mission: 'Promoting healthy physical lifestyle, competitive camaraderie, and university pride through sportsmanship.',
     activities_and_achievements: 'State University Football Trophy 2024 Gold Medalists; 12 team members drafted into national amateur leagues.',
-    logo_url: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=200&auto=format&fit=crop&q=80',
+    logo_url: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=200&auto=format&fit=crop&q=80',
     cover_image_url: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1200&auto=format&fit=crop&q=80',
     establishment_date: '2015-08-12',
     faculty_coordinator: 'Coach Anthony Fernandez (Director of Physical Education)',

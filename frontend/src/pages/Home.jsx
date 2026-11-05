@@ -87,17 +87,17 @@ export const Home = () => {
   const nextEvent = upcomingEvents.length > 0 ? upcomingEvents[0] : null;
 
   return (
-    <div className="space-y-24 pb-24 overflow-hidden bg-[#FAF9F7] dark:bg-[#111111] transition-colors">
+    <div className="space-y-20 pb-20 overflow-hidden bg-[#FAF9F7] dark:bg-[#111111] transition-colors">
       {/* HERO SECTION */}
-      <section className="relative pt-8 sm:pt-16 lg:pt-20">
+      <section className="relative pt-6 sm:pt-10 lg:pt-12">
         {/* Ambient Burgundy Glow Backgrounds */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-gradient-to-tr from-[#800020]/15 via-[#FCE7EF]/25 to-transparent blur-[140px] rounded-full pointer-events-none -z-10" />
         <div className="absolute -top-10 right-10 w-72 h-72 bg-[#C5A46D]/10 blur-[100px] rounded-full pointer-events-none -z-10" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-6 max-w-4xl mx-auto">
+          <div className="text-center space-y-4 max-w-3xl mx-auto">
             {/* Editorial Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#D9A0AE]/50 dark:border-[#800020]/60 bg-white/90 dark:bg-[#1C1C1C]/90 backdrop-blur-md shadow-xs animate-fade-in">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-[#D9A0AE]/50 dark:border-[#800020]/60 bg-white/90 dark:bg-[#1C1C1C]/90 backdrop-blur-md shadow-xs animate-fade-in">
               <span className="w-2 h-2 rounded-full bg-[#800020] animate-pulse" />
               <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#800020] dark:text-[#D9A0AE]">
                 The Premier Collegiate Hub
@@ -105,19 +105,19 @@ export const Home = () => {
             </div>
 
             {/* Requested Master Headline */}
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-black tracking-tight text-[#111111] dark:text-[#FAF9F7] leading-[1.08]">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-black tracking-tight text-[#111111] dark:text-[#FAF9F7] leading-[1.1]">
               Your Campus. <br className="hidden sm:inline" />
               <span className="text-[#800020] dark:text-[#D9A0AE]">Your Community.</span> <br className="hidden sm:inline" />
               Your Journey.
             </h1>
 
             {/* Requested Supporting Text */}
-            <p className="text-lg sm:text-xl text-[#737373] dark:text-[#A3A3A3] max-w-2xl mx-auto leading-relaxed font-sans">
+            <p className="text-base sm:text-lg text-[#737373] dark:text-[#A3A3A3] max-w-2xl mx-auto leading-relaxed font-sans">
               Discover extraordinary communities, connect with passionate people, and make your college experience unforgettable.
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-1">
               <Link to="/clubs">
                 <Button size="lg" variant="primary" rightIcon={<ArrowRight className="w-5 h-5" />}>
                   Explore Clubs
@@ -132,7 +132,7 @@ export const Home = () => {
           </div>
 
           {/* Interactive Multi-Image Editorial Collage */}
-          <div className="pt-12 sm:pt-16 max-w-6xl mx-auto relative">
+          <div className="pt-8 sm:pt-10 max-w-6xl mx-auto relative">
             <div className="grid grid-cols-12 gap-3 sm:gap-4 items-center">
               {/* Left Column (Coding / Tech) */}
               <div className="col-span-12 sm:col-span-3 space-y-3 sm:space-y-4">
@@ -153,10 +153,13 @@ export const Home = () => {
 
                 <div className="group relative rounded-2xl overflow-hidden shadow-md border border-[#E5E5E5] dark:border-[#383838] bg-white dark:bg-[#1C1C1C] h-40 sm:h-44 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                   <img
-                    src="https://images.unsplash.com/photo-1526676037777-05a232554f77?w=600&auto=format&fit=crop&q=80"
+                    src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&auto=format&fit=crop&q=80"
                     alt="Sports and athletics teams"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
+                    onError={(e) => {
+                      e.target.src = 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&auto=format&fit=crop&q=80';
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-3.5">
                     <div>

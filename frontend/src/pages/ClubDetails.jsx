@@ -161,7 +161,7 @@ export const ClubDetails = () => {
     { url: club.cover_image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&auto=format&fit=crop&q=80', caption: `${club.name} Chapter Showcase` },
     ...(club.events || []).filter(e => e.banner_url).map(e => ({ url: e.banner_url, caption: e.title })),
     { url: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&auto=format&fit=crop&q=80', caption: 'Student Hackathon & Teamwork' },
-    { url: 'https://images.unsplash.com/photo-1526676037777-05a232554f77?w=1200&auto=format&fit=crop&q=80', caption: 'Campus Meetup & Networking' },
+    { url: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&auto=format&fit=crop&q=80', caption: 'Campus Meetup & Networking' },
     { url: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=1200&auto=format&fit=crop&q=80', caption: 'Annual Showcase & Exhibition' },
   ];
 

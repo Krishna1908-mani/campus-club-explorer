@@ -2,14 +2,20 @@
  * Centralized error handler middleware
  */
 export const errorHandler = (err, req, res, next) => {
-  console.error('API Error:', {
-    message: err.message,
-    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
-    url: req.originalUrl,
-    method: req.method,
-  });
+  let statusCode = err.statusCode || (res.statusCode !== 200 ? res.statusCode : 500);
 
-  const statusCode = err.statusCode || (res.statusCode === 200 ? 500 : res.statusCode);
+  const msg = (err.message || '').toLowerCase();
+  if (msg.includes('not found')) {
+    statusCode = 404;
+  } else if (
+    msg.includes('already have') ||
+    msg.includes('already exists') ||
+    msg.includes('already registered') ||
+    msg.includes('required') ||
+    msg.includes('invalid')
+  ) {
+    statusCode = 400;
+  }
 
   res.status(statusCode).json({
     success: false,
