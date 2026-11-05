@@ -23,6 +23,7 @@ import Select from '../components/common/Select.jsx';
 import Badge from '../components/common/Badge.jsx';
 import Modal from '../components/common/Modal.jsx';
 import ConfirmationDialog from '../components/common/ConfirmationDialog.jsx';
+import AnimatedCounter from '../components/common/AnimatedCounter.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { apiService } from '../services/api.js';
@@ -407,23 +408,33 @@ export const AdminDashboard = () => {
         <div className="space-y-6">
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
             <div className="p-6 rounded-2xl bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] shadow-xs text-center hover:border-[#800020]/30 transition-all">
-              <div className="text-3xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">{stats.totalClubs}</div>
+              <div className="text-3xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">
+                <AnimatedCounter value={stats.totalClubs} />
+              </div>
               <div className="text-xs text-[#737373] dark:text-[#A3A3A3] font-medium uppercase mt-1">Total Clubs</div>
             </div>
             <div className="p-6 rounded-2xl bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] shadow-xs text-center hover:border-[#800020]/30 transition-all">
-              <div className="text-3xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">{stats.totalStudents}</div>
+              <div className="text-3xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">
+                <AnimatedCounter value={stats.totalStudents} />
+              </div>
               <div className="text-xs text-[#737373] dark:text-[#A3A3A3] font-medium uppercase mt-1">Registered Students</div>
             </div>
             <div className="p-6 rounded-2xl bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] shadow-xs text-center hover:border-[#800020]/30 transition-all">
-              <div className="text-3xl font-serif font-bold text-[#15803D] dark:text-emerald-400">{stats.totalMemberships}</div>
+              <div className="text-3xl font-serif font-bold text-[#15803D] dark:text-emerald-400">
+                <AnimatedCounter value={stats.totalMemberships} />
+              </div>
               <div className="text-xs text-[#737373] dark:text-[#A3A3A3] font-medium uppercase mt-1">Active Memberships</div>
             </div>
             <div className="p-6 rounded-2xl bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] shadow-xs text-center hover:border-[#800020]/30 transition-all">
-              <div className="text-3xl font-serif font-bold text-[#D97706] dark:text-amber-400">{stats.pendingRequests}</div>
+              <div className="text-3xl font-serif font-bold text-[#D97706] dark:text-amber-400">
+                <AnimatedCounter value={stats.pendingRequests} />
+              </div>
               <div className="text-xs text-[#737373] dark:text-[#A3A3A3] font-medium uppercase mt-1">Pending Approvals</div>
             </div>
             <div className="p-6 rounded-2xl bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] shadow-xs text-center col-span-2 lg:col-span-1 hover:border-[#800020]/30 transition-all">
-              <div className="text-3xl font-serif font-bold text-[#800020] dark:text-[#D9A0AE]">{stats.totalEvents}</div>
+              <div className="text-3xl font-serif font-bold text-[#800020] dark:text-[#D9A0AE]">
+                <AnimatedCounter value={stats.totalEvents} />
+              </div>
               <div className="text-xs text-[#737373] dark:text-[#A3A3A3] font-medium uppercase mt-1">Total Events</div>
             </div>
           </div>
@@ -448,6 +459,127 @@ export const AdminDashboard = () => {
               </Button>
             </div>
           )}
+
+          {/* INTERACTIVE SVG ANALYTICS CHARTS (Section 9) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Category Distribution Chart */}
+            <div className="lg:col-span-7 bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] rounded-3xl p-6 shadow-xs space-y-4">
+              <div className="flex items-center justify-between border-b border-[#E5E5E5] dark:border-[#383838] pb-3">
+                <div>
+                  <h3 className="font-serif font-bold text-base text-[#111111] dark:text-[#FAF9F7]">
+                    Club Distribution by Category
+                  </h3>
+                  <p className="text-xs text-[#737373] dark:text-[#A3A3A3]">
+                    Live tally of approved societies across university disciplines
+                  </p>
+                </div>
+                <Badge variant="burgundy" size="sm">
+                  {categories.length} Categories
+                </Badge>
+              </div>
+
+              <div className="space-y-3 pt-2">
+                {categories.map((cat) => {
+                  const clubCount = clubs.filter(
+                    (c) => c.category_id === cat.id || c.categories?.slug === cat.slug
+                  ).length;
+                  const percent = clubs.length ? Math.round((clubCount / clubs.length) * 100) : 0;
+                  return (
+                    <div key={cat.id} className="space-y-1">
+                      <div className="flex items-center justify-between text-xs font-semibold">
+                        <span className="text-[#111111] dark:text-[#FAF9F7]">{cat.name}</span>
+                        <span className="text-[#737373] dark:text-[#A3A3A3]">
+                          {clubCount} clubs ({percent}%)
+                        </span>
+                      </div>
+                      <div className="w-full h-2 rounded-full bg-[#FAF9F7] dark:bg-[#292929] overflow-hidden border border-[#E5E5E5]/60 dark:border-[#383838]">
+                        <div
+                          className="h-full bg-gradient-to-r from-[#800020] via-[#C2185B] to-[#C5A46D] rounded-full transition-all duration-700 ease-out"
+                          style={{ width: `${Math.max(percent, 4)}%` }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Membership Approval Breakdown Donut Chart */}
+            <div className="lg:col-span-5 bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] rounded-3xl p-6 shadow-xs space-y-4 flex flex-col justify-between">
+              <div className="border-b border-[#E5E5E5] dark:border-[#383838] pb-3">
+                <h3 className="font-serif font-bold text-base text-[#111111] dark:text-[#FAF9F7]">
+                  Membership Governance
+                </h3>
+                <p className="text-xs text-[#737373] dark:text-[#A3A3A3]">
+                  Student applications approval ratio
+                </p>
+              </div>
+
+              <div className="flex items-center justify-center py-4">
+                <div className="relative w-40 h-40 flex items-center justify-center">
+                  {/* SVG Donut */}
+                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                    {/* Background Circle */}
+                    <path
+                      className="text-gray-100 dark:text-neutral-800"
+                      strokeWidth="3.8"
+                      stroke="currentColor"
+                      fill="none"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                    {/* Approved slice (Burgundy) */}
+                    <path
+                      className="text-[#800020]"
+                      strokeDasharray={`${
+                        memberships.length
+                          ? (memberships.filter((m) => m.status === 'approved').length / memberships.length) * 100
+                          : 70
+                      }, 100`}
+                      strokeWidth="3.8"
+                      strokeLinecap="round"
+                      stroke="currentColor"
+                      fill="none"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                  </svg>
+                  <div className="absolute flex flex-col items-center justify-center text-center">
+                    <span className="text-2xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">
+                      {memberships.length
+                        ? Math.round(
+                            (memberships.filter((m) => m.status === 'approved').length / memberships.length) * 100
+                          )
+                        : 0}
+                      %
+                    </span>
+                    <span className="text-[10px] uppercase font-bold text-[#737373] dark:text-[#A3A3A3] tracking-widest">
+                      Approved
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#E5E5E5] dark:border-[#383838] text-center">
+                <div className="p-2 rounded-xl bg-[#FAF9F7] dark:bg-[#292929]">
+                  <div className="text-xs font-bold text-[#15803D]">
+                    {memberships.filter((m) => m.status === 'approved').length}
+                  </div>
+                  <div className="text-[10px] text-[#737373] dark:text-[#A3A3A3]">Approved</div>
+                </div>
+                <div className="p-2 rounded-xl bg-[#FAF9F7] dark:bg-[#292929]">
+                  <div className="text-xs font-bold text-[#D97706]">
+                    {memberships.filter((m) => m.status === 'pending').length}
+                  </div>
+                  <div className="text-[10px] text-[#737373] dark:text-[#A3A3A3]">Pending</div>
+                </div>
+                <div className="p-2 rounded-xl bg-[#FAF9F7] dark:bg-[#292929]">
+                  <div className="text-xs font-bold text-[#B91C1C]">
+                    {memberships.filter((m) => m.status === 'rejected').length}
+                  </div>
+                  <div className="text-[10px] text-[#737373] dark:text-[#A3A3A3]">Rejected</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 

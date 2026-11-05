@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, Users, ArrowUpRight, Sparkles } from 'lucide-react';
+import { Heart, Users, ArrowUpRight, Sparkles, Calendar } from 'lucide-react';
 import Badge from './Badge.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useToast } from '../../context/ToastContext.jsx';
@@ -10,6 +10,7 @@ export const ClubCard = ({
   club,
   isFavorite: initialFavorite = false,
   onFavoriteChange,
+  viewMode = 'grid',
 }) => {
   const { isAuthenticated } = useAuth();
   const { success, error, info } = useToast();
@@ -49,8 +50,104 @@ export const ClubCard = ({
 
   const categoryName = club.categories?.name || 'General Club';
 
+  if (viewMode === 'list') {
+    return (
+      <div className="group relative bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] rounded-2xl shadow-xs hover:shadow-md hover:border-[#800020]/40 dark:hover:border-[#C2185B]/40 transition-all duration-300 flex flex-col sm:flex-row overflow-hidden">
+        {/* Left Thumbnail */}
+        <div className="relative sm:w-64 h-48 sm:h-auto overflow-hidden bg-[#F5F3F2] dark:bg-[#292929] shrink-0">
+          <img
+            src={club.cover_image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=80'}
+            alt={club.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-black/60 to-transparent" />
+          
+          <div className="absolute top-3 left-3 flex items-center gap-1.5">
+            <Badge variant="burgundy" size="sm" className="font-semibold shadow-xs">
+              {categoryName}
+            </Badge>
+            {club.is_featured && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#111111]/90 text-[#C5A46D] border border-[#C5A46D]/40 backdrop-blur-md">
+                <Sparkles className="w-3 h-3 text-[#C5A46D]" /> Featured
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Center Details */}
+        <div className="p-5 flex-1 flex flex-col justify-between">
+          <div>
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0 border border-[#E5E5E5] dark:border-[#383838] shadow-xs bg-white dark:bg-[#292929] p-0.5">
+                  <img
+                    src={club.logo_url || 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=100&auto=format&fit=crop&q=80'}
+                    alt={`${club.name} logo`}
+                    className="w-full h-full object-cover rounded-lg"
+                    loading="lazy"
+                  />
+                </div>
+                <div>
+                  <Link to={`/clubs/${club.slug || club.id}`}>
+                    <h3 className="font-serif font-bold text-lg text-[#111111] dark:text-[#FAF9F7] group-hover:text-[#800020] dark:group-hover:text-[#D9A0AE] transition-colors">
+                      {club.name}
+                    </h3>
+                  </Link>
+                  <div className="flex items-center gap-3 text-xs text-[#737373] dark:text-[#A3A3A3] mt-0.5">
+                    <span className="flex items-center gap-1">
+                      <Users className="w-3.5 h-3.5 text-[#800020]" />
+                      {club.member_count || 0} active members
+                    </span>
+                    <span>•</span>
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5 text-[#C5A46D]" />
+                      {club.establishment_date ? `Est. ${new Date(club.establishment_date).getFullYear()}` : 'Campus Club'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Heart Button */}
+              <button
+                onClick={handleFavoriteClick}
+                disabled={favLoading}
+                aria-label={favorite ? 'Remove from favorites' : 'Add to favorites'}
+                className={`p-2 rounded-full border transition-all duration-200 ${
+                  favorite
+                    ? 'bg-[#800020] text-white border-[#800020]'
+                    : 'bg-white dark:bg-[#292929] text-[#737373] border-[#E5E5E5] dark:border-[#383838] hover:text-[#800020]'
+                }`}
+              >
+                <Heart className={`w-4 h-4 ${favorite ? 'fill-current' : ''}`} />
+              </button>
+            </div>
+
+            <p className="text-sm text-[#737373] dark:text-[#A3A3A3] line-clamp-2 mt-3 leading-relaxed">
+              {club.short_description}
+            </p>
+          </div>
+
+          <div className="mt-4 pt-3 border-t border-[#E5E5E5] dark:border-[#383838] flex items-center justify-between">
+            <span className="text-xs text-[#737373] dark:text-[#A3A3A3]">
+              Led by <span className="font-medium text-[#111111] dark:text-neutral-200">{club.lead_coordinator_name || 'Student Council'}</span>
+            </span>
+            <Link
+              to={`/clubs/${club.slug || club.id}`}
+              className="inline-flex items-center gap-1 text-xs font-semibold px-3.5 py-1.5 rounded-lg bg-[#800020] hover:bg-[#5C001A] text-white transition-colors shadow-xs"
+            >
+              <span>View Details</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Grid Mode (Default)
   return (
-    <div className="group relative bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] rounded-2xl shadow-sm hover:shadow-[0_16px_36px_rgba(17,17,17,0.08)] dark:hover:shadow-[0_16px_36px_rgba(0,0,0,0.5)] hover:border-[#800020]/40 dark:hover:border-[#C2185B]/40 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full overflow-hidden">
+    <div className="group relative bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] rounded-2xl shadow-xs hover:shadow-[0_16px_36px_rgba(17,17,17,0.08)] dark:hover:shadow-[0_16px_36px_rgba(0,0,0,0.5)] hover:border-[#800020]/40 dark:hover:border-[#C2185B]/40 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full overflow-hidden">
       {/* Cover Image & Favorite Badge */}
       <div className="relative h-44 w-full overflow-hidden bg-[#F5F3F2] dark:bg-[#292929]">
         <img
@@ -142,5 +239,5 @@ export const ClubCard = ({
     </div>
   );
 };
-export default ClubCard;
 
+export default ClubCard;

@@ -22,12 +22,14 @@ import {
   Building,
   UserCheck,
   Award,
+  Image as ImageIcon,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import Button from '../components/common/Button.jsx';
 import Badge from '../components/common/Badge.jsx';
 import EventCard from '../components/common/EventCard.jsx';
 import ConfirmationDialog from '../components/common/ConfirmationDialog.jsx';
+import LightboxModal from '../components/common/LightboxModal.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { apiService } from '../services/api.js';
@@ -45,6 +47,8 @@ export const ClubDetails = () => {
   const [favLoading, setFavLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('about');
   const [leaveModalOpen, setLeaveModalOpen] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   const fetchClubDetails = async () => {
     try {
@@ -152,6 +156,14 @@ export const ClubDetails = () => {
 
   const membershipStatus = club.membership?.status; // 'pending' | 'approved' | 'rejected' | null
   const socialLinks = club.social_links || {};
+
+  const galleryImages = [
+    { url: club.cover_image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&auto=format&fit=crop&q=80', caption: `${club.name} Chapter Showcase` },
+    ...(club.events || []).filter(e => e.banner_url).map(e => ({ url: e.banner_url, caption: e.title })),
+    { url: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&auto=format&fit=crop&q=80', caption: 'Student Hackathon & Teamwork' },
+    { url: 'https://images.unsplash.com/photo-1526676037777-05a232554f77?w=1200&auto=format&fit=crop&q=80', caption: 'Campus Meetup & Networking' },
+    { url: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=1200&auto=format&fit=crop&q=80', caption: 'Annual Showcase & Exhibition' },
+  ];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
@@ -275,6 +287,7 @@ export const ClubDetails = () => {
         <div className="px-6 sm:px-8 border-t border-[#E5E5E5] dark:border-[#383838] flex items-center gap-6 overflow-x-auto">
           {[
             { id: 'about', label: 'Overview & Mission' },
+            { id: 'gallery', label: 'Photo Gallery' },
             { id: 'events', label: `Events (${club.events?.length || 0})` },
             { id: 'announcements', label: `Announcements (${club.announcements?.length || 0})` },
             { id: 'leadership', label: 'Faculty & Coordinators' },
@@ -339,6 +352,47 @@ export const ClubDetails = () => {
                   </p>
                 </div>
               )}
+            </div>
+          )}
+
+          {activeTab === 'gallery' && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-xl font-bold font-serif text-[#111111] dark:text-[#FAF9F7]">
+                    Activity & Event Gallery
+                  </h3>
+                  <p className="text-xs text-[#737373] dark:text-[#A3A3A3] mt-0.5">
+                    Click any snapshot to open the full-screen interactive lightbox preview.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {galleryImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => {
+                      setLightboxIndex(idx);
+                      setLightboxOpen(true);
+                    }}
+                    className="group relative rounded-2xl overflow-hidden aspect-4/3 border border-[#E5E5E5] dark:border-[#383838] bg-white dark:bg-[#1C1C1C] shadow-xs hover:shadow-md hover:border-[#800020] transition-all text-left focus:outline-hidden"
+                  >
+                    <img
+                      src={img.url}
+                      alt={img.caption}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-3 flex items-end">
+                      <span className="text-white text-xs font-medium line-clamp-1">
+                        {img.caption}
+                      </span>
+                    </div>
+                  </button>
+                ))}
+              </div>
             </div>
           )}
 
@@ -517,6 +571,14 @@ export const ClubDetails = () => {
         }
         confirmText={membershipStatus === 'pending' ? 'Withdraw Request' : 'Leave Club'}
         isDestructive={true}
+      />
+      {/* Lightbox Modal */}
+      <LightboxModal
+        isOpen={lightboxOpen}
+        images={galleryImages}
+        currentIndex={lightboxIndex}
+        onClose={() => setLightboxOpen(false)}
+        onIndexChange={(idx) => setLightboxIndex(idx)}
       />
     </div>
   );

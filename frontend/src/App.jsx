@@ -8,6 +8,8 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import Navbar from './components/common/Navbar.jsx';
 import Footer from './components/common/Footer.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
+import ScrollProgress from './components/common/ScrollProgress.jsx';
+import BackToTop from './components/common/BackToTop.jsx';
 
 // Pages
 import Home from './pages/Home.jsx';
@@ -38,6 +40,7 @@ export const App = () => {
       <ToastProvider>
         <AuthProvider>
           <BrowserRouter>
+            <ScrollProgress />
             <ScrollToTop />
             <div className="flex flex-col min-h-screen bg-gray-50/60 text-gray-900 dark:bg-dark-bg dark:text-gray-100 transition-colors duration-200">
               <Navbar />
@@ -80,6 +83,7 @@ export const App = () => {
               </main>
               <Footer />
             </div>
+            <BackToTop />
           </BrowserRouter>
         </AuthProvider>
       </ToastProvider>

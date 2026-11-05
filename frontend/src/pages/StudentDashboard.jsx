@@ -22,6 +22,7 @@ import Button from '../components/common/Button.jsx';
 import Input from '../components/common/Input.jsx';
 import Badge from '../components/common/Badge.jsx';
 import ConfirmationDialog from '../components/common/ConfirmationDialog.jsx';
+import AnimatedCounter from '../components/common/AnimatedCounter.jsx';
 
 export const StudentDashboard = () => {
   const { user, profile, updateProfile, logout } = useAuth();
@@ -149,7 +150,7 @@ export const StudentDashboard = () => {
           </div>
           <div>
             <div className="text-2xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">
-              {approvedMemberships.length}
+              <AnimatedCounter value={approvedMemberships.length} />
             </div>
             <div className="text-xs text-[#737373] dark:text-[#A3A3A3] font-medium uppercase tracking-wider">
               Joined Clubs
@@ -163,7 +164,7 @@ export const StudentDashboard = () => {
           </div>
           <div>
             <div className="text-2xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">
-              {pendingMemberships.length}
+              <AnimatedCounter value={pendingMemberships.length} />
             </div>
             <div className="text-xs text-[#737373] dark:text-[#A3A3A3] font-medium uppercase tracking-wider">
               Pending Requests
@@ -177,7 +178,7 @@ export const StudentDashboard = () => {
           </div>
           <div>
             <div className="text-2xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">
-              {favorites.length}
+              <AnimatedCounter value={favorites.length} />
             </div>
             <div className="text-xs text-[#737373] dark:text-[#A3A3A3] font-medium uppercase tracking-wider">
               Saved Favorites
@@ -191,7 +192,7 @@ export const StudentDashboard = () => {
           </div>
           <div>
             <div className="text-2xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">
-              {events.length}
+              <AnimatedCounter value={events.length} />
             </div>
             <div className="text-xs text-[#737373] dark:text-[#A3A3A3] font-medium uppercase tracking-wider">
               Registered Events
