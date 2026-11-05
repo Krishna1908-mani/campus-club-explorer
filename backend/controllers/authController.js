@@ -1,4 +1,4 @@
-import { supabase, isSupabaseConfigured } from '../config/supabase.js';
+import { supabase, supabaseAdmin, isSupabaseConfigured } from '../config/supabase.js';
 import { SupabaseService, memoryStore } from '../services/supabaseService.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -46,7 +46,7 @@ export const AuthController = {
           .trim()
           .replace(/\/+$/, '');
 
-        const { data, error } = await supabase.auth.signUp({
+        let { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -61,15 +61,40 @@ export const AuthController = {
           },
         });
 
-        if (error) {
-          return res.status(400).json({
-            success: false,
-            message: error.message,
-          });
-        }
+        let user = data?.user;
+        let session = data?.session;
 
-        const user = data.user;
-        const session = data.session;
+        // If Supabase free tier email rate limit is exceeded, automatically provision via admin client
+        if (error) {
+          if (error.message.toLowerCase().includes('rate limit') && supabaseAdmin) {
+            const adminResult = await supabaseAdmin.auth.admin.createUser({
+              email,
+              password,
+              email_confirm: true,
+              user_metadata: {
+                full_name,
+                student_id: student_id || null,
+                department: department || null,
+                year_of_study: year_of_study || null,
+                role: 'student',
+              },
+            });
+
+            if (adminResult.error) {
+              return res.status(400).json({
+                success: false,
+                message: adminResult.error.message,
+              });
+            }
+
+            user = adminResult.data.user;
+          } else {
+            return res.status(400).json({
+              success: false,
+              message: error.message,
+            });
+          }
+        }
 
         return res.status(201).json({
           success: true,
