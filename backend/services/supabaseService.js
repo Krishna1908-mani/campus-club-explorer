@@ -1,4 +1,4 @@
-import { supabase, supabaseAdmin, isSupabaseConfigured } from '../config/supabase.js';
+import { supabase, supabaseAdmin, isSupabaseConfigured, assertDatabaseAvailable } from '../config/supabase.js';
 import {
   initialCategories,
   initialClubs,

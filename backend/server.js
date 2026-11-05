@@ -64,6 +64,7 @@ app.get('/api/health', (req, res) => {
     service: 'Campus Club Explorer Backend',
     database: isSupabaseConfigured ? 'Supabase PostgreSQL (Live)' : 'In-Memory Fallback Active',
     supabaseConnected: isSupabaseConfigured,
+    storageMode: process.env.NODE_ENV === 'production' || process.env.STORAGE_MODE === 'supabase' ? 'cloud_enforced' : 'development_demo',
     uptime: process.uptime(),
   });
 });

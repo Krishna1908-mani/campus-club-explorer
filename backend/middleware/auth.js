@@ -1,7 +1,18 @@
 import { supabase, supabaseAdmin, isSupabaseConfigured } from '../config/supabase.js';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'campus-club-explorer-jwt-secret-key-2026';
+const DEFAULT_DEV_JWT_SECRET = 'campus-club-explorer-jwt-secret-key-2026';
+let JWT_SECRET = process.env.JWT_SECRET;
+
+if (process.env.NODE_ENV === 'production') {
+  if (!JWT_SECRET || JWT_SECRET === DEFAULT_DEV_JWT_SECRET) {
+    throw new Error(
+      '[FATAL SECURITY ERROR] A strong, cryptographically secure JWT_SECRET must be set in production. Generate one using: openssl rand -hex 32'
+    );
+  }
+} else if (!JWT_SECRET) {
+  JWT_SECRET = DEFAULT_DEV_JWT_SECRET;
+}
 
 /**
  * Authenticate incoming request using either Supabase verified bearer token
