@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { LogIn, GraduationCap, Shield, User, Sparkles } from 'lucide-react';
+import { LogIn, GraduationCap } from 'lucide-react';
 import Input from '../components/common/Input.jsx';
 import Button from '../components/common/Button.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -42,12 +42,6 @@ export const Login = () => {
     }
   };
 
-  // Demo account quick fill helper
-  const handleDemoFill = (demoEmail, demoPass) => {
-    setEmail(demoEmail);
-    setPassword(demoPass);
-  };
-
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-[#FAF9F7] dark:bg-[#111111] transition-colors">
       <div className="w-full max-w-md space-y-6">
@@ -64,31 +58,6 @@ export const Login = () => {
           <p className="text-xs text-[#737373] dark:text-[#A3A3A3]">
             Enter your college credentials to access your club memberships
           </p>
-        </div>
-
-        {/* Demo Fast-Login Pill Tray for Easy Evaluation */}
-        <div className="p-4 rounded-2xl bg-[#FCE7EF]/50 dark:bg-[#800020]/20 border border-[#D9A0AE]/50 dark:border-[#800020]/50 space-y-2">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-[#800020] dark:text-[#D9A0AE]">
-            <Sparkles className="w-3.5 h-3.5 text-[#C5A46D]" /> Demo Login Quick-Fill (One-Click)
-          </div>
-          <div className="grid grid-cols-2 gap-2 pt-1">
-            <button
-              type="button"
-              onClick={() => handleDemoFill('student@campus.edu', 'password123')}
-              className="flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-[10px] bg-white dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] hover:border-[#800020] text-[#111111] dark:text-[#FAF9F7] transition-colors shadow-xs"
-            >
-              <User className="w-3.5 h-3.5 text-[#800020]" />
-              Demo Student
-            </button>
-            <button
-              type="button"
-              onClick={() => handleDemoFill('admin@campus.edu', 'admin123')}
-              className="flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-[10px] bg-white dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] hover:border-[#800020] text-[#111111] dark:text-[#FAF9F7] transition-colors shadow-xs"
-            >
-              <Shield className="w-3.5 h-3.5 text-[#C5A46D]" />
-              Demo Admin
-            </button>
-          </div>
         </div>
 
         {/* Login Form */}
