@@ -1,0 +1,21 @@
+{
+  "name": "campus-club-explorer",
+  "version": "1.0.0",
+  "description": "Full-stack collegiate club discovery and engagement web application built with React, Vite, Node.js, Express, and Supabase PostgreSQL.",
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:frontend": "cd frontend && npm run build",
+    "start:backend": "cd backend && npm start"
+  },
+  "keywords": [
+    "react",
+    "express",
+    "supabase",
+    "postgresql",
+    "college-clubs",
+    "mern"
+  ],
+  "author": "Campus Club Explorer Team",
+  "license": "MIT"
+}
