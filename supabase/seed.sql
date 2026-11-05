@@ -276,3 +276,4 @@ INSERT INTO public.announcements (id, club_id, title, content) VALUES
     'Drummers, bassists, and lead vocalists: auditions will be held in Studio B on Wednesday evening. Bring your own instruments if possible.'
 )
 ON CONFLICT (id) DO NOTHING;
+

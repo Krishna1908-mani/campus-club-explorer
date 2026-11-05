@@ -379,6 +379,7 @@ export const initialUsers = [
     department: 'Office of Student Affairs',
     year_of_study: 'Faculty Staff',
     role: 'admin',
+    password_hash: '$2a$10$5dl2N3wG7ZJoO2FRImivau62clKAgeufBahcGHwBmH2c84sUe3Ooa', // admin123
     avatar_url: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&auto=format&fit=crop&q=80',
     bio: 'Overseeing all registered university student clubs and campus societies.',
     created_at: new Date('2025-01-01').toISOString(),
@@ -391,6 +392,7 @@ export const initialUsers = [
     department: 'Computer Science & Engineering',
     year_of_study: '3rd Year',
     role: 'student',
+    password_hash: '$2a$10$bSGEo1wJsl/7q.T1yLX9/Okrc1kYsQ/jxWWW0dE2w3pUC8UbhzdaG', // password123
     avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
     bio: 'Passionate about web engineering, open-source AI, and campus photography.',
     created_at: new Date('2025-01-05').toISOString(),
@@ -442,3 +444,4 @@ export const initialEventRegistrations = [
     registered_at: new Date('2025-02-03').toISOString(),
   },
 ];
+

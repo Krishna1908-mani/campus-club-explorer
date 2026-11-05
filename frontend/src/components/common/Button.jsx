@@ -14,25 +14,25 @@ export const Button = ({
   onClick,
   ...props
 }) => {
-  const baseClasses = 'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed select-none';
+  const baseClasses = 'inline-flex items-center justify-center font-medium rounded-[10px] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed select-none tracking-tight';
 
   const sizeClasses = {
-    sm: 'text-xs px-3 py-1.5 gap-1.5',
-    md: 'text-sm px-4 py-2.5 gap-2',
-    lg: 'text-base px-6 py-3 gap-2.5',
+    sm: 'text-xs px-3.5 py-1.5 gap-1.5',
+    md: 'text-sm px-4.5 py-2.5 gap-2',
+    lg: 'text-base px-6 py-3.5 gap-2.5',
   };
 
   const variantClasses = {
     primary:
-      'bg-brand-600 hover:bg-brand-700 text-white shadow-sm hover:shadow-glow-indigo focus:ring-brand-500 active:scale-[0.98]',
+      'bg-[#800020] hover:bg-[#5C001A] text-white shadow-sm hover:shadow-glow-burgundy focus:ring-[#800020] active:scale-[0.98]',
     secondary:
-      'bg-violet-600 hover:bg-violet-700 text-white shadow-sm hover:shadow-glow-violet focus:ring-violet-500 active:scale-[0.98]',
+      'bg-white dark:bg-[#1C1C1C] border border-[#800020] dark:border-[#C2185B] text-[#800020] dark:text-[#FCE7EF] hover:bg-[#FCE7EF]/40 dark:hover:bg-[#800020]/20 focus:ring-[#800020] active:scale-[0.98]',
     outline:
-      'border border-gray-300 dark:border-gray-700 bg-white dark:bg-dark-card hover:bg-gray-50 dark:hover:bg-dark-surface text-gray-700 dark:text-gray-200 focus:ring-brand-500 active:scale-[0.98]',
+      'border border-[#E5E5E5] dark:border-[#383838] bg-white dark:bg-[#1C1C1C] hover:bg-[#FAF9F7] dark:hover:bg-[#292929] hover:border-[#800020]/40 text-[#111111] dark:text-[#FAF9F7] focus:ring-[#800020] active:scale-[0.98]',
     ghost:
-      'bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 focus:ring-gray-400',
+      'bg-transparent hover:bg-[#FCE7EF]/30 dark:hover:bg-[#800020]/20 text-[#800020] dark:text-[#D9A0AE] hover:text-[#5C001A] dark:hover:text-white focus:ring-[#800020]',
     danger:
-      'bg-rose-600 hover:bg-rose-700 text-white shadow-sm focus:ring-rose-500 active:scale-[0.98]',
+      'bg-[#B91C1C] hover:bg-[#991B1B] text-white shadow-sm focus:ring-[#B91C1C] active:scale-[0.98]',
   };
 
   return (
@@ -54,3 +54,4 @@ export const Button = ({
   );
 };
 export default Button;
+

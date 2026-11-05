@@ -10,7 +10,7 @@ export const ProtectedRoute = ({ children, requireAdmin = false }) => {
   if (loading) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-brand-600 mb-3" />
+        <Loader2 className="w-8 h-8 animate-spin text-[#800020] mb-3" />
         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
           Loading authentication session...
         </p>
@@ -29,3 +29,4 @@ export const ProtectedRoute = ({ children, requireAdmin = false }) => {
   return children;
 };
 export default ProtectedRoute;
+

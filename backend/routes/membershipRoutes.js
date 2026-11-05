@@ -15,3 +15,4 @@ router.put('/:id/status', authenticate, requireAdmin, MembershipController.updat
 router.delete('/:id', authenticate, requireAdmin, MembershipController.removeMemberAdmin);
 
 export default router;
+

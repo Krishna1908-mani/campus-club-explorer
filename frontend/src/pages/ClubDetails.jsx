@@ -158,15 +158,15 @@ export const ClubDetails = () => {
       {/* Back button */}
       <Link
         to="/clubs"
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-brand-600 dark:text-gray-400 dark:hover:text-brand-400 transition-colors"
+        className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#737373] hover:text-[#800020] dark:text-[#A3A3A3] dark:hover:text-[#D9A0AE] transition-colors"
       >
         <ArrowLeft className="w-4 h-4" /> Back to clubs directory
       </Link>
 
       {/* HERO BANNER */}
-      <div className="relative rounded-3xl overflow-hidden border border-gray-200/90 dark:border-gray-800 bg-white dark:bg-dark-card shadow-lg">
+      <div className="relative rounded-3xl overflow-hidden border border-[#E5E5E5] dark:border-[#383838] bg-[#FFFFFF] dark:bg-[#1C1C1C] shadow-lg">
         {/* Cover Photo */}
-        <div className="relative h-64 sm:h-80 w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
+        <div className="relative h-64 sm:h-80 w-full overflow-hidden bg-[#F5F3F2] dark:bg-[#292929]">
           <img
             src={club.cover_image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&auto=format&fit=crop&q=80'}
             alt={club.name}
@@ -182,8 +182,8 @@ export const ClubDetails = () => {
               aria-label={favorite ? 'Remove from favorites' : 'Add to favorites'}
               className={`p-3 rounded-2xl backdrop-blur-md transition-all shadow-md ${
                 favorite
-                  ? 'bg-rose-500 text-white'
-                  : 'bg-white/80 dark:bg-gray-900/80 text-gray-700 dark:text-gray-200 hover:text-rose-500'
+                  ? 'bg-[#800020] text-white hover:bg-[#5C001A]'
+                  : 'bg-white/85 dark:bg-[#111111]/85 text-[#111111] dark:text-[#FAF9F7] hover:text-[#800020]'
               }`}
             >
               <Heart className={`w-5 h-5 ${favorite ? 'fill-current' : ''}`} />
@@ -196,7 +196,7 @@ export const ClubDetails = () => {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 -mt-16 sm:-mt-20 relative z-10">
             {/* Logo + Titles */}
             <div className="flex items-end gap-5">
-              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-4 border-white dark:border-dark-card shadow-xl bg-white dark:bg-dark-surface shrink-0">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-4 border-white dark:border-[#1C1C1C] shadow-xl bg-white dark:bg-[#292929] shrink-0">
                 <img
                   src={club.logo_url || 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=200&auto=format&fit=crop&q=80'}
                   alt={`${club.name} logo`}
@@ -205,21 +205,21 @@ export const ClubDetails = () => {
               </div>
               <div className="space-y-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="primary" size="sm">
+                  <Badge variant="burgundy" size="sm">
                     {club.categories?.name || 'Student Club'}
                   </Badge>
                   {club.is_featured && (
                     <Badge variant="featured" size="sm">
-                      <Sparkles className="w-3 h-3 mr-1" /> Featured Society
+                      <Sparkles className="w-3 h-3 mr-1 text-[#C5A46D]" /> Featured Society
                     </Badge>
                   )}
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white leading-tight">
+                <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7] leading-tight">
                   {club.name}
                 </h1>
-                <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+                <div className="flex items-center gap-3 text-xs text-[#737373] dark:text-[#A3A3A3]">
                   <span className="flex items-center gap-1 font-medium">
-                    <Users className="w-3.5 h-3.5" /> {club.member_count} Members
+                    <Users className="w-3.5 h-3.5 text-[#800020] dark:text-[#D9A0AE]" /> {club.member_count} Members
                   </span>
                   {club.establishment_date && (
                     <span>• Founded {new Date(club.establishment_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}</span>
@@ -232,8 +232,8 @@ export const ClubDetails = () => {
             <div className="shrink-0 flex items-center gap-3">
               {membershipStatus === 'approved' ? (
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
-                    <CheckCircle className="w-4 h-4 text-emerald-600" /> Active Member
+                  <span className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-[10px] text-xs font-bold bg-emerald-50 dark:bg-emerald-950/60 text-[#15803D] dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                    <CheckCircle className="w-4 h-4 text-[#15803D]" /> Active Member
                   </span>
                   <Button
                     variant="outline"
@@ -245,8 +245,8 @@ export const ClubDetails = () => {
                 </div>
               ) : membershipStatus === 'pending' ? (
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
-                    <Clock className="w-4 h-4 text-amber-600" /> Membership Pending Approval
+                  <span className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-[10px] text-xs font-bold bg-amber-50 dark:bg-amber-950/60 text-[#D97706] dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+                    <Clock className="w-4 h-4 text-[#D97706]" /> Membership Pending Approval
                   </span>
                   <Button
                     variant="ghost"
@@ -272,7 +272,7 @@ export const ClubDetails = () => {
         </div>
 
         {/* Navigation Tabs */}
-        <div className="px-6 sm:px-8 border-t border-gray-100 dark:border-gray-800 flex items-center gap-6 overflow-x-auto">
+        <div className="px-6 sm:px-8 border-t border-[#E5E5E5] dark:border-[#383838] flex items-center gap-6 overflow-x-auto">
           {[
             { id: 'about', label: 'Overview & Mission' },
             { id: 'events', label: `Events (${club.events?.length || 0})` },
@@ -284,8 +284,8 @@ export const ClubDetails = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`py-4 text-sm font-semibold border-b-2 whitespace-nowrap transition-colors ${
                 activeTab === tab.id
-                  ? 'border-brand-600 text-brand-600 dark:text-brand-400'
-                  : 'border-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
+                  ? 'border-[#800020] text-[#800020] dark:border-[#C2185B] dark:text-[#FAF9F7]'
+                  : 'border-transparent text-[#737373] hover:text-[#111111] dark:text-[#A3A3A3] dark:hover:text-[#FAF9F7]'
               }`}
             >
               {tab.label}
@@ -313,9 +313,9 @@ export const ClubDetails = () => {
               {/* Mission & Objectives */}
               {club.mission && (
                 <div className="bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 rounded-3xl p-6 sm:p-8 space-y-3 shadow-sm">
-                  <div className="flex items-center gap-2 text-brand-600 dark:text-brand-400">
-                    <Sparkles className="w-5 h-5" />
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                  <div className="flex items-center gap-2 text-[#800020] dark:text-[#D9A0AE]">
+                    <Sparkles className="w-5 h-5 text-[#C5A46D]" />
+                    <h3 className="font-serif text-lg font-bold text-gray-900 dark:text-white">
                       Mission & Core Objectives
                     </h3>
                   </div>
@@ -377,7 +377,7 @@ export const ClubDetails = () => {
                     className="p-6 rounded-3xl bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 shadow-sm space-y-2"
                   >
                     <div className="flex items-center justify-between text-xs text-gray-400">
-                      <span className="font-semibold text-brand-600 dark:text-brand-400">Official Notice</span>
+                      <span className="font-semibold text-[#800020] dark:text-[#D9A0AE]">Official Notice</span>
                       <span>{new Date(ann.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                     </div>
                     <h4 className="font-bold text-base text-gray-900 dark:text-white">
@@ -399,7 +399,7 @@ export const ClubDetails = () => {
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="p-6 rounded-3xl bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 shadow-sm space-y-3">
-                  <div className="w-12 h-12 rounded-2xl bg-brand-50 dark:bg-brand-950 flex items-center justify-center text-brand-600">
+                  <div className="w-12 h-12 rounded-2xl bg-[#FCE7EF] dark:bg-[#800020]/30 flex items-center justify-center text-[#800020] dark:text-[#D9A0AE]">
                     <Building className="w-6 h-6" />
                   </div>
                   <div>
@@ -413,7 +413,7 @@ export const ClubDetails = () => {
                 </div>
 
                 <div className="p-6 rounded-3xl bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 shadow-sm space-y-3">
-                  <div className="w-12 h-12 rounded-2xl bg-violet-50 dark:bg-violet-950 flex items-center justify-center text-violet-600">
+                  <div className="w-12 h-12 rounded-2xl bg-[#FAF5EC] dark:bg-[#C5A46D]/20 flex items-center justify-center text-[#8F6B2A] dark:text-[#E6D3B1]">
                     <UserCheck className="w-6 h-6" />
                   </div>
                   <div>
@@ -441,9 +441,9 @@ export const ClubDetails = () => {
             {club.contact_email && (
               <a
                 href={`mailto:${club.contact_email}`}
-                className="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                className="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300 hover:text-[#800020] dark:hover:text-[#D9A0AE] transition-colors"
               >
-                <div className="w-9 h-9 rounded-xl bg-gray-50 dark:bg-dark-surface border border-gray-200 dark:border-gray-700 flex items-center justify-center text-brand-600">
+                <div className="w-9 h-9 rounded-xl bg-[#FAF9F7] dark:bg-[#292929] border border-gray-200 dark:border-gray-700 flex items-center justify-center text-[#800020] dark:text-[#D9A0AE]">
                   <Mail className="w-4 h-4" />
                 </div>
                 <span className="truncate">{club.contact_email}</span>
@@ -459,7 +459,7 @@ export const ClubDetails = () => {
                     href={socialLinks.website}
                     target="_blank"
                     rel="noreferrer"
-                    className="p-2.5 rounded-xl border border-gray-200 dark:border-gray-700 hover:text-brand-600 transition-colors"
+                    className="p-2.5 rounded-xl border border-gray-200 dark:border-gray-700 hover:text-[#800020] hover:border-[#800020]/40 transition-colors"
                     title="Website"
                   >
                     <Globe className="w-4 h-4" />
@@ -470,7 +470,7 @@ export const ClubDetails = () => {
                     href={socialLinks.github}
                     target="_blank"
                     rel="noreferrer"
-                    className="p-2.5 rounded-xl border border-gray-200 dark:border-gray-700 hover:text-brand-600 transition-colors"
+                    className="p-2.5 rounded-xl border border-gray-200 dark:border-gray-700 hover:text-[#800020] hover:border-[#800020]/40 transition-colors"
                     title="GitHub"
                   >
                     <Github className="w-4 h-4" />
@@ -522,3 +522,4 @@ export const ClubDetails = () => {
   );
 };
 export default ClubDetails;
+

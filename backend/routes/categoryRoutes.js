@@ -10,3 +10,4 @@ router.put('/:id', authenticate, requireAdmin, CategoryController.updateCategory
 router.delete('/:id', authenticate, requireAdmin, CategoryController.deleteCategory);
 
 export default router;
+

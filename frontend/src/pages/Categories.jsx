@@ -35,34 +35,34 @@ export const Categories = () => {
   const getIcon = (slug) => {
     switch (slug) {
       case 'coding-technology':
-        return <Code2 className="w-8 h-8 text-indigo-500" />;
+        return <Code2 className="w-8 h-8 text-[#800020] dark:text-[#D9A0AE]" />;
       case 'entrepreneurship':
-        return <Rocket className="w-8 h-8 text-violet-500" />;
+        return <Rocket className="w-8 h-8 text-[#C5A46D]" />;
       case 'sports-fitness':
-        return <Trophy className="w-8 h-8 text-amber-500" />;
+        return <Trophy className="w-8 h-8 text-[#800020] dark:text-[#FCE7EF]" />;
       case 'arts-creativity':
-        return <Palette className="w-8 h-8 text-pink-500" />;
+        return <Palette className="w-8 h-8 text-[#C2185B]" />;
       case 'music-dance':
-        return <Music className="w-8 h-8 text-rose-500" />;
+        return <Music className="w-8 h-8 text-[#990033]" />;
       case 'photography-media':
-        return <Camera className="w-8 h-8 text-cyan-500" />;
+        return <Camera className="w-8 h-8 text-[#C5A46D]" />;
       case 'social-service':
-        return <HeartHandshake className="w-8 h-8 text-emerald-500" />;
+        return <HeartHandshake className="w-8 h-8 text-[#15803D]" />;
       default:
-        return <Sparkles className="w-8 h-8 text-brand-500" />;
+        return <Sparkles className="w-8 h-8 text-[#800020]" />;
     }
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       <div className="space-y-3">
-        <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">
-          <Grid className="w-4 h-4" /> Categorized Taxonomy
+        <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#800020] dark:text-[#D9A0AE]">
+          <Grid className="w-4 h-4 text-[#800020] dark:text-[#D9A0AE]" /> Categorized Taxonomy
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white">
+        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">
           Explore Interest Categories
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-2xl">
+        <p className="text-sm text-[#737373] dark:text-[#A3A3A3] max-w-2xl font-sans">
           Choose a discipline to discover student chapters, labs, varsity clubs, and artistic groups dedicated to that domain.
         </p>
       </div>
@@ -72,21 +72,21 @@ export const Categories = () => {
           <Link
             key={cat.id}
             to={`/clubs?category=${cat.slug}`}
-            className="group p-8 rounded-3xl bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 hover:border-brand-500/50 hover:shadow-xl dark:hover:shadow-glow-indigo/15 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+            className="group p-8 rounded-2xl bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] hover:border-[#800020]/40 dark:hover:border-[#C2185B]/40 hover:shadow-[0_16px_36px_rgba(17,17,17,0.06)] hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
           >
             <div>
-              <div className="w-16 h-16 rounded-2xl bg-gray-50 dark:bg-dark-surface border border-gray-200 dark:border-gray-700 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 rounded-xl bg-[#FAF9F7] dark:bg-[#292929] border border-[#E5E5E5] dark:border-[#383838] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 {getIcon(cat.slug)}
               </div>
-              <h3 className="font-bold text-lg text-gray-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+              <h3 className="font-serif font-bold text-lg text-[#111111] dark:text-[#FAF9F7] group-hover:text-[#800020] dark:group-hover:text-[#D9A0AE] transition-colors">
                 {cat.name}
               </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 line-clamp-3 leading-relaxed">
+              <p className="text-sm text-[#737373] dark:text-[#A3A3A3] mt-2 line-clamp-3 leading-relaxed">
                 {cat.description}
               </p>
             </div>
 
-            <div className="mt-8 pt-4 border-t border-gray-100 dark:border-gray-800/80 flex items-center justify-between text-xs font-bold text-brand-600 dark:text-brand-400">
+            <div className="mt-8 pt-4 border-t border-[#E5E5E5] dark:border-[#383838] flex items-center justify-between text-xs font-bold text-[#800020] dark:text-[#D9A0AE]">
               <span>{cat.club_count || 0} Registered Clubs</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
@@ -97,3 +97,4 @@ export const Categories = () => {
   );
 };
 export default Categories;
+

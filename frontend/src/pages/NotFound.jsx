@@ -1,21 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Compass, ArrowLeft } from 'lucide-react';
+import { GraduationCap, ArrowLeft } from 'lucide-react';
 import Button from '../components/common/Button.jsx';
 
 export const NotFound = () => {
   return (
-    <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 py-16">
-      <div className="w-20 h-20 rounded-3xl bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 flex items-center justify-center mb-6">
-        <Compass className="w-10 h-10 animate-spin-slow" />
+    <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 py-16 bg-[#FAF9F7] dark:bg-[#111111] transition-colors">
+      <div className="w-20 h-20 rounded-2xl bg-[#FCE7EF] dark:bg-[#800020]/30 text-[#800020] dark:text-[#D9A0AE] flex items-center justify-center mb-6 shadow-xs">
+        <GraduationCap className="w-10 h-10" />
       </div>
-      <span className="text-sm font-bold uppercase tracking-widest text-brand-600 dark:text-brand-400">
+      <span className="text-sm font-bold uppercase tracking-[0.2em] text-[#800020] dark:text-[#D9A0AE]">
         404 — Page Not Found
       </span>
-      <h1 className="text-4xl sm:text-5xl font-black text-gray-900 dark:text-white mt-2 mb-4 tracking-tight">
+      <h1 className="text-4xl sm:text-5xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7] mt-2 mb-4 tracking-tight">
         You seem to have strayed off campus
       </h1>
-      <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md leading-relaxed mb-8">
+      <p className="text-sm text-[#737373] dark:text-[#A3A3A3] max-w-md leading-relaxed mb-8 font-sans">
         The club page, event link, or administrative URL you are looking for does not exist or may have been relocated.
       </p>
       <Link to="/">
@@ -27,3 +27,4 @@ export const NotFound = () => {
   );
 };
 export default NotFound;
+

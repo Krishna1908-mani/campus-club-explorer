@@ -116,29 +116,29 @@ export const ExploreClubs = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       {/* Page Header */}
       <div className="space-y-3">
-        <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">
-          <Compass className="w-4 h-4" /> Discovery Hub
+        <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#800020] dark:text-[#D9A0AE]">
+          <Compass className="w-4 h-4 text-[#800020] dark:text-[#D9A0AE]" /> Discovery Hub
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white">
+        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">
           Explore College Clubs
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-2xl">
+        <p className="text-sm text-[#737373] dark:text-[#A3A3A3] max-w-2xl font-sans">
           Browse through all active student organizations, search by interests, filter by categories, and discover your next community.
         </p>
       </div>
 
       {/* SEARCH & CONTROLS BAR */}
-      <div className="bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 rounded-3xl p-4 sm:p-5 shadow-sm space-y-4">
+      <div className="bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] rounded-2xl p-4 sm:p-5 shadow-xs space-y-4">
         <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
           {/* Search Input */}
           <div className="relative flex-1">
-            <Search className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+            <Search className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#737373] pointer-events-none" />
             <input
               type="text"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Search clubs by name, mission, keywords, or topics..."
-              className="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-gray-50 dark:bg-dark-surface border border-gray-200 dark:border-gray-700 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full pl-10 pr-10 py-2.5 rounded-[10px] bg-[#FFFFFF] dark:bg-[#292929] border border-[#E5E5E5] dark:border-[#383838] text-sm text-[#111111] dark:text-[#FAF9F7] placeholder-[#737373]/70 focus:outline-none focus:ring-2 focus:ring-[#800020] focus:border-[#800020]"
             />
             {searchInput && (
               <button
@@ -146,7 +146,7 @@ export const ExploreClubs = () => {
                   setSearchInput('');
                   updateFilter('search', null);
                 }}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#737373] hover:text-[#800020] dark:hover:text-white"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -159,25 +159,25 @@ export const ExploreClubs = () => {
               <select
                 value={sort}
                 onChange={(e) => updateFilter('sort', e.target.value)}
-                className="appearance-none pl-3.5 pr-8 py-2.5 rounded-2xl bg-gray-50 dark:bg-dark-surface border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-500 cursor-pointer"
+                className="appearance-none pl-3.5 pr-8 py-2.5 rounded-[10px] bg-[#FFFFFF] dark:bg-[#292929] border border-[#E5E5E5] dark:border-[#383838] text-sm font-medium text-[#111111] dark:text-[#FAF9F7] focus:outline-none focus:ring-2 focus:ring-[#800020] cursor-pointer"
               >
                 <option value="popular">Most Popular (Members)</option>
                 <option value="alphabetical">Alphabetical (A - Z)</option>
                 <option value="recent">Recently Established</option>
               </select>
-              <ArrowUpDown className="w-4 h-4 absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+              <ArrowUpDown className="w-4 h-4 absolute right-2.5 top-1/2 -translate-y-1/2 text-[#737373] pointer-events-none" />
             </div>
 
             {/* Featured Only Pill */}
             <button
               onClick={() => updateFilter('featured', !featured)}
-              className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-2xl text-sm font-semibold border transition-all duration-150 shrink-0 ${
+              className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-[10px] text-sm font-semibold border transition-all duration-150 shrink-0 ${
                 featured
-                  ? 'bg-amber-500 text-white border-amber-500 shadow-sm'
-                  : 'bg-gray-50 dark:bg-dark-surface border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-300'
+                  ? 'bg-[#111111] text-[#C5A46D] border-[#C5A46D]/60 shadow-xs'
+                  : 'bg-[#FFFFFF] dark:bg-[#292929] border-[#E5E5E5] dark:border-[#383838] text-[#111111] dark:text-[#FAF9F7] hover:border-[#800020]/40'
               }`}
             >
-              <Sparkles className="w-4 h-4" />
+              <Sparkles className="w-4 h-4 text-[#C5A46D]" />
               <span>Featured Only</span>
             </button>
           </div>
@@ -187,10 +187,10 @@ export const ExploreClubs = () => {
         <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-1 no-scrollbar">
           <button
             onClick={() => updateFilter('category', 'all')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
+            className={`px-3.5 py-1.5 rounded-[10px] text-xs font-semibold whitespace-nowrap transition-all border ${
               category === 'all'
-                ? 'bg-brand-600 text-white shadow-sm'
-                : 'bg-gray-100 dark:bg-dark-surface text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                ? 'bg-[#800020] text-white border-[#5C001A] shadow-xs'
+                : 'bg-white dark:bg-[#1C1C1C] border-[#E5E5E5] dark:border-[#383838] text-[#111111] dark:text-[#FAF9F7] hover:bg-[#FCE7EF] dark:hover:bg-[#800020]/25'
             }`}
           >
             All Categories
@@ -199,10 +199,10 @@ export const ExploreClubs = () => {
             <button
               key={cat.id}
               onClick={() => updateFilter('category', cat.slug)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
+              className={`px-3.5 py-1.5 rounded-[10px] text-xs font-semibold whitespace-nowrap transition-all border ${
                 category === cat.slug || category === cat.id
-                  ? 'bg-brand-600 text-white shadow-sm'
-                  : 'bg-gray-100 dark:bg-dark-surface text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  ? 'bg-[#800020] text-white border-[#5C001A] shadow-xs'
+                  : 'bg-white dark:bg-[#1C1C1C] border-[#E5E5E5] dark:border-[#383838] text-[#111111] dark:text-[#FAF9F7] hover:bg-[#FCE7EF] dark:hover:bg-[#800020]/25'
               }`}
             >
               {cat.name}
@@ -212,15 +212,15 @@ export const ExploreClubs = () => {
       </div>
 
       {/* ACTIVE FILTERS SUMMARY & COUNT */}
-      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+      <div className="flex items-center justify-between text-xs text-[#737373] dark:text-[#A3A3A3]">
         <div>
-          Showing <span className="font-bold text-gray-900 dark:text-white">{clubs.length}</span> of{' '}
-          <span className="font-bold text-gray-900 dark:text-white">{pagination.total}</span> college clubs
+          Showing <span className="font-bold text-[#111111] dark:text-[#FAF9F7]">{clubs.length}</span> of{' '}
+          <span className="font-bold text-[#111111] dark:text-[#FAF9F7]">{pagination.total}</span> college clubs
         </div>
         {hasActiveFilters && (
           <button
             onClick={clearAllFilters}
-            className="text-brand-600 dark:text-brand-400 hover:underline font-semibold flex items-center gap-1"
+            className="text-[#800020] dark:text-[#D9A0AE] hover:underline font-semibold flex items-center gap-1"
           >
             <X className="w-3.5 h-3.5" /> Clear active filters
           </button>
@@ -261,3 +261,4 @@ export const ExploreClubs = () => {
   );
 };
 export default ExploreClubs;
+

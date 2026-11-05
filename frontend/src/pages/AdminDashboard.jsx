@@ -345,21 +345,21 @@ export const AdminDashboard = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      {/* Header Banner */}
-      <div className="rounded-3xl bg-gradient-to-r from-gray-900 via-gray-800 to-indigo-950 p-8 text-white shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-6 border border-gray-800">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 bg-[#FAF9F7] dark:bg-[#111111] transition-colors">
+      {/* Header Banner with Luxury Charcoal + Burgundy Accent */}
+      <div className="rounded-2xl bg-[#111111] p-8 text-white shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-6 border border-[#292929]">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-brand-500/20 border border-brand-500/40 flex items-center justify-center text-brand-400">
+          <div className="w-14 h-14 rounded-xl bg-[#800020] flex items-center justify-center text-white shadow-xs">
             <ShieldCheck className="w-8 h-8" />
           </div>
           <div>
-            <span className="text-xs uppercase font-bold tracking-widest text-brand-400">
+            <span className="text-xs uppercase font-bold tracking-[0.2em] text-[#C5A46D]">
               Administrative Control Panel
             </span>
-            <h1 className="text-2xl sm:text-3xl font-black">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white">
               Campus Club Administration
             </h1>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-[#737373]">
               Logged in as {profile?.full_name} ({profile?.email})
             </p>
           </div>
@@ -378,7 +378,7 @@ export const AdminDashboard = () => {
       </div>
 
       {/* Navigation Sub-Tabs */}
-      <div className="flex items-center gap-2 border-b border-gray-200 dark:border-gray-800 overflow-x-auto pb-1">
+      <div className="flex items-center gap-2 border-b border-[#E5E5E5] dark:border-[#383838] overflow-x-auto pb-1">
         {[
           { id: 'stats', label: 'Overview' },
           { id: 'clubs', label: `Clubs (${clubs.length})` },
@@ -391,10 +391,10 @@ export const AdminDashboard = () => {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`py-3 px-4 text-xs font-bold rounded-xl whitespace-nowrap transition-all ${
+            className={`py-2.5 px-4 text-xs font-semibold rounded-[10px] whitespace-nowrap transition-all ${
               activeTab === tab.id
-                ? 'bg-brand-600 text-white shadow-sm'
-                : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-surface'
+                ? 'bg-[#800020] text-white shadow-xs'
+                : 'text-[#111111] dark:text-[#FAF9F7] hover:bg-[#FCE7EF]/60 dark:hover:bg-[#800020]/20'
             }`}
           >
             {tab.label}
@@ -406,25 +406,25 @@ export const AdminDashboard = () => {
       {activeTab === 'stats' && (
         <div className="space-y-6">
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-            <div className="p-6 rounded-3xl bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 shadow-sm text-center">
-              <div className="text-3xl font-black text-gray-900 dark:text-white">{stats.totalClubs}</div>
-              <div className="text-xs text-gray-500 font-semibold uppercase mt-1">Total Clubs</div>
+            <div className="p-6 rounded-2xl bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] shadow-xs text-center hover:border-[#800020]/30 transition-all">
+              <div className="text-3xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">{stats.totalClubs}</div>
+              <div className="text-xs text-[#737373] dark:text-[#A3A3A3] font-medium uppercase mt-1">Total Clubs</div>
             </div>
-            <div className="p-6 rounded-3xl bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 shadow-sm text-center">
-              <div className="text-3xl font-black text-gray-900 dark:text-white">{stats.totalStudents}</div>
-              <div className="text-xs text-gray-500 font-semibold uppercase mt-1">Registered Students</div>
+            <div className="p-6 rounded-2xl bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] shadow-xs text-center hover:border-[#800020]/30 transition-all">
+              <div className="text-3xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">{stats.totalStudents}</div>
+              <div className="text-xs text-[#737373] dark:text-[#A3A3A3] font-medium uppercase mt-1">Registered Students</div>
             </div>
-            <div className="p-6 rounded-3xl bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 shadow-sm text-center">
-              <div className="text-3xl font-black text-emerald-600">{stats.totalMemberships}</div>
-              <div className="text-xs text-gray-500 font-semibold uppercase mt-1">Active Memberships</div>
+            <div className="p-6 rounded-2xl bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] shadow-xs text-center hover:border-[#800020]/30 transition-all">
+              <div className="text-3xl font-serif font-bold text-[#15803D] dark:text-emerald-400">{stats.totalMemberships}</div>
+              <div className="text-xs text-[#737373] dark:text-[#A3A3A3] font-medium uppercase mt-1">Active Memberships</div>
             </div>
-            <div className="p-6 rounded-3xl bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 shadow-sm text-center">
-              <div className="text-3xl font-black text-amber-500">{stats.pendingRequests}</div>
-              <div className="text-xs text-gray-500 font-semibold uppercase mt-1">Pending Approvals</div>
+            <div className="p-6 rounded-2xl bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] shadow-xs text-center hover:border-[#800020]/30 transition-all">
+              <div className="text-3xl font-serif font-bold text-[#D97706] dark:text-amber-400">{stats.pendingRequests}</div>
+              <div className="text-xs text-[#737373] dark:text-[#A3A3A3] font-medium uppercase mt-1">Pending Approvals</div>
             </div>
-            <div className="p-6 rounded-3xl bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 shadow-sm text-center col-span-2 lg:col-span-1">
-              <div className="text-3xl font-black text-brand-600">{stats.totalEvents}</div>
-              <div className="text-xs text-gray-500 font-semibold uppercase mt-1">Total Events</div>
+            <div className="p-6 rounded-2xl bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] shadow-xs text-center col-span-2 lg:col-span-1 hover:border-[#800020]/30 transition-all">
+              <div className="text-3xl font-serif font-bold text-[#800020] dark:text-[#D9A0AE]">{stats.totalEvents}</div>
+              <div className="text-xs text-[#737373] dark:text-[#A3A3A3] font-medium uppercase mt-1">Total Events</div>
             </div>
           </div>
 
@@ -508,7 +508,7 @@ export const AdminDashboard = () => {
                     <td className="py-3.5 px-4 text-right space-x-2">
                       <button
                         onClick={() => handleOpenClubModal(c)}
-                        className="p-1.5 rounded-lg text-gray-500 hover:text-brand-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="p-1.5 rounded-lg text-gray-500 hover:text-[#800020] hover:bg-gray-100 dark:hover:bg-gray-700"
                         title="Edit Club"
                       >
                         <Edit2 className="w-4 h-4" />
@@ -651,7 +651,7 @@ export const AdminDashboard = () => {
                     <td className="py-3.5 px-4 text-right space-x-2">
                       <button
                         onClick={() => handleOpenEventModal(evt)}
-                        className="p-1.5 rounded-lg text-gray-500 hover:text-brand-600"
+                        className="p-1.5 rounded-lg text-gray-500 hover:text-[#800020]"
                       >
                         <Edit2 className="w-4 h-4" />
                       </button>
@@ -713,7 +713,7 @@ export const AdminDashboard = () => {
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() => handleOpenCategoryModal(cat)}
-                      className="p-1 text-gray-500 hover:text-brand-600"
+                      className="p-1 text-gray-500 hover:text-[#800020]"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
@@ -762,7 +762,7 @@ export const AdminDashboard = () => {
             {announcements.map((a) => (
               <div key={a.id} className="py-4 flex items-start justify-between gap-4">
                 <div>
-                  <span className="text-xs font-bold text-brand-600">
+                  <span className="text-xs font-bold text-[#800020] dark:text-[#D9A0AE]">
                     {a.clubs?.name}
                   </span>
                   <h4 className="font-bold text-base text-gray-900 dark:text-white">
@@ -816,7 +816,7 @@ export const AdminDashboard = () => {
                       <img
                         src={s.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(s.full_name)}`}
                         alt={s.full_name}
-                        className="w-9 h-9 rounded-xl object-cover bg-brand-100"
+                        className="w-9 h-9 rounded-xl object-cover bg-[#FCE7EF]"
                       />
                       <div>
                         <span className="font-bold text-gray-900 dark:text-white block">
@@ -890,7 +890,7 @@ export const AdminDashboard = () => {
               onChange={(e) => setClubForm({ ...clubForm, full_description: e.target.value })}
               rows={4}
               required
-              className="w-full rounded-xl text-sm p-3 bg-white dark:bg-dark-card border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full rounded-[10px] text-sm p-3 bg-white dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] focus:outline-none focus:ring-2 focus:ring-[#800020] text-[#111111] dark:text-[#FAF9F7]"
               placeholder="Detailed profile, meetings, objectives..."
             />
           </div>
@@ -948,22 +948,22 @@ export const AdminDashboard = () => {
           />
 
           <div className="flex items-center gap-6 pt-2">
-            <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold">
+            <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-[#111111] dark:text-[#FAF9F7]">
               <input
                 type="checkbox"
                 checked={clubForm.is_featured}
                 onChange={(e) => setClubForm({ ...clubForm, is_featured: e.target.checked })}
-                className="rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+                className="rounded border-[#E5E5E5] text-[#800020] focus:ring-[#800020]"
               />
               <span>Mark as Featured Club</span>
             </label>
 
-            <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold">
+            <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-[#111111] dark:text-[#FAF9F7]">
               <input
                 type="checkbox"
                 checked={clubForm.is_active}
                 onChange={(e) => setClubForm({ ...clubForm, is_active: e.target.checked })}
-                className="rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+                className="rounded border-[#E5E5E5] text-[#800020] focus:ring-[#800020]"
               />
               <span>Active Status</span>
             </label>
@@ -1130,3 +1130,4 @@ export const AdminDashboard = () => {
   );
 };
 export default AdminDashboard;
+

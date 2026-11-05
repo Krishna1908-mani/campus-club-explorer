@@ -15,3 +15,4 @@ router.put('/:id', authenticate, requireAdmin, ClubController.updateClub);
 router.delete('/:id', authenticate, requireAdmin, ClubController.deleteClub);
 
 export default router;
+

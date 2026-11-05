@@ -26,10 +26,10 @@ export const ConfirmationDialog = ({
         >
           <AlertTriangle className="w-7 h-7" />
         </div>
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+        <h3 className="font-serif text-xl font-bold text-[#111111] dark:text-[#FAF9F7] mb-2">
           {title}
         </h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-6 leading-relaxed">
+        <p className="text-sm text-[#737373] dark:text-[#A3A3A3] mb-6 leading-relaxed">
           {message}
         </p>
 
@@ -56,3 +56,4 @@ export const ConfirmationDialog = ({
   );
 };
 export default ConfirmationDialog;
+

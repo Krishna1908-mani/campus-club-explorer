@@ -8,3 +8,4 @@ router.get('/stats', authenticate, requireAdmin, AdminController.getDashboardSta
 router.get('/students', authenticate, requireAdmin, AdminController.getAllStudents);
 
 export default router;
+

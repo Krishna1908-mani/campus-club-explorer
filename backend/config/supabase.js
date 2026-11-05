@@ -37,3 +37,4 @@ if (!isSupabaseConfigured) {
   console.log('to connect to your live Supabase cloud database.');
   console.log('----------------------------------------------------');
 }
+

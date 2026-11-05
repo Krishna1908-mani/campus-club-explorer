@@ -187,11 +187,19 @@ export const AuthController = {
       // Fallback in-memory authentication
       const user = memoryStore.users.find(u => u.email.toLowerCase() === email.toLowerCase());
 
-      // If demo credentials or student/admin
-      if (
-        user &&
-        (user.password_hash ? await bcrypt.compare(password, user.password_hash) : (password === 'password123' || password === 'admin123'))
-      ) {
+      // Verify credentials
+      let passwordValid = false;
+      if (user) {
+        if (user.password_hash) {
+          passwordValid = await bcrypt.compare(password, user.password_hash);
+        } else {
+          // Legacy fallback for seed users without hashes
+          passwordValid = (user.role === 'admin' && password === 'admin123') ||
+                          (user.role === 'student' && password === 'password123');
+        }
+      }
+
+      if (user && passwordValid) {
         const token = jwt.sign(
           { id: user.id, email: user.email, role: user.role, full_name: user.full_name },
           JWT_SECRET,
@@ -278,3 +286,4 @@ export const AuthController = {
     }
   },
 };
+

@@ -105,8 +105,9 @@ export const StudentDashboard = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      {/* Welcome Banner */}
-      <div className="relative rounded-3xl bg-gradient-to-r from-brand-600 via-brand-700 to-violet-700 p-8 sm:p-10 text-white shadow-xl overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+      {/* Welcome Banner with Burgundy Luxury Styling */}
+      <div className="relative rounded-3xl bg-[#800020] p-8 sm:p-10 text-white shadow-xl overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#5C001A] rounded-full blur-3xl opacity-60 -mr-20 -mt-20 pointer-events-none" />
         <div className="flex items-center gap-5 relative z-10">
           <img
             src={
@@ -116,16 +117,16 @@ export const StudentDashboard = () => {
               )}`
             }
             alt={profile?.full_name}
-            className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl border-2 border-white/60 bg-white/20 object-cover shadow-lg"
+            className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl border-2 border-[#E6D3B1]/60 bg-white/20 object-cover shadow-lg"
           />
           <div className="space-y-1">
-            <span className="text-xs uppercase font-bold tracking-widest text-brand-200">
+            <span className="text-xs uppercase font-bold tracking-[0.2em] text-[#E6D3B1]">
               Student Portal
             </span>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-white">
               Welcome back, {profile?.full_name || 'Student'}!
             </h1>
-            <p className="text-xs sm:text-sm text-brand-100">
+            <p className="text-xs sm:text-sm text-rose-100/90 font-sans">
               {profile?.department || 'Department Not Set'} • {profile?.year_of_study || 'Year Not Set'}
             </p>
           </div>
@@ -133,7 +134,7 @@ export const StudentDashboard = () => {
 
         <div className="shrink-0 flex items-center gap-2 relative z-10">
           <Link to="/clubs">
-            <Button size="sm" className="bg-white text-brand-700 hover:bg-gray-100 shadow-sm">
+            <Button size="sm" className="bg-white text-[#800020] hover:bg-[#FAF9F7] font-semibold shadow-xs">
               Discover New Clubs
             </Button>
           </Link>
@@ -142,57 +143,57 @@ export const StudentDashboard = () => {
 
       {/* Overview Stats Bar */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-5 rounded-2xl bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 flex items-center justify-center shrink-0">
+        <div className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] shadow-xs flex items-center gap-4 hover:border-[#800020]/30 transition-all">
+          <div className="w-12 h-12 rounded-xl bg-[#FCE7EF] dark:bg-[#800020]/30 text-[#800020] dark:text-[#D9A0AE] flex items-center justify-center shrink-0">
             <CheckCircle className="w-6 h-6" />
           </div>
           <div>
-            <div className="text-2xl font-black text-gray-900 dark:text-white">
+            <div className="text-2xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">
               {approvedMemberships.length}
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 font-semibold uppercase tracking-wider">
+            <div className="text-xs text-[#737373] dark:text-[#A3A3A3] font-medium uppercase tracking-wider">
               Joined Clubs
             </div>
           </div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 flex items-center justify-center shrink-0">
+        <div className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] shadow-xs flex items-center gap-4 hover:border-[#800020]/30 transition-all">
+          <div className="w-12 h-12 rounded-xl bg-[#FAF5EC] dark:bg-[#C5A46D]/20 text-[#8F6B2A] dark:text-[#E6D3B1] flex items-center justify-center shrink-0">
             <Clock className="w-6 h-6" />
           </div>
           <div>
-            <div className="text-2xl font-black text-gray-900 dark:text-white">
+            <div className="text-2xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">
               {pendingMemberships.length}
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 font-semibold uppercase tracking-wider">
+            <div className="text-xs text-[#737373] dark:text-[#A3A3A3] font-medium uppercase tracking-wider">
               Pending Requests
             </div>
           </div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-rose-50 dark:bg-rose-950/50 text-rose-600 flex items-center justify-center shrink-0">
+        <div className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] shadow-xs flex items-center gap-4 hover:border-[#800020]/30 transition-all">
+          <div className="w-12 h-12 rounded-xl bg-[#FCE7EF] dark:bg-[#800020]/30 text-[#800020] dark:text-[#D9A0AE] flex items-center justify-center shrink-0">
             <Heart className="w-6 h-6" />
           </div>
           <div>
-            <div className="text-2xl font-black text-gray-900 dark:text-white">
+            <div className="text-2xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">
               {favorites.length}
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 font-semibold uppercase tracking-wider">
+            <div className="text-xs text-[#737373] dark:text-[#A3A3A3] font-medium uppercase tracking-wider">
               Saved Favorites
             </div>
           </div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-violet-50 dark:bg-violet-950/50 text-violet-600 flex items-center justify-center shrink-0">
+        <div className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] shadow-xs flex items-center gap-4 hover:border-[#800020]/30 transition-all">
+          <div className="w-12 h-12 rounded-xl bg-[#FAF5EC] dark:bg-[#C5A46D]/20 text-[#8F6B2A] dark:text-[#E6D3B1] flex items-center justify-center shrink-0">
             <Calendar className="w-6 h-6" />
           </div>
           <div>
-            <div className="text-2xl font-black text-gray-900 dark:text-white">
+            <div className="text-2xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">
               {events.length}
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 font-semibold uppercase tracking-wider">
+            <div className="text-xs text-[#737373] dark:text-[#A3A3A3] font-medium uppercase tracking-wider">
               Registered Events
             </div>
           </div>
@@ -201,7 +202,7 @@ export const StudentDashboard = () => {
 
       {/* Tabs Layout */}
       <div className="space-y-6">
-        <div className="flex items-center gap-3 border-b border-gray-200 dark:border-gray-800 overflow-x-auto">
+        <div className="flex items-center gap-3 border-b border-[#E5E5E5] dark:border-[#383838] overflow-x-auto">
           {[
             { id: 'overview', label: 'Dashboard Overview' },
             { id: 'clubs', label: `My Clubs (${memberships.length})` },
@@ -214,8 +215,8 @@ export const StudentDashboard = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`py-3.5 px-3 text-sm font-semibold border-b-2 whitespace-nowrap transition-colors ${
                 activeTab === tab.id
-                  ? 'border-brand-600 text-brand-600 dark:text-brand-400'
-                  : 'border-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
+                  ? 'border-[#800020] text-[#800020] dark:border-[#C2185B] dark:text-[#FAF9F7]'
+                  : 'border-transparent text-[#737373] hover:text-[#111111] dark:text-[#A3A3A3] dark:hover:text-[#FAF9F7]'
               }`}
             >
               {tab.label}
@@ -235,7 +236,7 @@ export const StudentDashboard = () => {
                   </h3>
                   <button
                     onClick={() => setActiveTab('clubs')}
-                    className="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline"
+                    className="text-xs font-semibold text-[#800020] dark:text-[#D9A0AE] hover:underline"
                   >
                     View All
                   </button>
@@ -244,28 +245,28 @@ export const StudentDashboard = () => {
                 {approvedMemberships.length === 0 ? (
                   <p className="text-sm text-gray-500 py-4">
                     You haven't been approved in any clubs yet.{' '}
-                    <Link to="/clubs" className="text-brand-600 hover:underline font-semibold">
+                    <Link to="/clubs" className="text-[#800020] dark:text-[#D9A0AE] hover:underline font-semibold">
                       Explore and apply to clubs!
                     </Link>
                   </p>
                 ) : (
-                  <div className="divide-y divide-gray-100 dark:divide-gray-800">
+                  <div className="divide-y divide-[#E5E5E5] dark:divide-[#383838]">
                     {approvedMemberships.slice(0, 3).map((m) => (
                       <div key={m.id} className="py-3 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <img
                             src={m.clubs?.logo_url || 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=100&auto=format&fit=crop&q=80'}
                             alt={m.clubs?.name}
-                            className="w-10 h-10 rounded-xl object-cover border border-gray-200 dark:border-gray-700"
+                            className="w-10 h-10 rounded-xl object-cover border border-[#E5E5E5] dark:border-[#383838]"
                           />
                           <div>
                             <Link
                               to={`/clubs/${m.clubs?.slug || m.clubs?.id}`}
-                              className="font-bold text-sm text-gray-900 dark:text-white hover:text-brand-600"
+                              className="font-serif font-bold text-sm text-[#111111] dark:text-[#FAF9F7] hover:text-[#800020] dark:hover:text-[#D9A0AE]"
                             >
                               {m.clubs?.name}
                             </Link>
-                            <span className="block text-xs text-gray-400">
+                            <span className="block text-xs text-[#737373]">
                               Joined {new Date(m.joined_at).toLocaleDateString()}
                             </span>
                           </div>
@@ -287,7 +288,7 @@ export const StudentDashboard = () => {
                   </h3>
                   <button
                     onClick={() => setActiveTab('events')}
-                    className="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline"
+                    className="text-xs font-semibold text-[#800020] dark:text-[#D9A0AE] hover:underline"
                   >
                     View All
                   </button>
@@ -296,7 +297,7 @@ export const StudentDashboard = () => {
                 {events.length === 0 ? (
                   <p className="text-sm text-gray-500 py-4">
                     No event registrations found.{' '}
-                    <Link to="/events" className="text-brand-600 hover:underline font-semibold">
+                    <Link to="/events" className="text-[#800020] dark:text-[#D9A0AE] hover:underline font-semibold">
                       Check upcoming campus events!
                     </Link>
                   </p>
@@ -340,7 +341,7 @@ export const StudentDashboard = () => {
                         key={a.id}
                         className="p-3.5 rounded-2xl bg-gray-50 dark:bg-dark-surface border border-gray-100 dark:border-gray-700/60 space-y-1"
                       >
-                        <span className="text-[10px] font-bold text-brand-600 dark:text-brand-400">
+                        <span className="text-[10px] font-bold text-[#800020] dark:text-[#D9A0AE]">
                           {a.clubs?.name || 'Club Announcement'}
                         </span>
                         <h4 className="font-semibold text-xs text-gray-900 dark:text-white">
@@ -393,7 +394,7 @@ export const StudentDashboard = () => {
                         <div>
                           <Link
                             to={`/clubs/${m.clubs?.slug || m.clubs?.id}`}
-                            className="font-bold text-base text-gray-900 dark:text-white hover:text-brand-600"
+                            className="font-serif font-bold text-base text-[#111111] dark:text-[#FAF9F7] hover:text-[#800020] dark:hover:text-[#D9A0AE]"
                           >
                             {m.clubs?.name}
                           </Link>
@@ -471,20 +472,20 @@ export const StudentDashboard = () => {
                         <div>
                           <Link
                             to={`/clubs/${club.slug || club.id}`}
-                            className="font-bold text-sm text-gray-900 dark:text-white hover:text-brand-600 line-clamp-1"
+                            className="font-serif font-bold text-sm text-[#111111] dark:text-[#FAF9F7] hover:text-[#800020] dark:hover:text-[#D9A0AE] line-clamp-1"
                           >
                             {club.name}
                           </Link>
-                          <span className="text-xs text-gray-400">
+                          <span className="text-xs text-[#737373]">
                             {club.member_count} members
                           </span>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
+                      <div className="flex items-center justify-between pt-2 border-t border-[#E5E5E5] dark:border-[#383838]">
                         <Link
                           to={`/clubs/${club.slug || club.id}`}
-                          className="text-xs font-semibold text-brand-600 hover:underline flex items-center gap-1"
+                          className="text-xs font-semibold text-[#800020] dark:text-[#D9A0AE] hover:underline flex items-center gap-1"
                         >
                           View Details <ArrowRight className="w-3.5 h-3.5" />
                         </Link>
@@ -509,8 +510,8 @@ export const StudentDashboard = () => {
 
         {/* TAB 4: MY EVENTS */}
         {activeTab === 'events' && (
-          <div className="bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+          <div className="bg-white dark:bg-dark-card border border-[#E5E5E5] dark:border-[#383838] rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+            <h3 className="font-serif text-xl font-bold text-[#111111] dark:text-[#FAF9F7]">
               My Registered Events
             </h3>
             {events.length === 0 ? (
@@ -522,16 +523,16 @@ export const StudentDashboard = () => {
                 {events.map((evt) => (
                   <div
                     key={evt.id}
-                    className="p-5 rounded-2xl bg-gray-50 dark:bg-dark-surface border border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                    className="p-5 rounded-2xl bg-gray-50 dark:bg-dark-surface border border-[#E5E5E5] dark:border-[#383838] flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                   >
                     <div>
-                      <h4 className="font-bold text-base text-gray-900 dark:text-white">
+                      <h4 className="font-serif font-bold text-base text-[#111111] dark:text-[#FAF9F7]">
                         {evt.title}
                       </h4>
-                      <p className="text-xs text-gray-500 mt-0.5">
+                      <p className="text-xs text-[#737373] mt-0.5">
                         {evt.event_date} • {evt.start_time} - {evt.end_time || 'Late'} • {evt.venue}
                       </p>
-                      <span className="text-xs text-brand-600 dark:text-brand-400 font-semibold mt-1 inline-block">
+                      <span className="text-xs text-[#800020] dark:text-[#D9A0AE] font-semibold mt-1 inline-block">
                         Hosted by {evt.clubs?.name}
                       </span>
                     </div>
@@ -619,7 +620,7 @@ export const StudentDashboard = () => {
                   value={profileForm.bio}
                   onChange={(e) => setProfileForm({ ...profileForm, bio: e.target.value })}
                   rows={3}
-                  className="w-full rounded-xl text-sm p-3 bg-white dark:bg-dark-card border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="w-full rounded-[10px] text-sm p-3 bg-white dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] focus:outline-none focus:ring-2 focus:ring-[#800020] text-[#111111] dark:text-[#FAF9F7]"
                   placeholder="Share a short bio or interests..."
                 />
               </div>
@@ -651,3 +652,4 @@ export const StudentDashboard = () => {
   );
 };
 export default StudentDashboard;
+

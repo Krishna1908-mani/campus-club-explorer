@@ -6,7 +6,7 @@ export const Skeleton = ({ className = '', count = 1 }) => {
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className={`animate-pulse bg-gray-200 dark:bg-gray-800 rounded-xl ${className}`}
+          className={`animate-pulse bg-[#E5E5E5] dark:bg-[#292929] rounded-[10px] ${className}`}
         />
       ))}
     </>
@@ -14,22 +14,23 @@ export const Skeleton = ({ className = '', count = 1 }) => {
 };
 
 export const ClubCardSkeleton = () => (
-  <div className="bg-white dark:bg-dark-card border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden p-0 shadow-sm animate-pulse">
-    <div className="h-44 bg-gray-200 dark:bg-gray-800 w-full" />
+  <div className="bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] rounded-2xl overflow-hidden p-0 shadow-sm animate-pulse">
+    <div className="h-44 bg-[#F5F3F2] dark:bg-[#292929] w-full" />
     <div className="p-5 space-y-3">
       <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-xl bg-gray-300 dark:bg-gray-700" />
+        <div className="w-12 h-12 rounded-xl bg-[#E5E5E5] dark:bg-[#383838]" />
         <div className="space-y-1.5 flex-1">
-          <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-3/4" />
-          <div className="h-3 bg-gray-200 dark:bg-gray-800 rounded w-1/2" />
+          <div className="h-4 bg-[#E5E5E5] dark:bg-[#383838] rounded w-3/4" />
+          <div className="h-3 bg-[#F5F3F2] dark:bg-[#292929] rounded w-1/2" />
         </div>
       </div>
-      <div className="h-3 bg-gray-200 dark:bg-gray-800 rounded w-full" />
-      <div className="h-3 bg-gray-200 dark:bg-gray-800 rounded w-5/6" />
-      <div className="pt-4 border-t border-gray-100 dark:border-gray-800 flex justify-between">
-        <div className="h-3 bg-gray-200 dark:bg-gray-800 rounded w-1/4" />
-        <div className="h-3 bg-gray-300 dark:bg-gray-700 rounded w-1/4" />
+      <div className="h-3 bg-[#F5F3F2] dark:bg-[#292929] rounded w-full" />
+      <div className="h-3 bg-[#F5F3F2] dark:bg-[#292929] rounded w-5/6" />
+      <div className="pt-4 border-t border-[#E5E5E5] dark:border-[#383838] flex justify-between">
+        <div className="h-3 bg-[#F5F3F2] dark:bg-[#292929] rounded w-1/4" />
+        <div className="h-3 bg-[#E5E5E5] dark:bg-[#383838] rounded w-1/4" />
       </div>
     </div>
   </div>
 );
+

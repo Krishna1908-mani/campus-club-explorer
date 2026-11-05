@@ -20,13 +20,13 @@ export const Select = ({
       {label && (
         <label
           htmlFor={id || name}
-          className="block text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1.5"
+          className="block text-xs font-semibold text-[#111111] dark:text-[#FAF9F7] uppercase tracking-wider mb-1.5"
         >
-          {label} {required && <span className="text-rose-500">*</span>}
+          {label} {required && <span className="text-[#800020] dark:text-[#D9A0AE]">*</span>}
         </label>
       )}
 
-      <div className="relative rounded-xl shadow-sm">
+      <div className="relative rounded-[10px] shadow-xs">
         <select
           id={id || name}
           name={name}
@@ -34,13 +34,13 @@ export const Select = ({
           onChange={onChange}
           required={required}
           disabled={disabled}
-          className={`block w-full appearance-none rounded-xl text-sm transition-colors duration-150 pl-3.5 pr-10 py-2.5 bg-white dark:bg-dark-card border
+          className={`block w-full appearance-none rounded-[10px] text-sm transition-colors duration-150 pl-3.5 pr-10 py-2.5 bg-[#FFFFFF] dark:bg-[#1C1C1C] border
             ${
               error
-                ? 'border-rose-400 dark:border-rose-600 focus:ring-rose-500 text-rose-900'
-                : 'border-gray-300 dark:border-gray-700 focus:ring-brand-500 text-gray-900 dark:text-gray-100'
+                ? 'border-[#B91C1C] focus:ring-[#B91C1C] text-[#B91C1C]'
+                : 'border-[#E5E5E5] dark:border-[#383838] focus:ring-[#800020] focus:border-[#800020] text-[#111111] dark:text-[#FAF9F7]'
             }
-            focus:outline-none focus:ring-2 focus:ring-offset-0 disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed cursor-pointer`}
+            focus:outline-none focus:ring-2 focus:ring-offset-0 disabled:bg-[#FAF9F7] dark:disabled:bg-[#292929] disabled:cursor-not-allowed cursor-pointer`}
           {...props}
         >
           {placeholder && <option value="">{placeholder}</option>}
@@ -61,3 +61,4 @@ export const Select = ({
   );
 };
 export default Select;
+

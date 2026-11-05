@@ -50,22 +50,22 @@ export const ClubCard = ({
   const categoryName = club.categories?.name || 'General Club';
 
   return (
-    <div className="group relative bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 rounded-2xl shadow-sm hover:shadow-xl dark:hover:shadow-glow-indigo/15 hover:border-brand-500/50 transition-all duration-300 flex flex-col h-full overflow-hidden">
+    <div className="group relative bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] rounded-2xl shadow-sm hover:shadow-[0_16px_36px_rgba(17,17,17,0.08)] dark:hover:shadow-[0_16px_36px_rgba(0,0,0,0.5)] hover:border-[#800020]/40 dark:hover:border-[#C2185B]/40 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full overflow-hidden">
       {/* Cover Image & Favorite Badge */}
-      <div className="relative h-44 w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
+      <div className="relative h-44 w-full overflow-hidden bg-[#F5F3F2] dark:bg-[#292929]">
         <img
           src={club.cover_image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=80'}
           alt={club.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-        {/* Featured Badge */}
+        {/* Featured Badge with Luxury Gold styling */}
         {club.is_featured && (
           <div className="absolute top-3 left-3">
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/90 text-white backdrop-blur-md shadow-sm">
-              <Sparkles className="w-3.5 h-3.5" /> Featured
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-[#111111]/90 text-[#C5A46D] border border-[#C5A46D]/40 backdrop-blur-md shadow-xs">
+              <Sparkles className="w-3.5 h-3.5 text-[#C5A46D]" /> Featured
             </span>
           </div>
         )}
@@ -78,16 +78,16 @@ export const ClubCard = ({
           className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md transition-all duration-200 shadow-sm
             ${
               favorite
-                ? 'bg-rose-500 text-white hover:bg-rose-600 scale-105'
-                : 'bg-white/80 dark:bg-gray-900/80 text-gray-700 dark:text-gray-300 hover:text-rose-500 dark:hover:text-rose-400 hover:bg-white dark:hover:bg-gray-900'
+                ? 'bg-[#800020] text-white hover:bg-[#5C001A] scale-105'
+                : 'bg-white/85 dark:bg-[#111111]/85 text-[#111111] dark:text-[#FAF9F7] hover:text-[#800020] dark:hover:text-[#D9A0AE] hover:bg-white dark:hover:bg-[#111111]'
             }`}
         >
           <Heart className={`w-4 h-4 transition-transform duration-200 ${favorite ? 'fill-current scale-110' : ''}`} />
         </button>
 
-        {/* Category Pill Over Cover */}
+        {/* Category Pill Over Cover with Burgundy accent */}
         <div className="absolute bottom-3 left-3">
-          <Badge variant="primary" size="sm" className="bg-white/90 dark:bg-gray-950/90 text-brand-700 dark:text-brand-300 font-semibold backdrop-blur-sm border-0">
+          <Badge variant="burgundy" size="sm" className="font-semibold shadow-xs">
             {categoryName}
           </Badge>
         </div>
@@ -98,7 +98,7 @@ export const ClubCard = ({
         <div>
           {/* Logo & Club Name */}
           <div className="flex items-start gap-3.5 mb-3">
-            <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-dark-surface p-0.5">
+            <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-[#E5E5E5] dark:border-[#383838] shadow-xs bg-white dark:bg-[#292929] p-0.5">
               <img
                 src={club.logo_url || 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=100&auto=format&fit=crop&q=80'}
                 alt={`${club.name} logo`}
@@ -108,31 +108,31 @@ export const ClubCard = ({
             </div>
             <div>
               <Link to={`/clubs/${club.slug || club.id}`}>
-                <h3 className="font-bold text-base text-gray-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors line-clamp-1">
+                <h3 className="font-serif font-bold text-base text-[#111111] dark:text-[#FAF9F7] group-hover:text-[#800020] dark:group-hover:text-[#D9A0AE] transition-colors line-clamp-1">
                   {club.name}
                 </h3>
               </Link>
-              <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                <Users className="w-3.5 h-3.5 text-gray-400" />
+              <div className="flex items-center gap-1.5 text-xs text-[#737373] dark:text-[#A3A3A3] mt-0.5">
+                <Users className="w-3.5 h-3.5 text-[#737373]" />
                 <span>{club.member_count || 0} active members</span>
               </div>
             </div>
           </div>
 
           {/* Description */}
-          <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 leading-relaxed">
+          <p className="text-sm text-[#737373] dark:text-[#A3A3A3] line-clamp-2 leading-relaxed">
             {club.short_description}
           </p>
         </div>
 
         {/* Action Button */}
-        <div className="mt-5 pt-4 border-t border-gray-100 dark:border-gray-800/80 flex items-center justify-between">
-          <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
+        <div className="mt-5 pt-4 border-t border-[#E5E5E5] dark:border-[#383838] flex items-center justify-between">
+          <span className="text-xs font-medium text-[#737373] dark:text-[#A3A3A3]">
             {club.establishment_date ? `Est. ${new Date(club.establishment_date).getFullYear()}` : 'Campus Club'}
           </span>
           <Link
             to={`/clubs/${club.slug || club.id}`}
-            className="inline-flex items-center gap-1 text-xs font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 group/link"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-[#800020] dark:text-[#D9A0AE] hover:text-[#5C001A] dark:hover:text-white group/link transition-colors"
           >
             <span>View Details</span>
             <ArrowUpRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
@@ -143,3 +143,4 @@ export const ClubCard = ({
   );
 };
 export default ClubCard;
+

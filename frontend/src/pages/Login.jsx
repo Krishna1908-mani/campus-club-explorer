@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { LogIn, Compass, Shield, User, Sparkles } from 'lucide-react';
+import { LogIn, GraduationCap, Shield, User, Sparkles } from 'lucide-react';
 import Input from '../components/common/Input.jsx';
 import Button from '../components/common/Button.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -49,53 +49,53 @@ export const Login = () => {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
+    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-[#FAF9F7] dark:bg-[#111111] transition-colors">
       <div className="w-full max-w-md space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
           <Link to="/" className="inline-flex items-center gap-2 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-violet-600 flex items-center justify-center text-white shadow-md">
-              <Compass className="w-5 h-5" />
+            <div className="w-12 h-12 rounded-2xl bg-[#800020] flex items-center justify-center text-white shadow-xs hover:bg-[#5C001A] transition-colors">
+              <GraduationCap className="w-6 h-6" />
             </div>
           </Link>
-          <h1 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">
+          <h1 className="text-2xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7] tracking-tight">
             Sign In to Campus Club Explorer
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+          <p className="text-xs text-[#737373] dark:text-[#A3A3A3]">
             Enter your college credentials to access your club memberships
           </p>
         </div>
 
         {/* Demo Fast-Login Pill Tray for Easy Evaluation */}
-        <div className="p-4 rounded-2xl bg-brand-50/70 dark:bg-brand-950/40 border border-brand-200 dark:border-brand-800/80 space-y-2">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-brand-700 dark:text-brand-300">
-            <Sparkles className="w-3.5 h-3.5" /> Demo Login Quick-Fill (One-Click)
+        <div className="p-4 rounded-2xl bg-[#FCE7EF]/50 dark:bg-[#800020]/20 border border-[#D9A0AE]/50 dark:border-[#800020]/50 space-y-2">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-[#800020] dark:text-[#D9A0AE]">
+            <Sparkles className="w-3.5 h-3.5 text-[#C5A46D]" /> Demo Login Quick-Fill (One-Click)
           </div>
           <div className="grid grid-cols-2 gap-2 pt-1">
             <button
               type="button"
               onClick={() => handleDemoFill('student@campus.edu', 'password123')}
-              className="flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-dark-card border border-brand-200 dark:border-brand-800 hover:border-brand-500 text-gray-800 dark:text-gray-200 transition-colors shadow-sm"
+              className="flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-[10px] bg-white dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] hover:border-[#800020] text-[#111111] dark:text-[#FAF9F7] transition-colors shadow-xs"
             >
-              <User className="w-3.5 h-3.5 text-brand-600" />
+              <User className="w-3.5 h-3.5 text-[#800020]" />
               Demo Student
             </button>
             <button
               type="button"
               onClick={() => handleDemoFill('admin@campus.edu', 'admin123')}
-              className="flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-dark-card border border-brand-200 dark:border-brand-800 hover:border-brand-500 text-gray-800 dark:text-gray-200 transition-colors shadow-sm"
+              className="flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-[10px] bg-white dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] hover:border-[#800020] text-[#111111] dark:text-[#FAF9F7] transition-colors shadow-xs"
             >
-              <Shield className="w-3.5 h-3.5 text-violet-600" />
+              <Shield className="w-3.5 h-3.5 text-[#C5A46D]" />
               Demo Admin
             </button>
           </div>
         </div>
 
         {/* Login Form */}
-        <div className="bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 rounded-3xl p-6 sm:p-8 shadow-sm">
+        <div className="bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] rounded-2xl p-6 sm:p-8 shadow-xs">
           <form onSubmit={handleSubmit} className="space-y-4">
             {errorMessage && (
-              <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-xs font-medium text-rose-700 dark:text-rose-300">
+              <div className="p-3.5 rounded-[10px] bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-xs font-medium text-[#B91C1C] dark:text-rose-300">
                 {errorMessage}
               </div>
             )}
@@ -105,7 +105,7 @@ export const Login = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="e.g. yourname@campus.edu"
+              placeholder="e.g. student@campus.edu"
               required
             />
 
@@ -119,18 +119,18 @@ export const Login = () => {
             />
 
             <div className="flex items-center justify-between text-xs">
-              <label className="flex items-center gap-2 cursor-pointer text-gray-600 dark:text-gray-400">
+              <label className="flex items-center gap-2 cursor-pointer text-[#737373] dark:text-[#A3A3A3]">
                 <input
                   type="checkbox"
                   defaultChecked
-                  className="rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+                  className="rounded border-[#E5E5E5] text-[#800020] focus:ring-[#800020]"
                 />
                 <span>Remember session</span>
               </label>
 
               <Link
                 to="/forgot-password"
-                className="text-brand-600 dark:text-brand-400 hover:underline font-semibold"
+                className="text-[#800020] dark:text-[#D9A0AE] hover:underline font-semibold"
               >
                 Forgot password?
               </Link>
@@ -148,11 +148,11 @@ export const Login = () => {
             </Button>
           </form>
 
-          <div className="mt-6 pt-5 border-t border-gray-100 dark:border-gray-800 text-center text-xs text-gray-500">
+          <div className="mt-6 pt-5 border-t border-[#E5E5E5] dark:border-[#383838] text-center text-xs text-[#737373] dark:text-[#A3A3A3]">
             Don't have a student account yet?{' '}
             <Link
               to="/register"
-              className="font-bold text-brand-600 dark:text-brand-400 hover:underline"
+              className="font-bold text-[#800020] dark:text-[#D9A0AE] hover:underline"
             >
               Register here
             </Link>
@@ -163,3 +163,4 @@ export const Login = () => {
   );
 };
 export default Login;
+

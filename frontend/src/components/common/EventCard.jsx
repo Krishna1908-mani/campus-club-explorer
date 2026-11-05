@@ -45,24 +45,24 @@ export const EventCard = ({ event, onRegistrationChange }) => {
   });
 
   return (
-    <div className="bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 rounded-2xl shadow-sm hover:shadow-xl dark:hover:shadow-glow-indigo/15 hover:border-brand-500/50 transition-all duration-300 overflow-hidden flex flex-col justify-between group">
+    <div className="bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] rounded-2xl shadow-sm hover:shadow-[0_16px_36px_rgba(17,17,17,0.08)] dark:hover:shadow-[0_16px_36px_rgba(0,0,0,0.5)] hover:border-[#800020]/40 dark:hover:border-[#C2185B]/40 transition-all duration-300 overflow-hidden flex flex-col justify-between group">
       <div>
         {/* Banner */}
-        <div className="relative h-44 w-full bg-gray-100 dark:bg-gray-800 overflow-hidden">
+        <div className="relative h-44 w-full bg-[#F5F3F2] dark:bg-[#292929] overflow-hidden">
           <img
             src={event.banner_url || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop&q=80'}
             alt={event.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
 
-          {/* Date Tag */}
-          <div className="absolute top-3 left-3 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md px-3 py-1.5 rounded-xl shadow-md text-center">
-            <span className="block text-[10px] font-bold tracking-wider uppercase text-brand-600 dark:text-brand-400">
+          {/* Burgundy Luxury Date Indicator */}
+          <div className="absolute top-3 left-3 bg-white/95 dark:bg-[#111111]/95 backdrop-blur-md px-3 py-1.5 rounded-xl shadow-xs text-center border border-[#E5E5E5]/60 dark:border-[#383838]">
+            <span className="block text-[10px] font-bold tracking-widest uppercase text-[#800020] dark:text-[#D9A0AE]">
               {new Date(event.event_date).toLocaleDateString('en-US', { month: 'short' })}
             </span>
-            <span className="block text-base font-extrabold text-gray-900 dark:text-white leading-none">
+            <span className="block text-base font-extrabold text-[#111111] dark:text-[#FAF9F7] leading-none font-serif">
               {new Date(event.event_date).getDate()}
             </span>
           </div>
@@ -70,8 +70,8 @@ export const EventCard = ({ event, onRegistrationChange }) => {
           {/* Club Pill */}
           {event.clubs && (
             <div className="absolute bottom-3 left-3">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-black/60 text-white backdrop-blur-md">
-                <Users className="w-3.5 h-3.5 text-brand-400" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#111111]/75 text-white backdrop-blur-md border border-white/10">
+                <Users className="w-3.5 h-3.5 text-[#D9A0AE]" />
                 {event.clubs.name}
               </span>
             </div>
@@ -80,22 +80,22 @@ export const EventCard = ({ event, onRegistrationChange }) => {
 
         {/* Content */}
         <div className="p-5">
-          <h3 className="font-bold text-lg text-gray-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors line-clamp-1 mb-2">
+          <h3 className="font-serif font-bold text-lg text-[#111111] dark:text-[#FAF9F7] group-hover:text-[#800020] dark:group-hover:text-[#D9A0AE] transition-colors line-clamp-1 mb-2">
             {event.title}
           </h3>
 
-          <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 mb-4 leading-relaxed">
+          <p className="text-sm text-[#737373] dark:text-[#A3A3A3] line-clamp-2 mb-4 leading-relaxed">
             {event.description}
           </p>
 
           {/* Details */}
-          <div className="space-y-1.5 text-xs text-gray-500 dark:text-gray-400">
+          <div className="space-y-1.5 text-xs text-[#737373] dark:text-[#A3A3A3]">
             <div className="flex items-center gap-2">
-              <Clock className="w-3.5 h-3.5 text-gray-400" />
+              <Clock className="w-3.5 h-3.5 text-[#800020] dark:text-[#D9A0AE]" />
               <span>{event.start_time ? `${event.start_time} - ${event.end_time || 'Late'}` : 'Time announced soon'}</span>
             </div>
             <div className="flex items-center gap-2">
-              <MapPin className="w-3.5 h-3.5 text-gray-400" />
+              <MapPin className="w-3.5 h-3.5 text-[#800020] dark:text-[#D9A0AE]" />
               <span className="line-clamp-1">{event.venue}</span>
             </div>
           </div>
@@ -110,7 +110,7 @@ export const EventCard = ({ event, onRegistrationChange }) => {
           className="w-full"
           onClick={handleRegister}
           isLoading={loading}
-          leftIcon={isRegistered ? <Check className="w-4 h-4 text-emerald-500" /> : undefined}
+          leftIcon={isRegistered ? <Check className="w-4 h-4 text-[#15803D]" /> : undefined}
         >
           {isRegistered ? 'Registered (Click to Cancel)' : 'Register for Event'}
         </Button>
@@ -119,3 +119,4 @@ export const EventCard = ({ event, onRegistrationChange }) => {
   );
 };
 export default EventCard;
+

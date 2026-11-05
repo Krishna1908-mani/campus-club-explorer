@@ -12,3 +12,4 @@ export const isSupabaseFrontendConfigured = Boolean(
 export const supabase = isSupabaseFrontendConfigured
   ? createClient(supabaseUrl, supabaseAnonKey)
   : null;
+

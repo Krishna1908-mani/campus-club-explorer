@@ -9,7 +9,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="p-2 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-dark-card text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="p-2 rounded-[10px] border border-[#E5E5E5] dark:border-[#383838] bg-white dark:bg-[#1C1C1C] text-[#111111] dark:text-[#FAF9F7] hover:border-[#800020]/40 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         aria-label="Previous page"
       >
         <ChevronLeft className="w-5 h-5" />
@@ -27,10 +27,10 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             <button
               key={pageNumber}
               onClick={() => onPageChange(pageNumber)}
-              className={`w-10 h-10 rounded-xl text-sm font-semibold transition-all duration-150 ${
+              className={`w-10 h-10 rounded-[10px] text-sm font-semibold transition-all duration-150 ${
                 currentPage === pageNumber
-                  ? 'bg-brand-600 text-white shadow-sm'
-                  : 'border border-gray-200 dark:border-gray-800 bg-white dark:bg-dark-card text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface'
+                  ? 'bg-[#800020] text-white shadow-xs'
+                  : 'border border-[#E5E5E5] dark:border-[#383838] bg-white dark:bg-[#1C1C1C] text-[#111111] dark:text-[#FAF9F7] hover:border-[#800020]/40'
               }`}
             >
               {pageNumber}
@@ -41,7 +41,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           pageNumber === currentPage + 2
         ) {
           return (
-            <span key={pageNumber} className="px-1 text-gray-400">
+            <span key={pageNumber} className="px-1 text-[#737373]">
               ...
             </span>
           );
@@ -52,7 +52,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="p-2 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-dark-card text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="p-2 rounded-[10px] border border-[#E5E5E5] dark:border-[#383838] bg-white dark:bg-[#1C1C1C] text-[#111111] dark:text-[#FAF9F7] hover:border-[#800020]/40 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         aria-label="Next page"
       >
         <ChevronRight className="w-5 h-5" />
@@ -61,3 +61,4 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   );
 };
 export default Pagination;
+

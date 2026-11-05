@@ -9,3 +9,4 @@ router.post('/', authenticate, requireAdmin, AnnouncementController.createAnnoun
 router.delete('/:id', authenticate, requireAdmin, AnnouncementController.deleteAnnouncement);
 
 export default router;
+

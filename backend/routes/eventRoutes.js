@@ -17,3 +17,4 @@ router.put('/:id', authenticate, requireAdmin, EventController.updateEvent);
 router.delete('/:id', authenticate, requireAdmin, EventController.deleteEvent);
 
 export default router;
+

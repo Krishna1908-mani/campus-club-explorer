@@ -27,9 +27,9 @@ export const Input = ({
       {label && (
         <label
           htmlFor={id || name}
-          className="block text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1.5"
+          className="block text-xs font-semibold text-[#111111] dark:text-[#FAF9F7] uppercase tracking-wider mb-1.5"
         >
-          {label} {required && <span className="text-rose-500">*</span>}
+          {label} {required && <span className="text-[#800020] dark:text-[#D9A0AE]">*</span>}
         </label>
       )}
 
@@ -49,16 +49,16 @@ export const Input = ({
           placeholder={placeholder}
           required={required}
           disabled={disabled}
-          className={`block w-full rounded-xl text-sm transition-colors duration-150
+          className={`block w-full rounded-[10px] text-sm transition-colors duration-150
             ${leftIcon ? 'pl-10' : 'pl-3.5'}
             ${isPassword || rightIcon ? 'pr-10' : 'pr-3.5'}
-            py-2.5 bg-white dark:bg-dark-card border
+            py-2.5 bg-[#FFFFFF] dark:bg-[#1C1C1C] border
             ${
               error
-                ? 'border-rose-400 dark:border-rose-600 focus:ring-rose-500 focus:border-rose-500 text-rose-900 dark:text-rose-100'
-                : 'border-gray-300 dark:border-gray-700 focus:ring-brand-500 focus:border-brand-500 text-gray-900 dark:text-gray-100'
+                ? 'border-[#B91C1C] focus:ring-[#B91C1C] focus:border-[#B91C1C] text-[#B91C1C] dark:text-rose-200'
+                : 'border-[#E5E5E5] dark:border-[#383838] focus:ring-[#800020] focus:border-[#800020] text-[#111111] dark:text-[#FAF9F7]'
             }
-            placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-0 disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed`}
+            placeholder-[#737373]/60 dark:placeholder-[#A3A3A3]/60 focus:outline-none focus:ring-2 focus:ring-offset-0 disabled:bg-[#FAF9F7] dark:disabled:bg-[#292929] disabled:cursor-not-allowed`}
           {...props}
         />
 
@@ -88,3 +88,4 @@ export const Input = ({
   );
 };
 export default Input;
+

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserPlus, Compass } from 'lucide-react';
+import { UserPlus, GraduationCap } from 'lucide-react';
 import Input from '../components/common/Input.jsx';
 import Select from '../components/common/Select.jsx';
 import Button from '../components/common/Button.jsx';
@@ -88,25 +88,25 @@ export const Register = () => {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center px-4 py-12">
+    <div className="min-h-[85vh] flex items-center justify-center px-4 py-12 bg-[#FAF9F7] dark:bg-[#111111] transition-colors">
       <div className="w-full max-w-lg space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
           <Link to="/" className="inline-flex items-center gap-2 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-violet-600 flex items-center justify-center text-white shadow-md">
-              <Compass className="w-5 h-5" />
+            <div className="w-12 h-12 rounded-2xl bg-[#800020] flex items-center justify-center text-white shadow-xs hover:bg-[#5C001A] transition-colors">
+              <GraduationCap className="w-6 h-6" />
             </div>
           </Link>
-          <h1 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">
+          <h1 className="text-2xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7] tracking-tight">
             Create Your Student Account
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+          <p className="text-xs text-[#737373] dark:text-[#A3A3A3]">
             Join collegiate societies, sign up for events, and build your campus network
           </p>
         </div>
 
         {/* Card Form */}
-        <div className="bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 rounded-3xl p-6 sm:p-8 shadow-sm">
+        <div className="bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] rounded-2xl p-6 sm:p-8 shadow-xs">
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               label="Full Name"
@@ -193,11 +193,11 @@ export const Register = () => {
             </Button>
           </form>
 
-          <div className="mt-6 pt-5 border-t border-gray-100 dark:border-gray-800 text-center text-xs text-gray-500">
+          <div className="mt-6 pt-5 border-t border-[#E5E5E5] dark:border-[#383838] text-center text-xs text-[#737373] dark:text-[#A3A3A3]">
             Already have an account?{' '}
             <Link
               to="/login"
-              className="font-bold text-brand-600 dark:text-brand-400 hover:underline"
+              className="font-bold text-[#800020] dark:text-[#D9A0AE] hover:underline"
             >
               Sign In
             </Link>
@@ -208,3 +208,4 @@ export const Register = () => {
   );
 };
 export default Register;
+

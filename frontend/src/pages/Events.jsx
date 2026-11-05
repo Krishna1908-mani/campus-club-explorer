@@ -59,29 +59,29 @@ export const Events = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       {/* Header */}
       <div className="space-y-3">
-        <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">
-          <Calendar className="w-4 h-4" /> Campus Calendar
+        <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#800020] dark:text-[#D9A0AE]">
+          <Calendar className="w-4 h-4 text-[#800020] dark:text-[#D9A0AE]" /> Campus Calendar
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white">
+        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">
           Events & Workshops
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-2xl">
+        <p className="text-sm text-[#737373] dark:text-[#A3A3A3] max-w-2xl font-sans">
           Discover hackathons, acoustic jam nights, venture pitch sessions, sports tournaments, and humanitarian drives hosted by college societies.
         </p>
       </div>
 
       {/* Filter & Controls */}
-      <div className="bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4">
+      <div className="bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] rounded-2xl p-5 shadow-xs space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {/* Search */}
           <div className="relative">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#737373]" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search event title, venue..."
-              className="w-full pl-10 pr-3.5 py-2.5 rounded-2xl bg-gray-50 dark:bg-dark-surface border border-gray-200 dark:border-gray-700 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full pl-10 pr-3.5 py-2.5 rounded-[10px] bg-[#FFFFFF] dark:bg-[#292929] border border-[#E5E5E5] dark:border-[#383838] text-sm text-[#111111] dark:text-[#FAF9F7] focus:outline-none focus:ring-2 focus:ring-[#800020] focus:border-[#800020]"
             />
           </div>
 
@@ -89,7 +89,7 @@ export const Events = () => {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-2xl bg-gray-50 dark:bg-dark-surface border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-500 cursor-pointer"
+            className="w-full px-3.5 py-2.5 rounded-[10px] bg-[#FFFFFF] dark:bg-[#292929] border border-[#E5E5E5] dark:border-[#383838] text-sm font-medium text-[#111111] dark:text-[#FAF9F7] focus:outline-none focus:ring-2 focus:ring-[#800020] cursor-pointer"
           >
             <option value="upcoming">Upcoming Events</option>
             <option value="completed">Past Events</option>
@@ -100,7 +100,7 @@ export const Events = () => {
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-2xl bg-gray-50 dark:bg-dark-surface border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-500 cursor-pointer"
+            className="w-full px-3.5 py-2.5 rounded-[10px] bg-[#FFFFFF] dark:bg-[#292929] border border-[#E5E5E5] dark:border-[#383838] text-sm font-medium text-[#111111] dark:text-[#FAF9F7] focus:outline-none focus:ring-2 focus:ring-[#800020] cursor-pointer"
           >
             <option value="all">All Categories</option>
             {categories.map((c) => (
@@ -114,7 +114,7 @@ export const Events = () => {
           <select
             value={clubFilter}
             onChange={(e) => setClubFilter(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-2xl bg-gray-50 dark:bg-dark-surface border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-500 cursor-pointer"
+            className="w-full px-3.5 py-2.5 rounded-[10px] bg-[#FFFFFF] dark:bg-[#292929] border border-[#E5E5E5] dark:border-[#383838] text-sm font-medium text-[#111111] dark:text-[#FAF9F7] focus:outline-none focus:ring-2 focus:ring-[#800020] cursor-pointer"
           >
             <option value="all">All Organizing Clubs</option>
             {clubs.map((cl) => (
@@ -156,3 +156,4 @@ export const Events = () => {
   );
 };
 export default Events;
+
