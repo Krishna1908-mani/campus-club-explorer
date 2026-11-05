@@ -28,21 +28,32 @@ app.use(helmet({
 }));
 
 // CORS Configuration
+const configuredOrigins = (process.env.FRONTEND_URL || '')
+  .split(',')
+  .map((url) => url.trim().replace(/\/+$/, ''))
+  .filter(Boolean);
+
 const allowedOrigins = [
-  process.env.FRONTEND_URL,
+  ...configuredOrigins,
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   'http://localhost:3000',
-].filter(Boolean);
+];
 
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (like mobile apps, curl, postman)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.length === 0 || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+    const normalizedOrigin = origin.replace(/\/+$/, '');
+    const isAllowed =
+      allowedOrigins.includes(normalizedOrigin) ||
+      (process.env.ALLOW_VERCEL_PREVIEWS === 'true' && normalizedOrigin.endsWith('.vercel.app')) ||
+      process.env.NODE_ENV !== 'production';
+
+    if (isAllowed) {
       return callback(null, true);
     }
-    return callback(new Error('CORS policy: origin not allowed'));
+    return callback(new Error(`CORS policy: origin ${origin} not allowed`));
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],

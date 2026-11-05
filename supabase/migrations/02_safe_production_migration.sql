@@ -449,3 +449,4 @@ CREATE POLICY "Admins can delete club assets"
         bucket_id = 'club-assets' AND
         (public.is_admin() OR auth.uid()::text = (storage.foldername(name))[2])
     );
+

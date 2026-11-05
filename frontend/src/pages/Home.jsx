@@ -151,17 +151,17 @@ export const Home = () => {
                   </div>
                 </div>
 
-                <div className="group relative rounded-2xl overflow-hidden shadow-md border border-[#E5E5E5] dark:border-[#383838] bg-white dark:bg-[#1C1C1C] h-40 sm:h-44 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div className="group relative rounded-2xl overflow-hidden shadow-md border border-[#E5E5E5] dark:border-[#383838] bg-[#1C1C1C] h-40 sm:h-44 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                   <img
-                    src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&auto=format&fit=crop&q=80"
+                    src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&auto=format&fit=crop&q=80"
                     alt="Sports and athletics teams"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
                     onError={(e) => {
-                      e.target.src = 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&auto=format&fit=crop&q=80';
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=800&auto=format&fit=crop&q=80';
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-3.5">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-3.5 pointer-events-none">
                     <div>
                       <span className="text-[10px] uppercase font-bold tracking-widest text-emerald-300">Athletics</span>
                       <p className="text-white text-xs font-serif font-bold">Sports & Fitness</p>
