@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { GraduationCap, Github, Twitter, Linkedin, Mail, Heart, Phone, MapPin } from 'lucide-react';
+import { GraduationCap, Github, Twitter, Linkedin, Mail, Heart, Phone, MapPin, ShieldCheck } from 'lucide-react';
 
 export const Footer = () => {
   return (
@@ -75,6 +75,12 @@ export const Footer = () => {
               <li>
                 <Link to="/about" className="text-[#737373] dark:text-[#A3A3A3] hover:text-[#800020] dark:hover:text-[#D9A0AE] transition-colors">
                   About Platform
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin" className="text-[#737373] dark:text-[#A3A3A3] hover:text-[#800020] dark:hover:text-[#D9A0AE] transition-colors flex items-center gap-1.5 font-medium">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#800020] dark:text-[#D9A0AE]" />
+                  <span>Admin Console</span>
                 </Link>
               </li>
             </ul>

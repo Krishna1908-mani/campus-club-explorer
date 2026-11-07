@@ -14,6 +14,7 @@ import {
   Trash2,
   ExternalLink,
   ShieldAlert,
+  ShieldCheck,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
@@ -133,7 +134,16 @@ export const StudentDashboard = () => {
           </div>
         </div>
 
-        <div className="shrink-0 flex items-center gap-2 relative z-10">
+        <div className="shrink-0 flex items-center gap-2 relative z-10 flex-wrap">
+          {profile?.role === 'admin' && (
+            <Link
+              to="/admin"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-400 text-amber-950 hover:bg-amber-300 font-bold text-xs sm:text-sm shadow-md transition-all duration-200 active:scale-95"
+            >
+              <ShieldCheck className="w-4 h-4 text-amber-900" />
+              <span>Admin Console</span>
+            </Link>
+          )}
           <Link
             to="/clubs"
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white !text-[#800020] hover:bg-[#FAF9F7] hover:!text-[#5C001A] font-bold text-xs sm:text-sm shadow-md transition-all duration-200 active:scale-95 group"

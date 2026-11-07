@@ -44,6 +44,7 @@ export const Navbar = () => {
     { name: 'Categories', path: '/categories' },
     { name: 'Events', path: '/events' },
     { name: 'About', path: '/about' },
+    ...(isAdmin ? [{ name: 'Admin Console', path: '/admin', isAdmin: true }] : []),
   ];
 
   return (
@@ -71,14 +72,21 @@ export const Navbar = () => {
               key={link.path}
               to={link.path}
               className={({ isActive }) =>
-                `px-3.5 py-2 rounded-[10px] text-sm font-medium tracking-tight transition-all duration-150 ${
-                  isActive
-                    ? 'text-[#800020] dark:text-[#FCE7EF] bg-[#FCE7EF]/70 dark:bg-[#800020]/30 font-semibold'
-                    : 'text-[#111111] dark:text-[#FAF9F7] hover:text-[#800020] dark:hover:text-[#D9A0AE] hover:bg-[#FAF9F7] dark:hover:bg-[#292929]'
-                }`
+                link.isAdmin
+                  ? `flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-xs font-bold tracking-tight transition-all duration-150 border ${
+                      isActive
+                        ? 'text-[#800020] dark:text-[#FCE7EF] bg-[#FCE7EF] dark:bg-[#800020]/40 border-[#800020]/40 shadow-xs'
+                        : 'text-[#800020] dark:text-[#D9A0AE] bg-[#FCE7EF]/60 dark:bg-[#800020]/20 border-[#800020]/30 hover:bg-[#FCE7EF] dark:hover:bg-[#800020]/40'
+                    }`
+                  : `px-3.5 py-2 rounded-[10px] text-sm font-medium tracking-tight transition-all duration-150 ${
+                      isActive
+                        ? 'text-[#800020] dark:text-[#FCE7EF] bg-[#FCE7EF]/70 dark:bg-[#800020]/30 font-semibold'
+                        : 'text-[#111111] dark:text-[#FAF9F7] hover:text-[#800020] dark:hover:text-[#D9A0AE] hover:bg-[#FAF9F7] dark:hover:bg-[#292929]'
+                    }`
               }
             >
-              {link.name}
+              {link.isAdmin && <ShieldCheck className="w-3.5 h-3.5 text-[#800020] dark:text-[#D9A0AE]" />}
+              <span>{link.name}</span>
             </NavLink>
           ))}
         </nav>
