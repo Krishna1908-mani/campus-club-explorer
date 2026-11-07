@@ -19,10 +19,12 @@ import Events from './pages/Events.jsx';
 import Categories from './pages/Categories.jsx';
 import About from './pages/About.jsx';
 import Login from './pages/Login.jsx';
+import RoleLogin from './pages/RoleLogin.jsx';
 import Register from './pages/Register.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import StudentDashboard from './pages/StudentDashboard.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
+import ClubLeadDashboard from './pages/ClubLeadDashboard.jsx';
 import NotFound from './pages/NotFound.jsx';
 
 // Scroll to top on page navigation
@@ -54,6 +56,9 @@ export const App = () => {
                   <Route path="/events" element={<Events />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/login" element={<Login />} />
+                  <Route path="/admin/login" element={<RoleLogin role="admin" />} />
+                  <Route path="/club-lead/login" element={<RoleLogin role="club_lead" />} />
+                  <Route path="/student/login" element={<RoleLogin role="student" />} />
                   <Route path="/register" element={<Register />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
 
@@ -66,10 +71,44 @@ export const App = () => {
                       </ProtectedRoute>
                     }
                   />
+                  <Route
+                    path="/student/dashboard"
+                    element={
+                      <ProtectedRoute>
+                        <StudentDashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  {/* Club Lead Protected Route */}
+                  <Route
+                    path="/club-lead/dashboard"
+                    element={
+                      <ProtectedRoute requireClubLead={true}>
+                        <ClubLeadDashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/lead/dashboard"
+                    element={
+                      <ProtectedRoute requireClubLead={true}>
+                        <ClubLeadDashboard />
+                      </ProtectedRoute>
+                    }
+                  />
 
                   {/* Admin Protected Route */}
                   <Route
                     path="/admin"
+                    element={
+                      <ProtectedRoute requireAdmin={true}>
+                        <AdminDashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/dashboard"
                     element={
                       <ProtectedRoute requireAdmin={true}>
                         <AdminDashboard />

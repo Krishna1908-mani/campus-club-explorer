@@ -41,6 +41,15 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     const res = await apiService.auth.login(credentials);
     if (res.success) {
+      if (credentials.expectedRole && res.profile?.role !== credentials.expectedRole) {
+        const errorMsg =
+          credentials.expectedRole === 'admin'
+            ? 'This account does not have Admin access.'
+            : credentials.expectedRole === 'club_lead'
+            ? 'This account does not have Club Lead access.'
+            : 'This login portal is reserved for students. Please use the Admin or Club Lead portal.';
+        throw new Error(errorMsg);
+      }
       localStorage.setItem('cce_auth_token', res.token);
       setToken(res.token);
       setUser(res.user);
@@ -83,6 +92,7 @@ export const AuthProvider = ({ children }) => {
 
   const isAuthenticated = Boolean(token && user);
   const isAdmin = Boolean(profile?.role === 'admin');
+  const isClubLead = Boolean(profile?.role === 'club_lead');
 
   return (
     <AuthContext.Provider
@@ -93,6 +103,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         isAuthenticated,
         isAdmin,
+        isClubLead,
         login,
         register,
         logout,

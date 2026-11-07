@@ -78,9 +78,24 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/admin" className="text-[#737373] dark:text-[#A3A3A3] hover:text-[#800020] dark:hover:text-[#D9A0AE] transition-colors flex items-center gap-1.5 font-medium">
+                <Link to="/student/login" className="text-[#737373] dark:text-[#A3A3A3] hover:text-[#800020] dark:hover:text-[#D9A0AE] transition-colors">
+                  Student Sign In
+                </Link>
+              </li>
+              <li>
+                <Link to="/club-lead/login" className="text-[#737373] dark:text-[#A3A3A3] hover:text-[#800020] dark:hover:text-[#D9A0AE] transition-colors">
+                  Club Lead Sign In
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/login" className="text-[#737373] dark:text-[#A3A3A3] hover:text-[#800020] dark:hover:text-[#D9A0AE] transition-colors flex items-center gap-1.5 font-medium">
                   <ShieldCheck className="w-3.5 h-3.5 text-[#800020] dark:text-[#D9A0AE]" />
-                  <span>Admin Console</span>
+                  <span>Admin Sign In</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/login" className="text-[#800020] dark:text-[#D9A0AE] font-semibold hover:underline">
+                  All Login Options
                 </Link>
               </li>
             </ul>

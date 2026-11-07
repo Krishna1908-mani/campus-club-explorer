@@ -16,6 +16,7 @@ import {
   Upload,
   ArrowRight,
   UserCheck,
+  UserX,
 } from 'lucide-react';
 import Button from '../components/common/Button.jsx';
 import Input from '../components/common/Input.jsx';
@@ -51,6 +52,16 @@ export const AdminDashboard = () => {
   const [events, setEvents] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
   const [students, setStudents] = useState([]);
+  const [clubLeads, setClubLeads] = useState([]);
+  const [eligibleStudents, setEligibleStudents] = useState([]);
+  const [clubLeadSearch, setClubLeadSearch] = useState('');
+
+  // Club Lead Assignment Modals
+  const [assignModalOpen, setAssignModalOpen] = useState(false);
+  const [assignForm, setAssignForm] = useState({ club_id: '', user_id: '' });
+  const [reassignModalOpen, setReassignModalOpen] = useState(false);
+  const [editingAssignment, setEditingAssignment] = useState(null);
+  const [reassignForm, setReassignForm] = useState({ new_club_id: '', new_user_id: '' });
 
   // Club Form Modal
   const [clubModalOpen, setClubModalOpen] = useState(false);
@@ -118,6 +129,8 @@ export const AdminDashboard = () => {
         eventsRes,
         annRes,
         studentsRes,
+        clubLeadsRes,
+        eligibleRes,
       ] = await Promise.all([
         apiService.admin.getStats(),
         apiService.clubs.getAll({ limit: 100 }),
@@ -126,6 +139,8 @@ export const AdminDashboard = () => {
         apiService.events.getAll({}),
         apiService.announcements.getAll({ limit: 50 }),
         apiService.admin.getStudents(),
+        apiService.admin.getClubLeads(),
+        apiService.admin.getEligibleUsers(),
       ]);
 
       if (statsRes.success) setStats(statsRes.data);
@@ -135,6 +150,8 @@ export const AdminDashboard = () => {
       if (eventsRes.success) setEvents(eventsRes.data);
       if (annRes.success) setAnnouncements(annRes.data);
       if (studentsRes.success) setStudents(studentsRes.data);
+      if (clubLeadsRes.success) setClubLeads(clubLeadsRes.data);
+      if (eligibleRes.success) setEligibleStudents(eligibleRes.data);
     } catch (err) {
       console.error('Failed to load admin data:', err);
     } finally {
@@ -327,6 +344,53 @@ export const AdminDashboard = () => {
   };
 
   // ------------------------------------------------------------------
+  // CLUB LEAD ASSIGNMENT ACTIONS
+  // ------------------------------------------------------------------
+  const handleAssignLead = async (e) => {
+    e.preventDefault();
+    if (!assignForm.club_id || !assignForm.user_id) {
+      error('Please select both a club and an eligible student.');
+      return;
+    }
+    try {
+      const res = await apiService.admin.assignClubLead(assignForm);
+      if (res.success) {
+        success('Club Lead assigned successfully!');
+        setAssignModalOpen(false);
+        setAssignForm({ club_id: '', user_id: '' });
+        fetchAdminData();
+      }
+    } catch (err) {
+      error(err.message || 'Failed to assign Club Lead.');
+    }
+  };
+
+  const handleOpenReassignModal = (assignment) => {
+    setEditingAssignment(assignment);
+    setReassignForm({
+      new_club_id: assignment.club_id,
+      new_user_id: assignment.user_id,
+    });
+    setReassignModalOpen(true);
+  };
+
+  const handleReassignLead = async (e) => {
+    e.preventDefault();
+    if (!editingAssignment) return;
+    try {
+      const res = await apiService.admin.reassignClubLead(editingAssignment.id, reassignForm);
+      if (res.success) {
+        success('Club Lead reassigned successfully!');
+        setReassignModalOpen(false);
+        setEditingAssignment(null);
+        fetchAdminData();
+      }
+    } catch (err) {
+      error(err.message || 'Failed to reassign Club Lead.');
+    }
+  };
+
+  // ------------------------------------------------------------------
   // DELETE HANDLER
   // ------------------------------------------------------------------
   const handleConfirmDelete = async () => {
@@ -336,6 +400,7 @@ export const AdminDashboard = () => {
       if (type === 'category') await apiService.categories.delete(id);
       if (type === 'event') await apiService.events.delete(id);
       if (type === 'announcement') await apiService.announcements.delete(id);
+      if (type === 'club_lead') await apiService.admin.removeClubLead(id);
 
       success(`${type} deleted successfully.`);
       setDeleteDialog({ isOpen: false, type: null, id: null, name: '' });
@@ -383,6 +448,7 @@ export const AdminDashboard = () => {
         {[
           { id: 'stats', label: 'Overview' },
           { id: 'clubs', label: `Clubs (${clubs.length})` },
+          { id: 'club_leads', label: `Club Leads (${clubLeads.length})` },
           { id: 'memberships', label: `Membership Approvals (${memberships.filter(m => m.status === 'pending').length} Pending)` },
           { id: 'events', label: `Events (${events.length})` },
           { id: 'categories', label: `Categories (${categories.length})` },
@@ -665,6 +731,188 @@ export const AdminDashboard = () => {
               </tbody>
             </table>
           </div>
+        </div>
+      )}
+
+      {/* TAB 2.5: CLUB LEAD MANAGEMENT */}
+      {activeTab === 'club_leads' && (
+        <div className="bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h3 className="font-bold text-lg text-gray-900 dark:text-white">
+                Club Lead Management ({clubLeads.length} Assigned)
+              </h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Designate and manage dedicated student leaders for each club. Club Leads have access strictly to their assigned organization.
+              </p>
+            </div>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => {
+                setAssignForm({ club_id: clubs[0]?.id || '', user_id: eligibleStudents[0]?.id || '' });
+                setAssignModalOpen(true);
+              }}
+              leftIcon={<Plus className="w-4 h-4" />}
+            >
+              Assign New Club Lead
+            </Button>
+          </div>
+
+          {/* Quick Metrics */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="p-4 rounded-2xl bg-[#FCE7EF]/50 dark:bg-[#800020]/20 border border-[#D9A0AE]/40 dark:border-[#800020]/40">
+              <span className="text-xs text-[#800020] dark:text-[#D9A0AE] font-semibold block">
+                Total Assigned Leads
+              </span>
+              <span className="text-2xl font-serif font-bold text-[#800020] dark:text-[#D9A0AE]">
+                {clubLeads.length}
+              </span>
+            </div>
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#1C1C1C] border border-gray-200 dark:border-gray-800">
+              <span className="text-xs text-gray-500 font-semibold block">Total Campus Clubs</span>
+              <span className="text-2xl font-serif font-bold text-gray-900 dark:text-white">
+                {clubs.length}
+              </span>
+            </div>
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#1C1C1C] border border-gray-200 dark:border-gray-800">
+              <span className="text-xs text-gray-500 font-semibold block">Unassigned Clubs</span>
+              <span className="text-2xl font-serif font-bold text-amber-600 dark:text-amber-400">
+                {Math.max(0, clubs.length - clubLeads.length)}
+              </span>
+            </div>
+          </div>
+
+          {/* Search bar */}
+          <div className="max-w-md">
+            <Input
+              placeholder="Search assignments by club name or lead..."
+              value={clubLeadSearch}
+              onChange={(e) => setClubLeadSearch(e.target.value)}
+              leftIcon={<Search className="w-4 h-4 text-gray-400" />}
+            />
+          </div>
+
+          {/* Assignments Table */}
+          {clubLeads.length === 0 ? (
+            <div className="text-center py-12 border border-dashed border-gray-200 dark:border-gray-800 rounded-2xl space-y-2">
+              <Compass className="w-8 h-8 text-gray-400 mx-auto" />
+              <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                No Club Leads assigned yet
+              </p>
+              <p className="text-xs text-gray-500">
+                Assign your first student leader to manage a collegiate organization.
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                className="mt-2"
+                onClick={() => {
+                  setAssignForm({ club_id: clubs[0]?.id || '', user_id: eligibleStudents[0]?.id || '' });
+                  setAssignModalOpen(true);
+                }}
+              >
+                Assign Club Lead
+              </Button>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-gray-50 dark:bg-dark-surface text-xs uppercase text-gray-500 border-b border-gray-200 dark:border-gray-700">
+                  <tr>
+                    <th className="py-3 px-4">Club Organization</th>
+                    <th className="py-3 px-4">Designated Club Lead</th>
+                    <th className="py-3 px-4">Department & Year</th>
+                    <th className="py-3 px-4">Assigned On</th>
+                    <th className="py-3 px-4">Status</th>
+                    <th className="py-3 px-4 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+                  {clubLeads
+                    .filter((a) => {
+                      if (!clubLeadSearch) return true;
+                      const q = clubLeadSearch.toLowerCase();
+                      return (
+                        a.clubs?.name?.toLowerCase().includes(q) ||
+                        a.profile?.full_name?.toLowerCase().includes(q) ||
+                        a.profile?.email?.toLowerCase().includes(q)
+                      );
+                    })
+                    .map((a) => (
+                      <tr key={a.id} className="hover:bg-gray-50 dark:hover:bg-dark-surface/50">
+                        <td className="py-3.5 px-4 flex items-center gap-3">
+                          <img
+                            src={a.clubs?.logo_url || 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=100'}
+                            alt={a.clubs?.name}
+                            className="w-9 h-9 rounded-xl object-cover bg-gray-100"
+                          />
+                          <div>
+                            <span className="font-bold text-gray-900 dark:text-white block">
+                              {a.clubs?.name || 'Club'}
+                            </span>
+                            <span className="text-xs text-[#800020] dark:text-[#D9A0AE]">
+                              /{a.clubs?.slug}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="py-3.5 px-4">
+                          <div className="flex items-center gap-2.5">
+                            <img
+                              src={
+                                a.profile?.avatar_url ||
+                                `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(
+                                  a.profile?.full_name || 'Leader'
+                                )}`
+                              }
+                              alt={a.profile?.full_name}
+                              className="w-8 h-8 rounded-lg object-cover bg-[#FCE7EF]"
+                            />
+                            <div>
+                              <span className="font-bold text-gray-900 dark:text-white block text-xs">
+                                {a.profile?.full_name || 'Unassigned User'}
+                              </span>
+                              <span className="text-[11px] text-gray-400">{a.profile?.email}</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-3.5 px-4 text-xs text-gray-600 dark:text-gray-300">
+                          {a.profile?.department || 'General'} • {a.profile?.year_of_study || 'N/A'}
+                        </td>
+                        <td className="py-3.5 px-4 text-xs text-gray-500">
+                          {new Date(a.created_at).toLocaleDateString()}
+                        </td>
+                        <td className="py-3.5 px-4">
+                          <Badge variant="success" size="sm">Active Lead</Badge>
+                        </td>
+                        <td className="py-3.5 px-4 text-right space-x-1">
+                          <button
+                            onClick={() => handleOpenReassignModal(a)}
+                            className="px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 text-gray-700 dark:text-gray-200 transition-colors"
+                          >
+                            Reassign
+                          </button>
+                          <button
+                            onClick={() =>
+                              setDeleteDialog({
+                                isOpen: true,
+                                type: 'club_lead',
+                                id: a.id,
+                                name: `${a.profile?.full_name || 'Lead'} from ${a.clubs?.name || 'Club'}`,
+                              })
+                            }
+                            className="p-1.5 rounded-lg text-rose-500 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                            title="Remove Club Lead Assignment"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       )}
 
@@ -1243,6 +1491,92 @@ export const AdminDashboard = () => {
             </Button>
             <Button type="submit" variant="primary" size="sm">
               Publish Notice
+            </Button>
+          </div>
+        </form>
+      </Modal>
+
+      {/* ASSIGN CLUB LEAD MODAL */}
+      <Modal
+        isOpen={assignModalOpen}
+        onClose={() => setAssignModalOpen(false)}
+        title="Assign Student as Club Lead"
+        maxWidth="max-w-md"
+      >
+        <form onSubmit={handleAssignLead} className="space-y-4">
+          <Select
+            label="Select Collegiate Organization *"
+            value={assignForm.club_id}
+            onChange={(e) => setAssignForm({ ...assignForm, club_id: e.target.value })}
+            options={clubs.map((c) => ({
+              value: c.id,
+              label: `${c.name} (${c.categories?.name || 'General'})`,
+            }))}
+            required
+          />
+
+          <Select
+            label="Select Eligible Student *"
+            value={assignForm.user_id}
+            onChange={(e) => setAssignForm({ ...assignForm, user_id: e.target.value })}
+            options={eligibleStudents.map((s) => ({
+              value: s.id,
+              label: `${s.full_name} (${s.email}${s.student_id ? ' - ID: ' + s.student_id : ''})`,
+            }))}
+            required
+          />
+
+          <p className="text-[11px] text-[#737373] dark:text-[#A3A3A3] leading-relaxed">
+            Assigning this student will elevate their role to <strong>Club Lead</strong> with permissions strictly scoped to manage this organization, its membership applications, events, and announcements.
+          </p>
+
+          <div className="flex justify-end gap-2 pt-2">
+            <Button variant="outline" size="sm" type="button" onClick={() => setAssignModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" size="sm" type="submit">
+              Confirm Assignment
+            </Button>
+          </div>
+        </form>
+      </Modal>
+
+      {/* REASSIGN CLUB LEAD MODAL */}
+      <Modal
+        isOpen={reassignModalOpen}
+        onClose={() => setReassignModalOpen(false)}
+        title={`Reassign: ${editingAssignment?.clubs?.name || 'Club'}`}
+        maxWidth="max-w-md"
+      >
+        <form onSubmit={handleReassignLead} className="space-y-4">
+          <Select
+            label="Organization"
+            value={reassignForm.new_club_id}
+            onChange={(e) => setReassignForm({ ...reassignForm, new_club_id: e.target.value })}
+            options={clubs.map((c) => ({
+              value: c.id,
+              label: c.name,
+            }))}
+            required
+          />
+
+          <Select
+            label="Assigned Student Leader"
+            value={reassignForm.new_user_id}
+            onChange={(e) => setReassignForm({ ...reassignForm, new_user_id: e.target.value })}
+            options={eligibleStudents.map((s) => ({
+              value: s.id,
+              label: `${s.full_name} (${s.email})`,
+            }))}
+            required
+          />
+
+          <div className="flex justify-end gap-2 pt-2">
+            <Button variant="outline" size="sm" type="button" onClick={() => setReassignModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" size="sm" type="submit">
+              Save Reassignment
             </Button>
           </div>
         </form>

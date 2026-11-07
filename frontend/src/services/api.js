@@ -115,6 +115,31 @@ export const apiService = {
   admin: {
     getStats: () => api.get('/admin/stats'),
     getStudents: () => api.get('/admin/students'),
+    getClubLeads: () => api.get('/admin/club-leads'),
+    getEligibleUsers: (search = '') => api.get('/admin/club-leads/eligible-users', { params: { search } }),
+    assignClubLead: (data) => api.post('/admin/club-leads/assign', data),
+    reassignClubLead: (id, data) => api.put(`/admin/club-leads/${id}/reassign`, data),
+    removeClubLead: (id) => api.delete(`/admin/club-leads/${id}/remove`),
+  },
+
+  // Club Lead API (Restricted & Isolated to Assigned Club)
+  clubLead: {
+    getDashboard: () => api.get('/club-lead/dashboard'),
+    getClub: () => api.get('/club-lead/club'),
+    updateClub: (data) => api.put('/club-lead/club', data),
+    getMembers: (params) => api.get('/club-lead/members', { params }),
+    updateMembershipStatus: (id, status) => api.put(`/club-lead/memberships/${id}/status`, { status }),
+    removeMember: (id) => api.delete(`/club-lead/members/${id}`),
+    getEvents: () => api.get('/club-lead/events'),
+    createEvent: (data) => api.post('/club-lead/events', data),
+    updateEvent: (id, data) => api.put(`/club-lead/events/${id}`, data),
+    deleteEvent: (id) => api.delete(`/club-lead/events/${id}`),
+    getEventRegistrations: (id) => api.get(`/club-lead/events/${id}/registrations`),
+    getAnnouncements: () => api.get('/club-lead/announcements'),
+    createAnnouncement: (data) => api.post('/club-lead/announcements', data),
+    updateAnnouncement: (id, data) => api.put(`/club-lead/announcements/${id}`, data),
+    deleteAnnouncement: (id) => api.delete(`/club-lead/announcements/${id}`),
+    getActivity: () => api.get('/club-lead/activity'),
   },
 
   // Image Upload

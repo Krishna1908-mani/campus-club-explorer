@@ -15,6 +15,7 @@ import {
   ShieldCheck,
   LogOut,
   Sparkles,
+  Compass,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useTheme } from '../../context/ThemeContext.jsx';
@@ -22,7 +23,7 @@ import { useToast } from '../../context/ToastContext.jsx';
 import Button from './Button.jsx';
 
 export const Navbar = () => {
-  const { user, profile, isAuthenticated, isAdmin, logout } = useAuth();
+  const { user, profile, isAuthenticated, isAdmin, isClubLead, logout } = useAuth();
   const { isDark, toggleTheme } = useTheme();
   const { success } = useToast();
   const navigate = useNavigate();
@@ -45,6 +46,8 @@ export const Navbar = () => {
     { name: 'Events', path: '/events' },
     { name: 'About', path: '/about' },
     ...(isAdmin ? [{ name: 'Admin Console', path: '/admin', isAdmin: true }] : []),
+    ...(isClubLead ? [{ name: 'Club Lead Portal', path: '/club-lead/dashboard', isClubLead: true }] : []),
+    ...(isAuthenticated && !isAdmin && !isClubLead ? [{ name: 'Student Dashboard', path: '/dashboard', isStudent: true }] : []),
   ];
 
   return (
@@ -72,7 +75,7 @@ export const Navbar = () => {
               key={link.path}
               to={link.path}
               className={({ isActive }) =>
-                link.isAdmin
+                link.isAdmin || link.isClubLead
                   ? `flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-xs font-bold tracking-tight transition-all duration-150 border ${
                       isActive
                         ? 'text-[#800020] dark:text-[#FCE7EF] bg-[#FCE7EF] dark:bg-[#800020]/40 border-[#800020]/40 shadow-xs'
@@ -86,6 +89,7 @@ export const Navbar = () => {
               }
             >
               {link.isAdmin && <ShieldCheck className="w-3.5 h-3.5 text-[#800020] dark:text-[#D9A0AE]" />}
+              {link.isClubLead && <Compass className="w-3.5 h-3.5 text-[#800020] dark:text-[#D9A0AE]" />}
               <span>{link.name}</span>
             </NavLink>
           ))}
@@ -156,6 +160,15 @@ export const Navbar = () => {
                           <ShieldCheck className="w-4 h-4 text-[#800020] dark:text-[#D9A0AE]" />
                           Admin Console
                         </Link>
+                      ) : isClubLead ? (
+                        <Link
+                          to="/club-lead/dashboard"
+                          onClick={() => setProfileDropdownOpen(false)}
+                          className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-[#111111] dark:text-[#FAF9F7] hover:bg-[#FCE7EF]/60 dark:hover:bg-[#800020]/30 hover:text-[#800020] dark:hover:text-[#FCE7EF] rounded-xl transition-colors"
+                        >
+                          <Compass className="w-4 h-4 text-[#800020] dark:text-[#D9A0AE]" />
+                          Club Lead Portal
+                        </Link>
                       ) : (
                         <Link
                           to="/dashboard"
@@ -181,6 +194,13 @@ export const Navbar = () => {
             </div>
           ) : (
             <div className="flex items-center gap-2">
+              <Link
+                to="/login"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#800020] dark:text-[#D9A0AE] bg-[#FCE7EF]/60 dark:bg-[#800020]/20 hover:bg-[#FCE7EF] border border-[#800020]/20 transition-all"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-[#800020] dark:text-[#D9A0AE]" />
+                <span>Demo Logins</span>
+              </Link>
               <Link to="/login">
                 <Button variant="outline" size="sm" leftIcon={<LogIn className="w-4 h-4 text-[#800020]" />}>
                   Sign In
@@ -238,11 +258,11 @@ export const Navbar = () => {
             {isAuthenticated ? (
               <>
                 <Link
-                  to={isAdmin ? '/admin' : '/dashboard'}
+                  to={isAdmin ? '/admin' : isClubLead ? '/club-lead/dashboard' : '/dashboard'}
                   onClick={() => setMobileMenuOpen(false)}
                   className="block px-4 py-2.5 rounded-xl text-sm font-semibold bg-[#FCE7EF]/60 dark:bg-[#800020]/30 text-[#800020] dark:text-[#FCE7EF]"
                 >
-                  {isAdmin ? 'Admin Console' : 'My Dashboard'} ({profile?.full_name})
+                  {isAdmin ? 'Admin Console' : isClubLead ? 'Club Lead Portal' : 'My Dashboard'} ({profile?.full_name})
                 </Link>
                 <button
                   onClick={handleLogout}

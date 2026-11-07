@@ -21,6 +21,7 @@ const memoryStore = {
   memberships: [...initialMemberships],
   favorites: [...initialFavorites],
   eventRegistrations: [...initialEventRegistrations],
+  clubLeadAssignments: [],
 };
 
 const getClient = (privileged = false) => {
@@ -1038,6 +1039,926 @@ export const SupabaseService = {
       publicUrl: `https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&auto=format&fit=crop&q=80`,
       path: `${folder}/${filename}`,
     };
+  },
+
+  // -------------------------------------------------------------
+  // CLUB LEAD MANAGEMENT (ADMIN & LEAD OPERATIONS)
+  // -------------------------------------------------------------
+  async getClubLeadAssignments() {
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      try {
+        const { data, error } = await client
+          .from('club_lead_assignments')
+          .select(`
+            *,
+            clubs:club_id(*),
+            profile:user_id(id, full_name, email, role, avatar_url, student_id, department),
+            assigner:assigned_by(id, full_name, email)
+          `)
+          .order('created_at', { ascending: false });
+
+        if (!error && data) {
+          return data;
+        }
+      } catch (err) {
+        console.warn('Could not query club_lead_assignments from Supabase:', err.message);
+      }
+    }
+
+    return (memoryStore.clubLeadAssignments || []).map((a) => {
+      const club = memoryStore.clubs.find((c) => c.id === a.club_id);
+      const profile = memoryStore.users.find((u) => u.id === a.user_id);
+      const assigner = memoryStore.users.find((u) => u.id === a.assigned_by);
+      return {
+        ...a,
+        clubs: club || null,
+        profile: profile || null,
+        assigner: assigner || null,
+      };
+    });
+  },
+
+  async assignClubLead({ userId, clubId, assignedBy }) {
+    if (!userId || !clubId) {
+      throw new Error('Both userId and clubId are required to assign a Club Lead.');
+    }
+
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+
+      // Verify club exists
+      const { data: club, error: clubErr } = await client.from('clubs').select('id, name').eq('id', clubId).single();
+      if (clubErr || !club) {
+        throw new Error('Target club does not exist.');
+      }
+
+      // Verify user exists
+      const { data: userProfile, error: userErr } = await client.from('profiles').select('id, email, role, full_name').eq('id', userId).single();
+      if (userErr || !userProfile) {
+        throw new Error('Target user does not exist.');
+      }
+
+      // Check if user is already an admin
+      if (userProfile.role === 'admin') {
+        throw new Error('Cannot assign an Administrator as a Club Lead.');
+      }
+
+      // Deactivate any existing active assignments for this club to keep 1 primary lead
+      await client
+        .from('club_lead_assignments')
+        .update({ is_active: false })
+        .eq('club_id', clubId);
+
+      // Create new assignment
+      const newAssignment = {
+        id: crypto.randomUUID(),
+        user_id: userId,
+        club_id: clubId,
+        assigned_by: assignedBy || null,
+        is_active: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+
+      try {
+        const { data: inserted, error: insertErr } = await client
+          .from('club_lead_assignments')
+          .upsert(newAssignment, { onConflict: 'user_id, club_id' })
+          .select(`
+            *,
+            clubs:club_id(*),
+            profile:user_id(id, full_name, email, role, avatar_url, student_id, department)
+          `)
+          .single();
+
+        if (insertErr) throw insertErr;
+
+        // Elevate user role to 'club_lead' in profiles
+        try {
+          await client
+            .from('profiles')
+            .update({ role: 'club_lead', updated_at: new Date().toISOString() })
+            .eq('id', userId);
+        } catch {}
+
+        // Sync role in Supabase Auth user_metadata
+        try {
+          await client.auth.admin.updateUserById(userId, {
+            user_metadata: { role: 'club_lead', assigned_club_id: clubId },
+          });
+        } catch {}
+
+        return inserted;
+      } catch (dbErr) {
+        console.warn('Database assignment fallback to memory:', dbErr.message);
+      }
+
+      // Sync role in Supabase Auth even when table is falling back to memory
+      try {
+        await client.auth.admin.updateUserById(userId, {
+          user_metadata: { role: 'club_lead', assigned_club_id: clubId },
+        });
+      } catch {}
+    }
+
+    // Memory Store Fallback
+    const existingIdx = (memoryStore.clubLeadAssignments || []).findIndex(
+      (a) => a.club_id === clubId && a.is_active
+    );
+    if (existingIdx !== -1) {
+      memoryStore.clubLeadAssignments[existingIdx].is_active = false;
+    }
+
+    const assignment = {
+      id: 'cla-' + Math.random().toString(36).substring(2, 11),
+      user_id: userId,
+      club_id: clubId,
+      assigned_by: assignedBy || null,
+      is_active: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    if (!memoryStore.clubLeadAssignments) memoryStore.clubLeadAssignments = [];
+    memoryStore.clubLeadAssignments.push(assignment);
+
+    const targetUser = memoryStore.users.find((u) => u.id === userId);
+    if (targetUser && targetUser.role !== 'admin') {
+      targetUser.role = 'club_lead';
+    }
+
+    const club = memoryStore.clubs.find((c) => c.id === clubId);
+    return {
+      ...assignment,
+      clubs: club || null,
+      profile: targetUser || null,
+    };
+  },
+
+  async reassignClubLead({ assignmentId, newClubId, newUserId, assignedBy }) {
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      try {
+        const { data: existing, error: getErr } = await client
+          .from('club_lead_assignments')
+          .select('*')
+          .eq('id', assignmentId)
+          .single();
+
+        if (!getErr && existing) {
+          const updates = {
+            updated_at: new Date().toISOString(),
+            assigned_by: assignedBy || existing.assigned_by,
+          };
+
+          if (newClubId) updates.club_id = newClubId;
+          if (newUserId) {
+            updates.user_id = newUserId;
+            await client.from('profiles').update({ role: 'club_lead' }).eq('id', newUserId);
+            const { count } = await client
+              .from('club_lead_assignments')
+              .select('id', { count: 'exact', head: true })
+              .eq('user_id', existing.user_id)
+              .eq('is_active', true)
+              .neq('id', assignmentId);
+
+            if (!count || count === 0) {
+              await client.from('profiles').update({ role: 'student' }).eq('id', existing.user_id);
+            }
+          }
+
+          const { data: updated, error: updErr } = await client
+            .from('club_lead_assignments')
+            .update(updates)
+            .eq('id', assignmentId)
+            .select(`
+              *,
+              clubs:club_id(*),
+              profile:user_id(id, full_name, email, role, avatar_url, student_id, department)
+            `)
+            .single();
+
+          if (!updErr && updated) return updated;
+        }
+      } catch (err) {
+        console.warn('Reassign DB fallback:', err.message);
+      }
+    }
+
+    // Memory Store Fallback
+    const existing = (memoryStore.clubLeadAssignments || []).find((a) => a.id === assignmentId);
+    if (!existing) throw new Error('Assignment record not found.');
+
+    if (newClubId) existing.club_id = newClubId;
+    if (newUserId) {
+      const oldUserId = existing.user_id;
+      existing.user_id = newUserId;
+      const newUser = memoryStore.users.find((u) => u.id === newUserId);
+      if (newUser && newUser.role !== 'admin') newUser.role = 'club_lead';
+
+      const otherActive = (memoryStore.clubLeadAssignments || []).some(
+        (a) => a.user_id === oldUserId && a.is_active && a.id !== assignmentId
+      );
+      if (!otherActive) {
+        const oldUser = memoryStore.users.find((u) => u.id === oldUserId);
+        if (oldUser && oldUser.role !== 'admin') oldUser.role = 'student';
+      }
+    }
+    existing.updated_at = new Date().toISOString();
+    return existing;
+  },
+
+  async removeClubLeadAssignment(assignmentId) {
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      try {
+        const { data: existing, error: getErr } = await client
+          .from('club_lead_assignments')
+          .select('*')
+          .eq('id', assignmentId)
+          .single();
+
+        if (!getErr && existing) {
+          const { error: delErr } = await client
+            .from('club_lead_assignments')
+            .delete()
+            .eq('id', assignmentId);
+
+          if (delErr) throw delErr;
+
+          // Check if user has other active assignments
+          const { count } = await client
+            .from('club_lead_assignments')
+            .select('id', { count: 'exact', head: true })
+            .eq('user_id', existing.user_id)
+            .eq('is_active', true);
+
+          if (!count || count === 0) {
+            try {
+              await client
+                .from('profiles')
+                .update({ role: 'student', updated_at: new Date().toISOString() })
+                .eq('id', existing.user_id)
+                .neq('role', 'admin');
+            } catch {}
+
+            try {
+              await client.auth.admin.updateUserById(existing.user_id, {
+                user_metadata: { role: 'student', assigned_club_id: null },
+              });
+            } catch {}
+          }
+
+          return { success: true, message: 'Club Lead assignment successfully removed.' };
+        }
+      } catch (err) {
+        console.warn('Database remove assignment fallback to memory:', err.message);
+      }
+    }
+
+    // Memory Store Fallback
+    const idx = (memoryStore.clubLeadAssignments || []).findIndex((a) => a.id === assignmentId);
+    if (idx === -1) throw new Error('Assignment record not found.');
+
+    const [removed] = memoryStore.clubLeadAssignments.splice(idx, 1);
+    const hasOther = (memoryStore.clubLeadAssignments || []).some(
+      (a) => a.user_id === removed.user_id && a.is_active
+    );
+    if (!hasOther) {
+      const u = memoryStore.users.find((user) => user.id === removed.user_id);
+      if (u && u.role !== 'admin') u.role = 'student';
+
+      if (isSupabaseConfigured && supabase) {
+        const client = getClient(true);
+        try {
+          await client.auth.admin.updateUserById(removed.user_id, {
+            user_metadata: { role: 'student', assigned_club_id: null },
+          });
+        } catch {}
+      }
+    }
+
+    return { success: true, message: 'Club Lead assignment successfully removed.' };
+  },
+
+  async getEligibleUsersForClubLead(search = '') {
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      let query = client
+        .from('profiles')
+        .select('id, full_name, email, student_id, department, role, avatar_url')
+        .in('role', ['student', 'club_lead'])
+        .order('full_name', { ascending: true })
+        .limit(50);
+
+      if (search) {
+        query = query.or(`full_name.ilike.%${search}%,email.ilike.%${search}%,student_id.ilike.%${search}%`);
+      }
+
+      const { data, error } = await query;
+      if (!error && data) return data;
+    }
+
+    let list = (memoryStore.users || []).filter((u) => u.role === 'student' || u.role === 'club_lead');
+    if (search) {
+      const q = search.toLowerCase();
+      list = list.filter(
+        (u) =>
+          u.full_name?.toLowerCase().includes(q) ||
+          u.email?.toLowerCase().includes(q) ||
+          u.student_id?.toLowerCase().includes(q)
+      );
+    }
+    return list;
+  },
+
+  // -------------------------------------------------------------
+  // DEDICATED CLUB LEAD DASHBOARD DATA & OPERATIONS
+  // -------------------------------------------------------------
+  async getClubLeadDashboardData(userId) {
+    let assignedClubId = null;
+    let assignedClub = null;
+
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      try {
+        const { data: assignment, error } = await client
+          .from('club_lead_assignments')
+          .select('club_id, clubs(*)')
+          .eq('user_id', userId)
+          .eq('is_active', true)
+          .maybeSingle();
+
+        if (!error && assignment) {
+          assignedClubId = assignment.club_id;
+          assignedClub = assignment.clubs;
+        }
+      } catch {}
+
+      if (!assignedClubId) {
+        try {
+          const { data: { user } } = await client.auth.admin.getUserById(userId);
+          if (user?.user_metadata?.assigned_club_id) {
+            assignedClubId = user.user_metadata.assigned_club_id;
+          }
+        } catch {}
+      }
+    }
+
+    // Memory Store check if not found
+    if (!assignedClubId) {
+      const memAss = (memoryStore.clubLeadAssignments || []).find(
+        (a) => a.user_id === userId && a.is_active
+      );
+      if (memAss) {
+        assignedClubId = memAss.club_id;
+        assignedClub = (memoryStore.clubs || []).find((c) => c.id === assignedClubId);
+      }
+    }
+
+    // Ensure club details are fetched if id is known
+    if (assignedClubId && !assignedClub && isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      const { data: fetchedClub } = await client
+        .from('clubs')
+        .select('*, categories(*)')
+        .eq('id', assignedClubId)
+        .single();
+      assignedClub = fetchedClub;
+    }
+
+    if (!assignedClubId || !assignedClub) {
+      throw new Error('No active club assignment found for this Club Lead.');
+    }
+
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      const [
+        { count: totalMembers },
+        { count: pendingRequests },
+        { count: upcomingEvents },
+        { count: totalEvents },
+        { count: totalAnnouncements },
+        { data: recentMemberships },
+        { data: recentEvents },
+        { data: recentAnnouncements },
+      ] = await Promise.all([
+        client.from('memberships').select('id', { count: 'exact', head: true }).eq('club_id', assignedClubId).eq('status', 'approved'),
+        client.from('memberships').select('id', { count: 'exact', head: true }).eq('club_id', assignedClubId).eq('status', 'pending'),
+        client.from('events').select('id', { count: 'exact', head: true }).eq('club_id', assignedClubId).eq('status', 'upcoming'),
+        client.from('events').select('id', { count: 'exact', head: true }).eq('club_id', assignedClubId),
+        client.from('announcements').select('id', { count: 'exact', head: true }).eq('club_id', assignedClubId),
+        client.from('memberships').select('*, profiles:user_id(id, full_name, email, avatar_url)').eq('club_id', assignedClubId).order('joined_at', { ascending: false }).limit(5),
+        client.from('events').select('*').eq('club_id', assignedClubId).order('event_date', { ascending: true }).limit(5),
+        client.from('announcements').select('*').eq('club_id', assignedClubId).order('created_at', { ascending: false }).limit(5),
+      ]);
+
+      return {
+        club: assignedClub,
+        stats: {
+          totalMembers: totalMembers || 0,
+          pendingRequests: pendingRequests || 0,
+          upcomingEvents: upcomingEvents || 0,
+          totalEvents: totalEvents || 0,
+          totalAnnouncements: totalAnnouncements || 0,
+        },
+        recentMemberships: recentMemberships || [],
+        recentEvents: recentEvents || [],
+        recentAnnouncements: recentAnnouncements || [],
+      };
+    }
+
+    // Memory Store stats
+    const approvedMembers = (memoryStore.memberships || []).filter(
+      (m) => m.club_id === assignedClubId && m.status === 'approved'
+    );
+    const pendingReqs = (memoryStore.memberships || []).filter(
+      (m) => m.club_id === assignedClubId && m.status === 'pending'
+    );
+    const clubEvents = (memoryStore.events || []).filter((e) => e.club_id === assignedClubId);
+    const clubAnns = (memoryStore.announcements || []).filter((a) => a.club_id === assignedClubId);
+
+    return {
+      club: assignedClub,
+      stats: {
+        totalMembers: approvedMembers.length,
+        pendingRequests: pendingReqs.length,
+        upcomingEvents: clubEvents.filter((e) => e.status === 'upcoming').length,
+        totalEvents: clubEvents.length,
+        totalAnnouncements: clubAnns.length,
+      },
+      recentMemberships: approvedMembers.slice(0, 5),
+      recentEvents: clubEvents.slice(0, 5),
+      recentAnnouncements: clubAnns.slice(0, 5),
+    };
+  },
+
+  async updateClubForLead(clubId, updates) {
+    const allowedFields = [
+      'short_description',
+      'full_description',
+      'mission',
+      'activities_and_achievements',
+      'faculty_coordinator',
+      'student_coordinator',
+      'contact_email',
+      'social_links',
+      'logo_url',
+      'cover_image_url',
+    ];
+
+    const sanitized = {};
+    for (const key of allowedFields) {
+      if (updates[key] !== undefined) {
+        sanitized[key] = updates[key];
+      }
+    }
+    sanitized.updated_at = new Date().toISOString();
+
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      const { data, error } = await client
+        .from('clubs')
+        .update(sanitized)
+        .eq('id', clubId)
+        .select('*, categories(*)')
+        .single();
+
+      if (error) throw error;
+      return data;
+    }
+
+    const club = memoryStore.clubs.find((c) => c.id === clubId);
+    if (!club) throw new Error('Club not found.');
+    Object.assign(club, sanitized);
+    return club;
+  },
+
+  async getClubMembersForLead(clubId, { status = 'all', search = '' }) {
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      let query = client
+        .from('memberships')
+        .select(`
+          *,
+          profiles:user_id(id, full_name, email, student_id, department, year_of_study, avatar_url)
+        `)
+        .eq('club_id', clubId)
+        .order('joined_at', { ascending: false });
+
+      if (status && status !== 'all') {
+        query = query.eq('status', status);
+      }
+
+      const { data, error } = await query;
+      if (error) throw error;
+
+      let list = data || [];
+      if (search) {
+        const q = search.toLowerCase();
+        list = list.filter(
+          (m) =>
+            m.profiles?.full_name?.toLowerCase().includes(q) ||
+            m.profiles?.email?.toLowerCase().includes(q) ||
+            m.profiles?.student_id?.toLowerCase().includes(q)
+        );
+      }
+      return list;
+    }
+
+    let list = (memoryStore.memberships || []).filter((m) => m.club_id === clubId);
+    if (status && status !== 'all') {
+      list = list.filter((m) => m.status === status);
+    }
+    return list.map((m) => ({
+      ...m,
+      profiles: memoryStore.users.find((u) => u.id === m.user_id) || null,
+    }));
+  },
+
+  async updateMembershipStatusForLead(clubId, membershipId, status) {
+    if (!['approved', 'rejected', 'pending'].includes(status)) {
+      throw new Error("Invalid status. Allowed values: 'approved', 'rejected', 'pending'");
+    }
+
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+
+      const { data: mem, error: fetchErr } = await client
+        .from('memberships')
+        .select('id, club_id')
+        .eq('id', membershipId)
+        .single();
+
+      if (fetchErr || !mem) {
+        throw new Error('Membership request not found.');
+      }
+
+      if (mem.club_id !== clubId) {
+        throw new Error('Forbidden: You can only manage membership requests for your assigned club.');
+      }
+
+      const { data, error } = await client
+        .from('memberships')
+        .update({ status, updated_at: new Date().toISOString() })
+        .eq('id', membershipId)
+        .select(`
+          *,
+          profiles:user_id(id, full_name, email, student_id, department, year_of_study, avatar_url)
+        `)
+        .single();
+
+      if (error) throw error;
+      return data;
+    }
+
+    const mem = (memoryStore.memberships || []).find((m) => m.id === membershipId);
+    if (!mem) throw new Error('Membership request not found.');
+    if (mem.club_id !== clubId) {
+      throw new Error('Forbidden: You can only manage membership requests for your assigned club.');
+    }
+    mem.status = status;
+    mem.updated_at = new Date().toISOString();
+    return {
+      ...mem,
+      profiles: memoryStore.users.find((u) => u.id === mem.user_id) || null,
+    };
+  },
+
+  async removeMemberForLead(clubId, membershipId) {
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      const { data: mem } = await client
+        .from('memberships')
+        .select('id, club_id')
+        .eq('id', membershipId)
+        .single();
+
+      if (!mem || mem.club_id !== clubId) {
+        throw new Error('Forbidden: You can only remove members from your assigned club.');
+      }
+
+      const { error } = await client.from('memberships').delete().eq('id', membershipId);
+      if (error) throw error;
+      return { success: true, message: 'Member successfully removed.' };
+    }
+
+    const idx = (memoryStore.memberships || []).findIndex(
+      (m) => m.id === membershipId && m.club_id === clubId
+    );
+    if (idx === -1) throw new Error('Member not found in assigned club.');
+    memoryStore.memberships.splice(idx, 1);
+    return { success: true, message: 'Member successfully removed.' };
+  },
+
+  async getClubEventsForLead(clubId) {
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      const { data, error } = await client
+        .from('events')
+        .select('*, event_registrations(count)')
+        .eq('club_id', clubId)
+        .order('event_date', { ascending: false });
+
+      if (error) throw error;
+      return (data || []).map((e) => ({
+        ...e,
+        registration_count: e.event_registrations?.[0]?.count || 0,
+      }));
+    }
+
+    return (memoryStore.events || []).filter((e) => e.club_id === clubId);
+  },
+
+  async createClubEventForLead(clubId, eventData) {
+    if (!eventData.title || !eventData.event_date || !eventData.venue) {
+      throw new Error('Title, date, and venue are required to create an event.');
+    }
+
+    const payload = {
+      id: crypto.randomUUID(),
+      club_id: clubId,
+      title: eventData.title.trim(),
+      description: eventData.description || 'No description provided.',
+      banner_url: eventData.banner_url || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&auto=format&fit=crop&q=80',
+      event_date: eventData.event_date,
+      start_time: eventData.start_time || '10:00:00',
+      end_time: eventData.end_time || '12:00:00',
+      venue: eventData.venue.trim(),
+      registration_url: eventData.registration_url || null,
+      max_participants: eventData.max_participants ? Number(eventData.max_participants) : 100,
+      status: eventData.status || 'upcoming',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      const { data, error } = await client.from('events').insert(payload).select().single();
+      if (error) throw error;
+      return data;
+    }
+
+    memoryStore.events.push(payload);
+    return payload;
+  },
+
+  async updateClubEventForLead(clubId, eventId, eventData) {
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+
+      const { data: existing, error: fetchErr } = await client
+        .from('events')
+        .select('id, club_id')
+        .eq('id', eventId)
+        .single();
+
+      if (fetchErr || !existing) throw new Error('Event not found.');
+      if (existing.club_id !== clubId) {
+        throw new Error('Forbidden: You can only edit events belonging to your assigned club.');
+      }
+
+      const updates = { ...eventData };
+      delete updates.id;
+      delete updates.club_id;
+      updates.updated_at = new Date().toISOString();
+
+      const { data, error } = await client
+        .from('events')
+        .update(updates)
+        .eq('id', eventId)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    }
+
+    const ev = (memoryStore.events || []).find((e) => e.id === eventId);
+    if (!ev) throw new Error('Event not found.');
+    if (ev.club_id !== clubId) {
+      throw new Error('Forbidden: You can only edit events belonging to your assigned club.');
+    }
+    Object.assign(ev, eventData, { club_id: clubId, updated_at: new Date().toISOString() });
+    return ev;
+  },
+
+  async deleteClubEventForLead(clubId, eventId) {
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      const { data: existing } = await client
+        .from('events')
+        .select('id, club_id')
+        .eq('id', eventId)
+        .single();
+
+      if (!existing || existing.club_id !== clubId) {
+        throw new Error('Forbidden: You can only cancel or delete events belonging to your assigned club.');
+      }
+
+      const { error } = await client.from('events').delete().eq('id', eventId);
+      if (error) throw error;
+      return { success: true, message: 'Event successfully removed.' };
+    }
+
+    const idx = (memoryStore.events || []).findIndex((e) => e.id === eventId && e.club_id === clubId);
+    if (idx === -1) throw new Error('Event not found in assigned club.');
+    memoryStore.events.splice(idx, 1);
+    return { success: true, message: 'Event successfully removed.' };
+  },
+
+  async getClubEventRegistrationsForLead(clubId, eventId) {
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      const { data: ev } = await client.from('events').select('id, club_id, title').eq('id', eventId).single();
+      if (!ev || ev.club_id !== clubId) {
+        throw new Error('Forbidden: You can only access registrations for your assigned club events.');
+      }
+
+      const { data, error } = await client
+        .from('event_registrations')
+        .select(`
+          *,
+          profiles:user_id(id, full_name, email, student_id, department, year_of_study)
+        `)
+        .eq('event_id', eventId)
+        .order('registered_at', { ascending: false });
+
+      if (error) throw error;
+      return { event: ev, registrations: data || [] };
+    }
+
+    const ev = (memoryStore.events || []).find((e) => e.id === eventId && e.club_id === clubId);
+    if (!ev) throw new Error('Forbidden: Event not found in assigned club.');
+    const regs = (memoryStore.eventRegistrations || []).filter((r) => r.event_id === eventId);
+    return {
+      event: ev,
+      registrations: regs.map((r) => ({
+        ...r,
+        profiles: memoryStore.users.find((u) => u.id === r.user_id) || null,
+      })),
+    };
+  },
+
+  async getClubAnnouncementsForLead(clubId) {
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      const { data, error } = await client
+        .from('announcements')
+        .select('*, profiles:created_by(id, full_name, email)')
+        .eq('club_id', clubId)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data || [];
+    }
+
+    return (memoryStore.announcements || []).filter((a) => a.club_id === clubId);
+  },
+
+  async createClubAnnouncementForLead(clubId, data, userId) {
+    if (!data.title || !data.content) {
+      throw new Error('Title and content are required for an announcement.');
+    }
+
+    const payload = {
+      id: crypto.randomUUID(),
+      club_id: clubId,
+      title: data.title.trim(),
+      content: data.content.trim(),
+      created_by: userId,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      const { data: inserted, error } = await client
+        .from('announcements')
+        .insert(payload)
+        .select('*, profiles:created_by(id, full_name, email)')
+        .single();
+
+      if (error) throw error;
+      return inserted;
+    }
+
+    memoryStore.announcements.push(payload);
+    return payload;
+  },
+
+  async updateClubAnnouncementForLead(clubId, announcementId, data) {
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      const { data: existing } = await client
+        .from('announcements')
+        .select('id, club_id')
+        .eq('id', announcementId)
+        .single();
+
+      if (!existing || existing.club_id !== clubId) {
+        throw new Error('Forbidden: You can only edit announcements belonging to your assigned club.');
+      }
+
+      const updates = { ...data };
+      delete updates.id;
+      delete updates.club_id;
+      updates.updated_at = new Date().toISOString();
+
+      const { data: updated, error } = await client
+        .from('announcements')
+        .update(updates)
+        .eq('id', announcementId)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return updated;
+    }
+
+    const ann = (memoryStore.announcements || []).find((a) => a.id === announcementId);
+    if (!ann || ann.club_id !== clubId) throw new Error('Announcement not found in assigned club.');
+    Object.assign(ann, data, { club_id: clubId, updated_at: new Date().toISOString() });
+    return ann;
+  },
+
+  async deleteClubAnnouncementForLead(clubId, announcementId) {
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      const { data: existing } = await client
+        .from('announcements')
+        .select('id, club_id')
+        .eq('id', announcementId)
+        .single();
+
+      if (!existing || existing.club_id !== clubId) {
+        throw new Error('Forbidden: You can only delete announcements belonging to your assigned club.');
+      }
+
+      const { error } = await client.from('announcements').delete().eq('id', announcementId);
+      if (error) throw error;
+      return { success: true, message: 'Announcement deleted.' };
+    }
+
+    const idx = (memoryStore.announcements || []).findIndex(
+      (a) => a.id === announcementId && a.club_id === clubId
+    );
+    if (idx === -1) throw new Error('Announcement not found in assigned club.');
+    memoryStore.announcements.splice(idx, 1);
+    return { success: true, message: 'Announcement deleted.' };
+  },
+
+  async getClubActivityForLead(clubId) {
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      const [
+        { data: members },
+        { data: events },
+        { data: announcements },
+      ] = await Promise.all([
+        client.from('memberships').select('*, profiles:user_id(id, full_name, email)').eq('club_id', clubId).order('updated_at', { ascending: false }).limit(10),
+        client.from('events').select('*').eq('club_id', clubId).order('created_at', { ascending: false }).limit(10),
+        client.from('announcements').select('*').eq('club_id', clubId).order('created_at', { ascending: false }).limit(10),
+      ]);
+
+      const activities = [];
+
+      (members || []).forEach((m) => {
+        activities.push({
+          id: `mem-${m.id}`,
+          type: m.status === 'approved' ? 'member_joined' : m.status === 'pending' ? 'membership_requested' : 'membership_rejected',
+          title: m.status === 'approved' ? 'New Member Joined' : m.status === 'pending' ? 'New Membership Request' : 'Membership Rejected',
+          description: `${m.profiles?.full_name || 'A student'} (${m.profiles?.email || 'N/A'}) - status: ${m.status}`,
+          timestamp: m.updated_at || m.joined_at,
+        });
+      });
+
+      (events || []).forEach((e) => {
+        activities.push({
+          id: `ev-${e.id}`,
+          type: 'event_created',
+          title: `Event Scheduled: ${e.title}`,
+          description: `Venue: ${e.venue} on ${e.event_date}`,
+          timestamp: e.created_at,
+        });
+      });
+
+      (announcements || []).forEach((a) => {
+        activities.push({
+          id: `ann-${a.id}`,
+          type: 'announcement_posted',
+          title: `Announcement: ${a.title}`,
+          description: a.content.substring(0, 100) + '...',
+          timestamp: a.created_at,
+        });
+      });
+
+      activities.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      return activities.slice(0, 20);
+    }
+
+    return [];
   },
 };
 

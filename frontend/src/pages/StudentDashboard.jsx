@@ -144,13 +144,23 @@ export const StudentDashboard = () => {
               <span>Admin Console</span>
             </Link>
           )}
+          {profile?.role === 'club_lead' && (
+            <Link
+              to="/club-lead/dashboard"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500 text-white hover:bg-emerald-600 font-bold text-xs sm:text-sm shadow-md transition-all duration-200 active:scale-95"
+            >
+              <Compass className="w-4 h-4 text-white" />
+              <span>Club Lead Portal</span>
+            </Link>
+          )}
           <Link
             to="/clubs"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white !text-[#800020] hover:bg-[#FAF9F7] hover:!text-[#5C001A] font-bold text-xs sm:text-sm shadow-md transition-all duration-200 active:scale-95 group"
+            style={{ color: '#800020', backgroundColor: '#FFFFFF' }}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm shadow-md transition-all duration-200 active:scale-95 group hover:bg-[#FAF9F7]"
           >
-            <Compass className="w-4 h-4 !text-[#800020] group-hover:rotate-45 transition-transform duration-300" />
-            <span>Explore Clubs</span>
-            <ArrowRight className="w-3.5 h-3.5 !text-[#800020] group-hover:translate-x-0.5 transition-transform" />
+            <Compass className="w-4 h-4 transition-transform group-hover:rotate-45" style={{ color: '#800020' }} />
+            <span style={{ color: '#800020' }}>Explore Clubs</span>
+            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" style={{ color: '#800020' }} />
           </Link>
         </div>
       </div>

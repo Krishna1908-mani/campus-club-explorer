@@ -15,6 +15,7 @@ import favoriteRoutes from './routes/favoriteRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
 import announcementRoutes from './routes/announcementRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import clubLeadRoutes from './routes/clubLeadRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 
 dotenv.config();
@@ -89,6 +90,7 @@ app.use('/api/favorites', favoriteRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/club-lead', clubLeadRoutes);
 app.use('/api/upload', uploadRoutes);
 
 // 404 Handler for undefined API routes

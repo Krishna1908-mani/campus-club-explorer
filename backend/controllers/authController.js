@@ -165,7 +165,7 @@ export const AuthController = {
 
   async login(req, res, next) {
     try {
-      const { email, password } = req.body;
+      const { email, password, expectedRole } = req.body;
 
       if (!email || !password) {
         return res.status(400).json({
@@ -198,6 +198,72 @@ export const AuthController = {
           .eq('id', user.id)
           .single();
 
+        const effectiveRole =
+          profile?.role === 'admin' || user.user_metadata?.role === 'admin'
+            ? 'admin'
+            : profile?.role === 'club_lead' || user.user_metadata?.role === 'club_lead'
+            ? 'club_lead'
+            : profile?.role || 'student';
+
+        // Strict Role Verification if login requested via a dedicated role portal
+        if (expectedRole) {
+          if (expectedRole === 'admin' && effectiveRole !== 'admin') {
+            return res.status(403).json({
+              success: false,
+              message: 'This account does not have Admin access.',
+            });
+          }
+          if (expectedRole === 'club_lead') {
+            if (effectiveRole !== 'club_lead') {
+              return res.status(403).json({
+                success: false,
+                message: 'This account does not have Club Lead access.',
+              });
+            }
+
+            // Verify active club assignment for Club Lead
+            let assignedClubId = user.user_metadata?.assigned_club_id;
+            const client = supabaseAdmin || supabase;
+            if (client) {
+              try {
+                const { data: assignment } = await client
+                  .from('club_lead_assignments')
+                  .select('club_id')
+                  .eq('user_id', user.id)
+                  .eq('is_active', true)
+                  .maybeSingle();
+                if (assignment?.club_id) {
+                  assignedClubId = assignment.club_id;
+                }
+              } catch {
+                // Ignore table query errors if running with memory fallback
+              }
+            }
+
+            if (!assignedClubId) {
+              return res.status(403).json({
+                success: false,
+                message: 'Your Club Lead account does not have an active club assignment. Please contact an administrator.',
+              });
+            }
+          }
+          if (expectedRole === 'student' && effectiveRole !== 'student') {
+            return res.status(403).json({
+              success: false,
+              message: 'This login portal is reserved for students. Please use the Admin or Club Lead portal.',
+            });
+          }
+        }
+
+        const safeProfile = profile
+          ? { ...profile, role: effectiveRole }
+          : {
+              id: user.id,
+              email: user.email,
+              full_name: user.user_metadata?.full_name || email.split('@')[0],
+              role: effectiveRole,
+            };
+
         return res.json({
           success: true,
           message: 'Login successful!',
@@ -206,12 +272,7 @@ export const AuthController = {
             id: user.id,
             email: user.email,
           },
-          profile: profile || {
-            id: user.id,
-            email: user.email,
-            full_name: user.user_metadata?.full_name || email.split('@')[0],
-            role: user.user_metadata?.role || 'student',
-          },
+          profile: safeProfile,
         });
       }
 
@@ -226,11 +287,42 @@ export const AuthController = {
         } else {
           // Legacy fallback for seed users without hashes
           passwordValid = (user.role === 'admin' && password === 'admin123') ||
+                          (user.role === 'club_lead' && password === 'lead123') ||
                           (user.role === 'student' && password === 'password123');
         }
       }
 
       if (user && passwordValid) {
+        // Strict Role Verification in memory fallback
+        if (expectedRole) {
+          if (expectedRole === 'admin' && user.role !== 'admin') {
+            return res.status(403).json({
+              success: false,
+              message: 'This account does not have Admin access.',
+            });
+          }
+          if (expectedRole === 'club_lead') {
+            if (user.role !== 'club_lead') {
+              return res.status(403).json({
+                success: false,
+                message: 'This account does not have Club Lead access.',
+              });
+            }
+            if (!user.assigned_club_id) {
+              return res.status(403).json({
+                success: false,
+                message: 'Your Club Lead account does not have an active club assignment. Please contact an administrator.',
+              });
+            }
+          }
+          if (expectedRole === 'student' && user.role !== 'student') {
+            return res.status(403).json({
+              success: false,
+              message: 'This login portal is reserved for students. Please use the Admin or Club Lead portal.',
+            });
+          }
+        }
+
         const token = jwt.sign(
           { id: user.id, email: user.email, role: user.role, full_name: user.full_name },
           JWT_SECRET,
