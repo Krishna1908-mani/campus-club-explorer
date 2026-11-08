@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserPlus, GraduationCap } from 'lucide-react';
+import { UserPlus, User } from 'lucide-react';
+import AuthLayout from '../components/common/AuthLayout.jsx';
 import Input from '../components/common/Input.jsx';
 import Select from '../components/common/Select.jsx';
 import Button from '../components/common/Button.jsx';
@@ -88,124 +89,113 @@ export const Register = () => {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center px-4 py-12 bg-[#FAF9F7] dark:bg-[#111111] transition-colors">
-      <div className="w-full max-w-lg space-y-6">
-        {/* Brand Header */}
-        <div className="text-center space-y-2">
-          <Link to="/" className="inline-flex items-center gap-2 mb-2">
-            <div className="w-12 h-12 rounded-2xl bg-[#800020] flex items-center justify-center text-white shadow-xs hover:bg-[#5C001A] transition-colors">
-              <GraduationCap className="w-6 h-6" />
-            </div>
-          </Link>
-          <h1 className="text-2xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7] tracking-tight">
-            Create Your Student Account
-          </h1>
-          <p className="text-xs text-[#737373] dark:text-[#A3A3A3]">
-            Join collegiate societies, sign up for events, and build your campus network
-          </p>
+    <AuthLayout
+      role="student"
+      badgeText="Student Portal"
+      badgeIcon={<User className="w-3.5 h-3.5" />}
+      badgeVariant="emerald"
+      title="Create Student Account"
+      subtitle="Join collegiate societies, sign up for flagship events, and build your campus network."
+      backTo="/student/login"
+      backLabel="Back to Student Sign In"
+    >
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <Input
+          label="Full Name"
+          name="full_name"
+          value={formData.full_name}
+          onChange={handleChange}
+          placeholder="e.g. Jordan Lee"
+          error={formErrors.full_name}
+          required
+        />
+
+        <Input
+          label="College Email"
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="e.g. jordan.lee@campus.edu"
+          error={formErrors.email}
+          required
+        />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Input
+            label="Password"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Min 6 characters"
+            error={formErrors.password}
+            required
+          />
+
+          <Input
+            label="Confirm Password"
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            placeholder="••••••••"
+            error={formErrors.confirmPassword}
+            required
+          />
         </div>
 
-        {/* Card Form */}
-        <div className="bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] rounded-2xl p-6 sm:p-8 shadow-xs">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <Input
-              label="Full Name"
-              name="full_name"
-              value={formData.full_name}
-              onChange={handleChange}
-              placeholder="e.g. Jordan Lee"
-              error={formErrors.full_name}
-              required
-            />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Input
+            label="Student ID (Optional)"
+            name="student_id"
+            value={formData.student_id}
+            onChange={handleChange}
+            placeholder="e.g. STU-2026-104"
+          />
 
-            <Input
-              label="College Email"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="e.g. jordan.lee@campus.edu"
-              error={formErrors.email}
-              required
-            />
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Input
-                label="Password"
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Min 6 characters"
-                error={formErrors.password}
-                required
-              />
-
-              <Input
-                label="Confirm Password"
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                placeholder="••••••••"
-                error={formErrors.confirmPassword}
-                required
-              />
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Input
-                label="Student ID (Optional)"
-                name="student_id"
-                value={formData.student_id}
-                onChange={handleChange}
-                placeholder="e.g. STU-2026-104"
-              />
-
-              <Select
-                label="Year of Study"
-                name="year_of_study"
-                value={formData.year_of_study}
-                onChange={handleChange}
-                options={yearsOfStudy}
-                placeholder=""
-              />
-            </div>
-
-            <Select
-              label="Department / Faculty"
-              name="department"
-              value={formData.department}
-              onChange={handleChange}
-              options={departments}
-              placeholder=""
-            />
-
-            <Button
-              type="submit"
-              variant="primary"
-              size="lg"
-              className="w-full mt-3"
-              isLoading={loading}
-              leftIcon={<UserPlus className="w-4 h-4" />}
-            >
-              Complete Registration
-            </Button>
-          </form>
-
-          <div className="mt-6 pt-5 border-t border-[#E5E5E5] dark:border-[#383838] text-center text-xs text-[#737373] dark:text-[#A3A3A3]">
-            Already have an account?{' '}
-            <Link
-              to="/login"
-              className="font-bold text-[#800020] dark:text-[#D9A0AE] hover:underline"
-            >
-              Sign In
-            </Link>
-          </div>
+          <Select
+            label="Year of Study"
+            name="year_of_study"
+            value={formData.year_of_study}
+            onChange={handleChange}
+            options={yearsOfStudy}
+            placeholder=""
+          />
         </div>
+
+        <Select
+          label="Department / Faculty"
+          name="department"
+          value={formData.department}
+          onChange={handleChange}
+          options={departments}
+          placeholder=""
+        />
+
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          className="w-full h-11 text-sm font-semibold rounded-xl mt-3 shadow-xs hover:shadow-md"
+          isLoading={loading}
+          leftIcon={<UserPlus className="w-4 h-4" />}
+        >
+          Complete Registration
+        </Button>
+      </form>
+
+      <div className="pt-4 border-t border-[#E8E3E5] dark:border-[#2E2E2E] text-center text-xs text-[#777777] dark:text-[#A3A3A3]">
+        Already have an account?{' '}
+        <Link
+          to="/student/login"
+          className="font-bold text-[#800020] dark:text-[#D9A0AE] hover:underline focus:outline-none focus-visible:ring-1 focus-visible:ring-[#800020] rounded"
+        >
+          Sign In here
+        </Link>
       </div>
-    </div>
+    </AuthLayout>
   );
 };
-export default Register;
 
+export default Register;

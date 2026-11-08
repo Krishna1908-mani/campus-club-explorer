@@ -911,11 +911,13 @@ export const SupabaseService = {
         { count: totalStudents },
         { count: upcomingEvents },
         { count: categoriesCount },
+        { count: totalMemberships },
       ] = await Promise.all([
         supabase.from('clubs').select('id', { count: 'exact', head: true }).eq('is_active', true),
         supabase.from('profiles').select('id', { count: 'exact', head: true }),
         supabase.from('events').select('id', { count: 'exact', head: true }).gte('event_date', new Date().toISOString().split('T')[0]),
         supabase.from('categories').select('id', { count: 'exact', head: true }),
+        supabase.from('memberships').select('id', { count: 'exact', head: true }).eq('status', 'approved'),
       ]);
 
       return {
@@ -923,6 +925,7 @@ export const SupabaseService = {
         totalStudents: (totalStudents || 0) + 1240, // Base active collegiate student body
         upcomingEvents: upcomingEvents || 0,
         interestCategories: categoriesCount || 0,
+        totalMemberships: (totalMemberships || 0) + 380,
       };
     }
 
@@ -931,6 +934,7 @@ export const SupabaseService = {
       totalStudents: 1248,
       upcomingEvents: memoryStore.events.filter(e => e.status === 'upcoming').length,
       interestCategories: memoryStore.categories.length,
+      totalMemberships: memoryStore.memberships.filter(m => m.status === 'approved').length + 380,
     };
   },
 

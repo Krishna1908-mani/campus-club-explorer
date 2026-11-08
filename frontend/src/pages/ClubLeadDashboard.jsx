@@ -27,6 +27,7 @@ import { useToast } from '../context/ToastContext.jsx';
 import { apiService } from '../services/api.js';
 import Button from '../components/common/Button.jsx';
 import Input from '../components/common/Input.jsx';
+import Textarea from '../components/common/Textarea.jsx';
 import Badge from '../components/common/Badge.jsx';
 import Modal from '../components/common/Modal.jsx';
 import ConfirmationDialog from '../components/common/ConfirmationDialog.jsx';
@@ -782,46 +783,31 @@ export const ClubLeadDashboard = () => {
               required
             />
 
-            <div>
-              <label className="block text-xs font-semibold text-[#111111] dark:text-[#FAF9F7] mb-1">
-                Full Club Description
-              </label>
-              <textarea
-                value={clubForm.full_description}
-                onChange={(e) => setClubForm({ ...clubForm, full_description: e.target.value })}
-                rows={4}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-[#E5E5E5] dark:border-[#383838] bg-white dark:bg-[#111111] text-xs text-[#111111] dark:text-[#FAF9F7] focus:ring-2 focus:ring-[#800020]/20 focus:outline-none"
-                placeholder="Comprehensive description of the club, core pillars, and activities..."
-                required
-              />
-            </div>
+            <Textarea
+              label="Full Club Description"
+              value={clubForm.full_description}
+              onChange={(e) => setClubForm({ ...clubForm, full_description: e.target.value })}
+              rows={4}
+              placeholder="Comprehensive description of the club, core pillars, and activities..."
+              required
+            />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-semibold text-[#111111] dark:text-[#FAF9F7] mb-1">
-                  Mission Statement
-                </label>
-                <textarea
-                  value={clubForm.mission}
-                  onChange={(e) => setClubForm({ ...clubForm, mission: e.target.value })}
-                  rows={3}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#E5E5E5] dark:border-[#383838] bg-white dark:bg-[#111111] text-xs text-[#111111] dark:text-[#FAF9F7] focus:ring-2 focus:ring-[#800020]/20 focus:outline-none"
-                  placeholder="The driving mission and collegiate purpose of the club..."
-                />
-              </div>
+              <Textarea
+                label="Mission Statement"
+                value={clubForm.mission}
+                onChange={(e) => setClubForm({ ...clubForm, mission: e.target.value })}
+                rows={3}
+                placeholder="The driving mission and collegiate purpose of the club..."
+              />
 
-              <div>
-                <label className="block text-xs font-semibold text-[#111111] dark:text-[#FAF9F7] mb-1">
-                  Activities & Achievements
-                </label>
-                <textarea
-                  value={clubForm.activities_and_achievements}
-                  onChange={(e) => setClubForm({ ...clubForm, activities_and_achievements: e.target.value })}
-                  rows={3}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#E5E5E5] dark:border-[#383838] bg-white dark:bg-[#111111] text-xs text-[#111111] dark:text-[#FAF9F7] focus:ring-2 focus:ring-[#800020]/20 focus:outline-none"
-                  placeholder="Key accomplishments, regular workshops, competitions, trophies..."
-                />
-              </div>
+              <Textarea
+                label="Activities & Achievements"
+                value={clubForm.activities_and_achievements}
+                onChange={(e) => setClubForm({ ...clubForm, activities_and_achievements: e.target.value })}
+                rows={3}
+                placeholder="Key accomplishments, regular workshops, competitions, trophies..."
+              />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -1401,19 +1387,14 @@ export const ClubLeadDashboard = () => {
             required
           />
 
-          <div>
-            <label className="block text-xs font-semibold text-[#111111] dark:text-[#FAF9F7] mb-1">
-              Event Description
-            </label>
-            <textarea
-              value={eventForm.description}
-              onChange={(e) => setEventForm({ ...eventForm, description: e.target.value })}
-              rows={3}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-[#E5E5E5] dark:border-[#383838] bg-white dark:bg-[#111111] text-xs text-[#111111] dark:text-[#FAF9F7] focus:ring-2 focus:ring-[#800020]/20 focus:outline-none"
-              placeholder="Detailed schedule, speakers, takeaways, prerequisites..."
-              required
-            />
-          </div>
+          <Textarea
+            label="Event Description"
+            value={eventForm.description}
+            onChange={(e) => setEventForm({ ...eventForm, description: e.target.value })}
+            rows={3}
+            placeholder="Detailed schedule, speakers, takeaways, prerequisites..."
+            required
+          />
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <Input
@@ -1535,19 +1516,14 @@ export const ClubLeadDashboard = () => {
             required
           />
 
-          <div>
-            <label className="block text-xs font-semibold text-[#111111] dark:text-[#FAF9F7] mb-1">
-              Notice Content
-            </label>
-            <textarea
-              value={announcementForm.content}
-              onChange={(e) => setAnnouncementForm({ ...announcementForm, content: e.target.value })}
-              rows={4}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-[#E5E5E5] dark:border-[#383838] bg-white dark:bg-[#111111] text-xs text-[#111111] dark:text-[#FAF9F7] focus:ring-2 focus:ring-[#800020]/20 focus:outline-none"
-              placeholder="Write the full broadcast notice for your club members..."
-              required
-            />
-          </div>
+          <Textarea
+            label="Notice Content"
+            value={announcementForm.content}
+            onChange={(e) => setAnnouncementForm({ ...announcementForm, content: e.target.value })}
+            rows={4}
+            placeholder="Write the full broadcast notice for your club members..."
+            required
+          />
 
           <div className="pt-2 flex justify-end gap-2">
             <Button variant="outline" size="sm" type="button" onClick={() => setAnnouncementModalOpen(false)}>

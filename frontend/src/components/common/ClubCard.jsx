@@ -52,7 +52,7 @@ export const ClubCard = ({
 
   if (viewMode === 'list') {
     return (
-      <div className="group relative bg-white dark:bg-[#181818] border border-[#E8E5E7] dark:border-[#2E2E2E] rounded-2xl shadow-xs hover:shadow-lg hover:border-[#800020]/40 dark:hover:border-[#C2185B]/40 transition-all duration-300 flex flex-col sm:flex-row overflow-hidden hover:-translate-y-0.5">
+      <div className="group relative bg-white dark:bg-[#181818] border border-[#E8E3E5] dark:border-[#2E2E2E] rounded-2xl shadow-xs hover:shadow-lg hover:border-[#800020]/40 dark:hover:border-[#C2185B]/40 transition-all duration-300 flex flex-col sm:flex-row overflow-hidden hover:-translate-y-0.5">
         {/* Left Thumbnail */}
         <div className="relative sm:w-64 h-48 sm:h-auto overflow-hidden bg-[#F3F1F3] dark:bg-[#222222] shrink-0">
           <img
@@ -80,7 +80,7 @@ export const ClubCard = ({
           <div>
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-[#E8E5E7] dark:border-[#2E2E2E] shadow-xs bg-white dark:bg-[#222222] p-0.5">
+                <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-[#E8E3E5] dark:border-[#2E2E2E] shadow-xs bg-white dark:bg-[#222222] p-0.5">
                   <img
                     src={club.logo_url || 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=100&auto=format&fit=crop&q=80'}
                     alt={`${club.name} logo`}
@@ -116,7 +116,7 @@ export const ClubCard = ({
                 className={`p-2 rounded-full border transition-all duration-200 cursor-pointer ${
                   favorite
                     ? 'bg-[#800020] text-white border-[#800020]'
-                    : 'bg-white dark:bg-[#222222] text-[#737373] border-[#E8E5E7] dark:border-[#2E2E2E] hover:text-[#800020]'
+                    : 'bg-white dark:bg-[#222222] text-[#737373] border-[#E8E3E5] dark:border-[#2E2E2E] hover:text-[#800020]'
                 }`}
               >
                 <Heart className={`w-4 h-4 ${favorite ? 'fill-current' : ''}`} />
@@ -128,7 +128,7 @@ export const ClubCard = ({
             </p>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-[#E8E5E7] dark:border-[#2E2E2E] flex items-center justify-between">
+          <div className="mt-4 pt-3 border-t border-[#E8E3E5] dark:border-[#2E2E2E] flex items-center justify-between">
             <span className="text-xs text-[#737373] dark:text-[#A3A3A3]">
               Led by <span className="font-medium text-[#151515] dark:text-neutral-200">{club.lead_coordinator_name || 'Designated Lead'}</span>
             </span>
@@ -147,7 +147,7 @@ export const ClubCard = ({
 
   // Grid Mode (Default)
   return (
-    <div className="group relative bg-white dark:bg-[#181818] border border-[#E8E5E7] dark:border-[#2E2E2E] rounded-2xl shadow-xs hover:shadow-[0_16px_36px_rgba(21,21,21,0.08)] dark:hover:shadow-[0_16px_36px_rgba(0,0,0,0.5)] hover:border-[#800020]/40 dark:hover:border-[#C2185B]/40 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full overflow-hidden">
+    <div className="group relative bg-white dark:bg-[#181818] border border-[#E8E3E5] dark:border-[#2E2E2E] rounded-2xl shadow-xs hover:shadow-[0_16px_36px_rgba(21,21,21,0.08)] dark:hover:shadow-[0_16px_36px_rgba(0,0,0,0.5)] hover:border-[#800020]/40 dark:hover:border-[#C2185B]/40 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full overflow-hidden">
       {/* Cover Image & Favorite Badge */}
       <div className="relative h-44 w-full overflow-hidden bg-[#F3F1F3] dark:bg-[#222222]">
         <img
@@ -195,7 +195,7 @@ export const ClubCard = ({
         <div>
           {/* Logo & Club Name */}
           <div className="flex items-start gap-3.5 mb-3">
-            <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-[#E8E5E7] dark:border-[#2E2E2E] shadow-xs bg-white dark:bg-[#222222] p-0.5">
+            <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-[#E8E3E5] dark:border-[#2E2E2E] shadow-xs bg-white dark:bg-[#222222] p-0.5">
               <img
                 src={club.logo_url || 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=100&auto=format&fit=crop&q=80'}
                 alt={`${club.name} logo`}
@@ -223,7 +223,7 @@ export const ClubCard = ({
         </div>
 
         {/* Action Button */}
-        <div className="mt-5 pt-4 border-t border-[#E8E5E7] dark:border-[#2E2E2E] flex items-center justify-between">
+        <div className="mt-5 pt-4 border-t border-[#E8E3E5] dark:border-[#2E2E2E] flex items-center justify-between">
           <span className="text-xs font-medium text-[#737373] dark:text-[#A3A3A3]">
             {club.establishment_date ? `Est. ${new Date(club.establishment_date).getFullYear()}` : 'Campus Society'}
           </span>

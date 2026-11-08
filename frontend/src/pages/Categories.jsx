@@ -14,6 +14,7 @@ import {
   Globe,
   Gamepad2,
 } from 'lucide-react';
+import PageHeader from '../components/common/PageHeader.jsx';
 import { apiService } from '../services/api.js';
 
 export const Categories = () => {
@@ -63,17 +64,12 @@ export const Categories = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      <div className="space-y-3">
-        <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#800020] dark:text-[#D9A0AE]">
-          <Grid className="w-4 h-4 text-[#800020] dark:text-[#D9A0AE]" /> Categorized Taxonomy
-        </div>
-        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">
-          Explore Interest Categories
-        </h1>
-        <p className="text-sm text-[#737373] dark:text-[#A3A3A3] max-w-2xl font-sans">
-          Choose a discipline to discover student chapters, labs, varsity clubs, and artistic groups dedicated to that domain.
-        </p>
-      </div>
+      <PageHeader
+        badge="Categorized Taxonomy"
+        badgeIcon={<Grid className="w-4 h-4 text-[#800020] dark:text-[#D9A0AE]" />}
+        title="Explore Interest Categories"
+        description="Choose a discipline to discover student chapters, labs, varsity clubs, and artistic groups dedicated to that domain."
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {categories.map((cat) => (

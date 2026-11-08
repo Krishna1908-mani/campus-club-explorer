@@ -16,6 +16,7 @@ import { ClubCardSkeleton } from '../components/common/Skeleton.jsx';
 import EmptyState from '../components/common/EmptyState.jsx';
 import Pagination from '../components/common/Pagination.jsx';
 import Badge from '../components/common/Badge.jsx';
+import PageHeader from '../components/common/PageHeader.jsx';
 import { apiService } from '../services/api.js';
 
 export const ExploreClubs = () => {
@@ -123,17 +124,12 @@ export const ExploreClubs = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       {/* Page Header */}
-      <div className="space-y-3">
-        <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#800020] dark:text-[#D9A0AE]">
-          <Compass className="w-4 h-4 text-[#800020] dark:text-[#D9A0AE]" /> Discovery Hub
-        </div>
-        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">
-          Explore College Clubs
-        </h1>
-        <p className="text-sm text-[#737373] dark:text-[#A3A3A3] max-w-2xl font-sans">
-          Browse through all active student organizations, search by interests, filter by categories, and discover your next community.
-        </p>
-      </div>
+      <PageHeader
+        badge="Discovery Hub"
+        badgeIcon={<Compass className="w-4 h-4 text-[#800020] dark:text-[#D9A0AE]" />}
+        title="Explore College Clubs"
+        description="Browse through all active student organizations, search by interests, filter by categories, and discover your next community."
+      />
 
       {/* FEATURED SPOTLIGHT BANNER (Shown on Page 1 without active search) */}
       {!search && page === 1 && spotlightClub && (

@@ -9,13 +9,13 @@ export const Badge = ({
 }) => {
   const variantClasses = {
     default:
-      'bg-[#F5F3F2] dark:bg-[#292929] text-[#737373] dark:text-[#E5E5E5] border border-[#E5E5E5] dark:border-[#383838]',
+      'bg-[#F8F7F8] dark:bg-[#242424] text-[#777777] dark:text-[#E5E5E5] border border-[#E8E3E5] dark:border-[#2E2E2E]',
     primary:
-      'bg-[#FCE7EF] dark:bg-[#800020]/40 text-[#800020] dark:text-[#FCE7EF] border border-[#D9A0AE]/50 dark:border-[#800020]',
+      'bg-[#F4E7EC] dark:bg-[#800020]/40 text-[#800020] dark:text-[#F4E7EC] border border-[#D9A0AE]/50 dark:border-[#800020]',
     burgundy:
-      'bg-[#800020] text-white border border-[#5C001A]',
-    violet:
-      'bg-[#FCE7EF]/70 dark:bg-[#C2185B]/25 text-[#990033] dark:text-[#D9A0AE] border border-[#C2185B]/30',
+      'bg-[#800020] text-white border border-[#5C001A] shadow-2xs',
+    rose:
+      'bg-[#F4E7EC] text-[#800020] border border-[#E8E3E5] dark:bg-[#800020]/25 dark:text-[#F4E7EC] dark:border-[#800020]/50',
     success:
       'bg-emerald-50 dark:bg-emerald-950/60 text-[#15803D] dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80',
     warning:
@@ -23,7 +23,9 @@ export const Badge = ({
     danger:
       'bg-rose-50 dark:bg-rose-950/60 text-[#B91C1C] dark:text-rose-300 border border-rose-200 dark:border-rose-800/80',
     featured:
-      'bg-[#FAF5EC] dark:bg-[#C5A46D]/20 text-[#8F6B2A] dark:text-[#E6D3B1] border border-[#C5A46D]/50 shadow-xs',
+      'bg-[#FAF5EC] dark:bg-[#C5A46D]/20 text-[#8F6B2A] dark:text-[#E6D3B1] border border-[#C5A46D]/50 shadow-2xs',
+    outline:
+      'bg-transparent border border-[#E8E3E5] dark:border-[#2E2E2E] text-[#151515] dark:text-[#FAF9F7]',
   };
 
   const sizeClasses = {
@@ -34,12 +36,12 @@ export const Badge = ({
 
   return (
     <span
-      className={`inline-flex items-center rounded-full leading-none shrink-0 ${sizeClasses[size]} ${variantClasses[variant] || variantClasses.default} ${className}`}
+      className={`inline-flex items-center rounded-full leading-none shrink-0 ${sizeClasses[size] || sizeClasses.md} ${variantClasses[variant] || variantClasses.default} ${className}`}
     >
-      {icon && <span className="shrink-0">{icon}</span>}
+      {icon && <span className="shrink-0" aria-hidden="true">{icon}</span>}
       <span>{children}</span>
     </span>
   );
 };
-export default Badge;
 
+export default Badge;

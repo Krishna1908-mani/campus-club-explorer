@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import Button from '../components/common/Button.jsx';
 import Input from '../components/common/Input.jsx';
+import Textarea from '../components/common/Textarea.jsx';
 import Select from '../components/common/Select.jsx';
 import Badge from '../components/common/Badge.jsx';
 import Modal from '../components/common/Modal.jsx';
@@ -1757,19 +1758,14 @@ export const AdminDashboard = () => {
             required
           />
 
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-              Full Description *
-            </label>
-            <textarea
-              value={clubForm.full_description}
-              onChange={(e) => setClubForm({ ...clubForm, full_description: e.target.value })}
-              rows={4}
-              required
-              className="w-full rounded-[10px] text-sm p-3 bg-white dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] focus:outline-none focus:ring-2 focus:ring-[#800020] text-[#111111] dark:text-[#FAF9F7]"
-              placeholder="Detailed profile, meetings, objectives..."
-            />
-          </div>
+          <Textarea
+            label="Full Description"
+            value={clubForm.full_description}
+            onChange={(e) => setClubForm({ ...clubForm, full_description: e.target.value })}
+            rows={4}
+            required
+            placeholder="Detailed profile, meetings, objectives..."
+          />
 
           <Input
             label="Mission & Objectives"
@@ -1973,16 +1969,13 @@ export const AdminDashboard = () => {
             placeholder="e.g. Annual Autonomous Drone Derby"
             required
           />
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold uppercase">Description *</label>
-            <textarea
-              value={eventForm.description}
-              onChange={(e) => setEventForm({ ...eventForm, description: e.target.value })}
-              rows={3}
-              required
-              className="w-full rounded-xl text-sm p-3 bg-white dark:bg-dark-card border border-gray-300 dark:border-gray-700"
-            />
-          </div>
+          <Textarea
+            label="Description"
+            value={eventForm.description}
+            onChange={(e) => setEventForm({ ...eventForm, description: e.target.value })}
+            rows={3}
+            required
+          />
           <div className="grid grid-cols-2 gap-3">
             <Input
               label="Date"
@@ -2036,16 +2029,13 @@ export const AdminDashboard = () => {
             placeholder="e.g. Audition Dates Rescheduled"
             required
           />
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold uppercase">Notice Content *</label>
-            <textarea
-              value={announcementForm.content}
-              onChange={(e) => setAnnouncementForm({ ...announcementForm, content: e.target.value })}
-              rows={4}
-              required
-              className="w-full rounded-xl text-sm p-3 bg-white dark:bg-dark-card border border-gray-300 dark:border-gray-700"
-            />
-          </div>
+          <Textarea
+            label="Notice Content"
+            value={announcementForm.content}
+            onChange={(e) => setAnnouncementForm({ ...announcementForm, content: e.target.value })}
+            rows={4}
+            required
+          />
           <div className="flex justify-end gap-3 pt-4">
             <Button variant="outline" size="sm" onClick={() => setAnnouncementModalOpen(false)}>
               Cancel

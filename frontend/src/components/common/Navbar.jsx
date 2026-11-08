@@ -50,7 +50,7 @@ export const Navbar = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-white/90 dark:bg-[#151515]/90 backdrop-blur-xl border-b border-[#E8E5E7] dark:border-[#2E2E2E] transition-colors shadow-[0_2px_12px_rgba(21,21,21,0.03)]">
+    <header className="sticky top-0 z-40 w-full bg-white/90 dark:bg-[#151515]/90 backdrop-blur-xl border-b border-[#E8E3E5] dark:border-[#2E2E2E] transition-colors shadow-[0_2px_12px_rgba(21,21,21,0.03)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
         {/* Brand Logo with Burgundy Luxury Identity */}
         <Link to="/" className="flex items-center gap-3 group">
@@ -99,7 +99,7 @@ export const Navbar = () => {
           {/* Theme Toggle Button */}
           <button
             onClick={toggleTheme}
-            className="p-2.5 rounded-xl border border-[#E8E5E7] dark:border-[#2E2E2E] bg-white dark:bg-[#1E1E1E] text-[#737373] dark:text-[#FAF9F7] hover:text-[#800020] dark:hover:text-[#D9A0AE] hover:border-[#800020]/40 transition-all shadow-xs"
+            className="p-2.5 rounded-xl border border-[#E8E3E5] dark:border-[#2E2E2E] bg-white dark:bg-[#1E1E1E] text-[#777777] dark:text-[#FAF9F7] hover:text-[#800020] dark:hover:text-[#D9A0AE] hover:border-[#800020]/40 transition-all shadow-xs"
             aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
           >
             {isDark ? <Sun className="w-4 h-4 text-[#C5A46D] transition-transform duration-300 hover:rotate-45" /> : <Moon className="w-4 h-4 transition-transform duration-300 hover:-rotate-12" />}
@@ -110,7 +110,7 @@ export const Navbar = () => {
             <div className="relative">
               <button
                 onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-                className="flex items-center gap-2.5 p-1.5 pl-2 pr-3 rounded-xl border border-[#E8E5E7] dark:border-[#2E2E2E] bg-white dark:bg-[#1E1E1E] hover:border-[#800020]/40 transition-all shadow-xs focus:outline-none cursor-pointer"
+                className="flex items-center gap-2.5 p-1.5 pl-2 pr-3 rounded-xl border border-[#E8E3E5] dark:border-[#2E2E2E] bg-white dark:bg-[#1E1E1E] hover:border-[#800020]/40 transition-all shadow-xs focus:outline-none cursor-pointer"
               >
                 <img
                   src={
@@ -141,7 +141,7 @@ export const Navbar = () => {
                     onClick={() => setProfileDropdownOpen(false)}
                   />
                   <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-[#181818] border border-[#E8E5E5] dark:border-[#2E2E2E] rounded-2xl shadow-xl z-20 py-2 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
-                    <div className="px-4 py-3 border-b border-[#E8E5E7] dark:border-[#2E2E2E] bg-[#F8F7F8] dark:bg-[#1E1E1E]">
+                    <div className="px-4 py-3 border-b border-[#E8E3E5] dark:border-[#2E2E2E] bg-[#F8F7F8] dark:bg-[#1E1E1E]">
                       <p className="text-xs font-semibold text-[#151515] dark:text-[#FAF9F7] truncate">
                         {profile?.full_name}
                       </p>
@@ -197,7 +197,7 @@ export const Navbar = () => {
               <div className="relative">
                 <button
                   onClick={() => setSignInDropdownOpen(!signInDropdownOpen)}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-[#151515] dark:text-[#FAF9F7] bg-white dark:bg-[#1E1E1E] border border-[#E8E5E7] dark:border-[#2E2E2E] hover:border-[#800020]/40 hover:text-[#800020] dark:hover:text-[#D9A0AE] transition-all shadow-xs cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-[#151515] dark:text-[#FAF9F7] bg-white dark:bg-[#1E1E1E] border border-[#E8E3E5] dark:border-[#2E2E2E] hover:border-[#800020]/40 hover:text-[#800020] dark:hover:text-[#D9A0AE] transition-all shadow-xs cursor-pointer"
                 >
                   <LogIn className="w-3.5 h-3.5 text-[#800020] dark:text-[#D9A0AE]" />
                   <span>Sign In</span>
@@ -210,7 +210,7 @@ export const Navbar = () => {
                       className="fixed inset-0 z-10"
                       onClick={() => setSignInDropdownOpen(false)}
                     />
-                    <div className="absolute right-0 mt-2 w-52 bg-white dark:bg-[#181818] border border-[#E8E5E7] dark:border-[#2E2E2E] rounded-2xl shadow-xl z-20 py-1.5 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
+                    <div className="absolute right-0 mt-2 w-52 bg-white dark:bg-[#181818] border border-[#E8E3E5] dark:border-[#2E2E2E] rounded-2xl shadow-xl z-20 py-1.5 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
                       <Link
                         to="/login"
                         onClick={() => setSignInDropdownOpen(false)}
@@ -219,7 +219,7 @@ export const Navbar = () => {
                         <Sparkles className="w-3.5 h-3.5" />
                         <span>All Portals (/login)</span>
                       </Link>
-                      <div className="my-1 border-t border-[#E8E5E7] dark:border-[#2E2E2E]" />
+                      <div className="my-1 border-t border-[#E8E3E5] dark:border-[#2E2E2E]" />
                       <Link
                         to="/student/login"
                         onClick={() => setSignInDropdownOpen(false)}
@@ -279,7 +279,7 @@ export const Navbar = () => {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-[#E8E5E7] dark:border-[#2E2E2E] bg-white dark:bg-[#151515] px-4 pt-3 pb-6 space-y-2">
+        <div className="md:hidden border-t border-[#E8E3E5] dark:border-[#2E2E2E] bg-white dark:bg-[#151515] px-4 pt-3 pb-6 space-y-2">
           {navLinks.map((link) => (
             <NavLink
               key={link.path}
@@ -297,7 +297,7 @@ export const Navbar = () => {
             </NavLink>
           ))}
 
-          <div className="pt-3 border-t border-[#E8E5E7] dark:border-[#2E2E2E] space-y-2">
+          <div className="pt-3 border-t border-[#E8E3E5] dark:border-[#2E2E2E] space-y-2">
             {isAuthenticated ? (
               <>
                 <Link

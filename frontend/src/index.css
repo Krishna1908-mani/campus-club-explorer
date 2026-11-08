@@ -13,9 +13,9 @@
   --surface-secondary: #F3F1F3;
 
   --text-primary: #151515;
-  --text-secondary: #737373;
+  --text-secondary: #777777;
 
-  --border: #E8E5E7;
+  --border: #E8E3E5;
 
   --success: #15803D;
   --warning: #D97706;
@@ -41,8 +41,8 @@
   --charcoal: #151515;
   --background: #111111;
   --light-rose: rgba(128, 0, 32, 0.2);
-  --surface: #181818;
-  --surface-secondary: #222222;
+  --surface: #1A1A1A;
+  --surface-secondary: #242424;
 
   --text-primary: #FAF9F7;
   --text-secondary: #A3A3A3;
@@ -140,5 +140,31 @@
 .dark ::-webkit-scrollbar-thumb:hover {
   background: #990033;
 }
+
+/* Accessibility Focus Ring Standards */
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  outline: 2px solid #800020;
+  outline-offset: 2px;
+}
+.dark .focus-ring:focus-visible {
+  outline: 2px solid #D9A0AE;
+  outline-offset: 2px;
+}
+
+/* Reduced Motion Support for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 
 

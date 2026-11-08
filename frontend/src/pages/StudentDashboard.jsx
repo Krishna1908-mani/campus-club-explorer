@@ -20,6 +20,7 @@ import { useToast } from '../context/ToastContext.jsx';
 import { apiService } from '../services/api.js';
 import Button from '../components/common/Button.jsx';
 import Input from '../components/common/Input.jsx';
+import Textarea from '../components/common/Textarea.jsx';
 import Badge from '../components/common/Badge.jsx';
 import ConfirmationDialog from '../components/common/ConfirmationDialog.jsx';
 import AnimatedCounter from '../components/common/AnimatedCounter.jsx';
@@ -634,18 +635,13 @@ export const StudentDashboard = () => {
                 placeholder="https://..."
               />
 
-              <div className="space-y-1.5">
-                <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                  Student Bio / Interests
-                </label>
-                <textarea
-                  value={profileForm.bio}
-                  onChange={(e) => setProfileForm({ ...profileForm, bio: e.target.value })}
-                  rows={3}
-                  className="w-full rounded-[10px] text-sm p-3 bg-white dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] focus:outline-none focus:ring-2 focus:ring-[#800020] text-[#111111] dark:text-[#FAF9F7]"
-                  placeholder="Share a short bio or interests..."
-                />
-              </div>
+              <Textarea
+                label="Student Bio / Interests"
+                value={profileForm.bio}
+                onChange={(e) => setProfileForm({ ...profileForm, bio: e.target.value })}
+                rows={3}
+                placeholder="Share a short bio or interests..."
+              />
 
               <Button
                 type="submit"

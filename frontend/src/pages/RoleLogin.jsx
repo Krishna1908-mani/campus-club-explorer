@@ -5,23 +5,25 @@ import {
   Users,
   User,
   LogIn,
-  ArrowLeft,
+  Mail,
+  Lock,
   AlertCircle,
 } from 'lucide-react';
+import AuthLayout from '../components/common/AuthLayout.jsx';
 import Input from '../components/common/Input.jsx';
 import Button from '../components/common/Button.jsx';
+import Checkbox from '../components/common/Checkbox.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 
 const ROLE_CONFIGS = {
   admin: {
     role: 'admin',
-    title: 'Admin Login',
-    subtitle: 'Sign in to access complete platform administration and club oversight.',
+    title: 'Administrator Sign In',
+    subtitle: 'Sign in to access platform governance, club lead assignments, and audit controls.',
     icon: Shield,
-    iconBg: 'bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-800',
     badgeText: 'Platform Administration',
-    badgeClass: 'bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800',
+    badgeVariant: 'amber',
     buttonText: 'Admin Sign In',
     targetRoute: '/admin',
     emailPlaceholder: 'admin@campus.edu',
@@ -29,12 +31,11 @@ const ROLE_CONFIGS = {
   },
   club_lead: {
     role: 'club_lead',
-    title: 'Club Lead Login',
-    subtitle: 'Sign in to manage your assigned college club, members, and events.',
+    title: 'Club Lead Sign In',
+    subtitle: 'Sign in to manage your designated student club, member approvals, and events.',
     icon: Users,
-    iconBg: 'bg-rose-100 dark:bg-[#800020]/30 text-[#800020] dark:text-rose-200 border-rose-300 dark:border-[#800020]/60',
-    badgeText: 'Club Management',
-    badgeClass: 'bg-rose-100 text-[#800020] border-rose-300 dark:bg-[#800020]/30 dark:text-rose-200 dark:border-[#800020]/60',
+    badgeText: 'Club Lead Portal',
+    badgeVariant: 'rose',
     buttonText: 'Club Lead Sign In',
     targetRoute: '/club-lead/dashboard',
     emailPlaceholder: 'club.lead@campus.edu',
@@ -42,12 +43,11 @@ const ROLE_CONFIGS = {
   },
   student: {
     role: 'student',
-    title: 'Student Login',
-    subtitle: 'Sign in to explore clubs, join activities, and register for campus events.',
+    title: 'Student Sign In',
+    subtitle: 'Enter your university credentials to explore clubs, join activities, and RSVP to events.',
     icon: User,
-    iconBg: 'bg-emerald-100 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800',
     badgeText: 'Student Portal',
-    badgeClass: 'bg-emerald-100 text-emerald-900 border-emerald-300 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800',
+    badgeVariant: 'emerald',
     buttonText: 'Student Sign In',
     targetRoute: '/dashboard',
     emailPlaceholder: 'student@campus.edu',
@@ -78,7 +78,7 @@ export const RoleLogin = ({ role = 'student' }) => {
     setLoading(true);
 
     if (!email.trim() || !password) {
-      setErrorMessage('Please enter both email and password.');
+      setErrorMessage('Please enter both your college email and password.');
       setLoading(false);
       return;
     }
@@ -104,142 +104,98 @@ export const RoleLogin = ({ role = 'student' }) => {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center px-4 py-12 bg-[#FAF9F7] dark:bg-[#111111] transition-colors">
-      <div className="w-full max-w-md space-y-6">
-        {/* Back Link to Login Selection */}
-        <div>
-          <Link
-            to="/login"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#737373] hover:text-[#800020] dark:text-[#A3A3A3] dark:hover:text-[#D9A0AE] transition-colors"
+    <AuthLayout
+      role={config.role}
+      badgeText={config.badgeText}
+      badgeIcon={<RoleIcon className="w-3.5 h-3.5" />}
+      badgeVariant={config.badgeVariant}
+      title={config.title}
+      subtitle={config.subtitle}
+      backTo="/login"
+      backLabel="All sign in options"
+    >
+      <form onSubmit={handleLoginSubmit} className="space-y-4.5">
+        {errorMessage && (
+          <div
+            role="alert"
+            className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-xs font-medium text-[#B91C1C] dark:text-rose-300 flex items-start gap-2.5 animate-in fade-in duration-150"
           >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to Login Selection</span>
+            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-[#B91C1C]" />
+            <span className="leading-relaxed">{errorMessage}</span>
+          </div>
+        )}
+
+        <Input
+          label="College Email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder={config.emailPlaceholder}
+          leftIcon={<Mail className="w-4 h-4" />}
+          autoComplete="email"
+          required
+        />
+
+        <Input
+          label="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="••••••••"
+          leftIcon={<Lock className="w-4 h-4" />}
+          autoComplete="current-password"
+          required
+        />
+
+        <div className="flex items-center justify-between text-xs pt-0.5">
+          <Checkbox
+            label="Remember session"
+            checked={rememberSession}
+            onChange={(e) => setRememberSession(e.target.checked)}
+          />
+
+          <Link
+            to="/forgot-password"
+            className="text-xs font-semibold text-[#800020] dark:text-[#D9A0AE] hover:underline focus:outline-none focus-visible:ring-1 focus-visible:ring-[#800020] rounded"
+          >
+            Forgot password?
           </Link>
         </div>
 
-        {/* Brand Header */}
-        <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center mb-1">
-            <div className={`w-14 h-14 rounded-2xl border flex items-center justify-center shadow-md ${config.iconBg}`}>
-              <RoleIcon className="w-7 h-7" />
-            </div>
-          </div>
-          <div className="inline-block">
-            <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${config.badgeClass}`}>
-              {config.badgeText}
-            </span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7] tracking-tight">
-            {config.title}
-          </h1>
-          <p className="text-xs text-[#737373] dark:text-[#A3A3A3] max-w-sm mx-auto leading-relaxed">
-            {config.subtitle}
-          </p>
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          className="w-full h-11 text-sm font-semibold rounded-xl shadow-xs hover:shadow-md mt-2"
+          isLoading={loading}
+          leftIcon={<LogIn className="w-4 h-4" />}
+        >
+          {config.buttonText}
+        </Button>
+      </form>
+
+      {/* Footer link for Student Registration */}
+      {config.showRegister ? (
+        <div className="pt-4 border-t border-[#E8E3E5] dark:border-[#2E2E2E] text-center text-xs text-[#777777] dark:text-[#A3A3A3]">
+          Don't have a student account yet?{' '}
+          <Link
+            to="/register"
+            className="font-bold text-[#800020] dark:text-[#D9A0AE] hover:underline focus:outline-none focus-visible:ring-1 focus-visible:ring-[#800020] rounded"
+          >
+            Register here
+          </Link>
         </div>
-
-        {/* Login Form Box */}
-        <div className="bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] rounded-2xl p-6 sm:p-8 shadow-xs">
-          <form onSubmit={handleLoginSubmit} className="space-y-4">
-            {errorMessage && (
-              <div className="p-3.5 rounded-[10px] bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-xs font-medium text-[#B91C1C] dark:text-rose-300 flex items-start gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                <span>{errorMessage}</span>
-              </div>
-            )}
-
-            <Input
-              label="College Email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={`e.g. ${config.emailPlaceholder}`}
-              required
-            />
-
-            <Input
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              required
-            />
-
-            <div className="flex items-center justify-between text-xs">
-              <label className="flex items-center gap-2 cursor-pointer text-[#737373] dark:text-[#A3A3A3]">
-                <input
-                  type="checkbox"
-                  checked={rememberSession}
-                  onChange={(e) => setRememberSession(e.target.checked)}
-                  className="rounded border-[#E5E5E5] text-[#800020] focus:ring-[#800020]"
-                />
-                <span>Remember session</span>
-              </label>
-
-              <Link
-                to="/forgot-password"
-                className="text-[#800020] dark:text-[#D9A0AE] hover:underline font-semibold"
-              >
-                Forgot password?
-              </Link>
-            </div>
-
-            <Button
-              type="submit"
-              variant="primary"
-              size="lg"
-              className="w-full mt-2"
-              isLoading={loading}
-              leftIcon={<LogIn className="w-4 h-4" />}
-            >
-              {config.buttonText}
-            </Button>
-          </form>
-
-          {/* Registration link ONLY shown for students */}
-          {config.showRegister ? (
-            <div className="mt-6 pt-5 border-t border-[#E5E5E5] dark:border-[#383838] text-center text-xs text-[#737373] dark:text-[#A3A3A3]">
-              Don't have a student account yet?{' '}
-              <Link
-                to="/register"
-                className="font-bold text-[#800020] dark:text-[#D9A0AE] hover:underline"
-              >
-                Register here
-              </Link>
-            </div>
-          ) : (
-            <div className="mt-6 pt-5 border-t border-[#E5E5E5] dark:border-[#383838] text-center text-xs text-[#737373] dark:text-[#A3A3A3]">
-              <span className="text-gray-400">Need credentials? </span>
-              <span className="font-medium">
-                {role === 'admin'
-                  ? 'Contact campus IT administration'
-                  : 'Contact your faculty club administrator'}
-              </span>
-            </div>
-          )}
+      ) : (
+        <div className="pt-4 border-t border-[#E8E3E5] dark:border-[#2E2E2E] text-center text-xs text-[#777777] dark:text-[#A3A3A3]">
+          <span>Need credentials? </span>
+          <span className="font-semibold text-[#151515] dark:text-[#FAF9F7]">
+            {role === 'admin'
+              ? 'Contact university IT system administration'
+              : 'Contact university student activities board'}
+          </span>
         </div>
-
-        {/* Switch Login Option Links */}
-        <div className="text-center text-xs text-[#737373] dark:text-[#A3A3A3] space-x-3">
-          <span>Looking for another portal?</span>
-          {role !== 'student' && (
-            <Link to="/student/login" className="text-[#800020] dark:text-[#D9A0AE] font-semibold hover:underline">
-              Student Login
-            </Link>
-          )}
-          {role !== 'club_lead' && (
-            <Link to="/club-lead/login" className="text-[#800020] dark:text-[#D9A0AE] font-semibold hover:underline">
-              Club Lead Login
-            </Link>
-          )}
-          {role !== 'admin' && (
-            <Link to="/admin/login" className="text-[#800020] dark:text-[#D9A0AE] font-semibold hover:underline">
-              Admin Login
-            </Link>
-          )}
-        </div>
-      </div>
-    </div>
+      )}
+    </AuthLayout>
   );
 };
 

@@ -5,6 +5,7 @@ import EmptyState from '../components/common/EmptyState.jsx';
 import CountdownTimer from '../components/common/CountdownTimer.jsx';
 import Button from '../components/common/Button.jsx';
 import Badge from '../components/common/Badge.jsx';
+import PageHeader from '../components/common/PageHeader.jsx';
 import { apiService } from '../services/api.js';
 
 export const Events = () => {
@@ -64,17 +65,12 @@ export const Events = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       {/* Header */}
-      <div className="space-y-3">
-        <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#800020] dark:text-[#D9A0AE]">
-          <Calendar className="w-4 h-4 text-[#800020] dark:text-[#D9A0AE]" /> Campus Calendar
-        </div>
-        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">
-          Events & Workshops
-        </h1>
-        <p className="text-sm text-[#737373] dark:text-[#A3A3A3] max-w-2xl font-sans">
-          Discover hackathons, acoustic jam nights, venture pitch sessions, sports tournaments, and humanitarian drives hosted by college societies.
-        </p>
-      </div>
+      <PageHeader
+        badge="Campus Calendar"
+        badgeIcon={<Calendar className="w-4 h-4 text-[#800020] dark:text-[#D9A0AE]" />}
+        title="Events & Workshops"
+        description="Discover hackathons, acoustic jam nights, venture pitch sessions, sports tournaments, and humanitarian drives hosted by college societies."
+      />
 
       {/* FEATURED EVENT SPOTLIGHT WITH LIVE COUNTDOWN */}
       {!search && statusFilter === 'upcoming' && spotlightEvent && (

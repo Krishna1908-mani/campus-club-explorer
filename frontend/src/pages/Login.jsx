@@ -70,8 +70,8 @@ export const Login = () => {
   ];
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 bg-[#FAF9F7] dark:bg-[#111111] transition-colors">
-      <div className="w-full max-w-6xl space-y-12">
+    <div className="min-h-[85vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-14 bg-[#F8F7F8] dark:bg-[#111111] transition-colors">
+      <div className="w-full max-w-6xl space-y-10">
         {/* Brand Header */}
         <div className="text-center space-y-3">
           <div className="inline-flex items-center gap-2 mb-1">
@@ -79,10 +79,10 @@ export const Login = () => {
               <GraduationCap className="w-6 h-6" />
             </div>
           </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#151515] dark:text-[#FAF9F7] tracking-tight">
             Sign In to Campus Club Explorer
           </h1>
-          <p className="text-sm sm:text-base text-[#737373] dark:text-[#A3A3A3] max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-[#777777] dark:text-[#A3A3A3] max-w-2xl mx-auto leading-relaxed">
             Select your university role below to access your dedicated management portal or student account.
           </p>
         </div>
@@ -96,7 +96,7 @@ export const Login = () => {
               <div
                 key={card.role}
                 onClick={() => navigate(card.route)}
-                className="group relative rounded-3xl bg-[#FFFFFF] dark:bg-[#1C1C1C] border border-[#E5E5E5] dark:border-[#383838] p-7 flex flex-col justify-between shadow-xs hover:shadow-xl hover:border-[#800020]/40 transition-all duration-300 cursor-pointer hover:-translate-y-1"
+                className="group relative rounded-2xl bg-white dark:bg-[#1A1A1A] border border-[#E8E3E5] dark:border-[#2E2E2E] p-7 flex flex-col justify-between shadow-xs hover:shadow-lg hover:border-[#800020]/40 transition-all duration-300 cursor-pointer hover:-translate-y-1"
               >
                 {/* Top Section */}
                 <div className="space-y-6">
@@ -112,22 +112,22 @@ export const Login = () => {
 
                   {/* Title & Description */}
                   <div className="space-y-1.5">
-                    <h2 className="text-xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7] group-hover:text-[#800020] dark:group-hover:text-[#D9A0AE] transition-colors">
+                    <h2 className="text-xl font-serif font-bold text-[#151515] dark:text-[#FAF9F7] group-hover:text-[#800020] dark:group-hover:text-[#D9A0AE] transition-colors">
                       {card.title}
                     </h2>
-                    <p className="text-xs sm:text-sm text-[#737373] dark:text-[#A3A3A3] leading-relaxed">
+                    <p className="text-xs sm:text-sm text-[#777777] dark:text-[#A3A3A3] leading-relaxed">
                       {card.description}
                     </p>
                   </div>
 
                   {/* Feature Highlights */}
-                  <div className="pt-2 border-t border-[#E5E5E5]/70 dark:border-[#383838]/70 space-y-2">
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#737373] dark:text-[#A3A3A3]">
+                  <div className="pt-2 border-t border-[#E8E3E5] dark:border-[#2E2E2E] space-y-2">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#777777] dark:text-[#A3A3A3]">
                       Module Capabilities:
                     </span>
                     <ul className="space-y-1.5">
                       {card.features.map((feat, idx) => (
-                        <li key={idx} className="flex items-center gap-2 text-xs text-gray-700 dark:text-gray-300">
+                        <li key={idx} className="flex items-center gap-2 text-xs text-[#151515] dark:text-gray-300">
                           <CheckCircle className="w-3.5 h-3.5 text-[#800020] dark:text-[#D9A0AE] shrink-0" />
                           <span>{feat}</span>
                         </li>
@@ -153,7 +153,7 @@ export const Login = () => {
         </div>
 
         {/* Footer info: Registration for students & assistance */}
-        <div className="pt-6 border-t border-[#E5E5E5] dark:border-[#383838] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#737373] dark:text-[#A3A3A3]">
+        <div className="pt-6 border-t border-[#E8E3E5] dark:border-[#2E2E2E] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#777777] dark:text-[#A3A3A3]">
           <div>
             <span>Are you a new student without an account? </span>
             <Link

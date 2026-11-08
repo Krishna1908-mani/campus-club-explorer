@@ -4,7 +4,7 @@ import { GraduationCap, Github, Twitter, Linkedin, Mail, Heart, Phone, MapPin, S
 
 export const Footer = () => {
   return (
-    <footer className="bg-[#FFFFFF] dark:bg-[#111111] border-t border-[#E5E5E5] dark:border-[#383838] transition-colors">
+    <footer className="bg-white dark:bg-[#111111] border-t border-[#E8E3E5] dark:border-[#2E2E2E] transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand Info */}
@@ -155,7 +155,7 @@ export const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-[#E5E5E5] dark:border-[#383838] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#737373] dark:text-[#A3A3A3]">
+        <div className="mt-12 pt-8 border-t border-[#E8E3E5] dark:border-[#2E2E2E] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#777777] dark:text-[#A3A3A3]">
           <p>© {new Date().getFullYear()} Campus Club Explorer. All rights reserved.</p>
           <p className="flex items-center gap-1">
             Built with <Heart className="w-3.5 h-3.5 text-[#800020] fill-current" /> for university student communities
