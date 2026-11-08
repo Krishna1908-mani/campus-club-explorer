@@ -1373,6 +1373,441 @@ export const SupabaseService = {
     return list;
   },
 
+  /**
+   * Comprehensive Club Lead & Club Directory
+   * Merges all clubs (from Supabase/memory) with active/inactive leads and Auth accounts.
+   * Every newly created club automatically appears as "unassigned" until a lead is provisioned.
+   */
+  async getClubLeadDirectory() {
+    // 1. Fetch all clubs directly
+    let clubs = [];
+    if (isSupabaseConfigured && supabase) {
+      const client = getClient(true);
+      const { data, error } = await client
+        .from('clubs')
+        .select('*, categories(*)')
+        .order('name', { ascending: true });
+      if (!error && data) clubs = data;
+    } else {
+      clubs = (memoryStore.clubs || []).map((c) => ({
+        ...c,
+        categories: (memoryStore.categories || []).find((cat) => cat.id === c.category_id) || null,
+      }));
+    }
+
+    // 2. Fetch assignments & auth users
+    let authUsers = [];
+    let dbAssignments = [];
+    let profiles = [];
+
+    if (isSupabaseConfigured && supabaseAdmin) {
+      try {
+        const { data: { users } } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
+        if (users) authUsers = users;
+      } catch (err) {
+        console.warn('Directory listUsers warning:', err.message);
+      }
+
+      try {
+        const { data: profData } = await supabaseAdmin.from('profiles').select('*');
+        if (profData) profiles = profData;
+      } catch {}
+
+      try {
+        const { data: assignData } = await supabaseAdmin
+          .from('club_lead_assignments')
+          .select('*')
+          .eq('is_active', true);
+        if (assignData) dbAssignments = assignData;
+      } catch {}
+    } else {
+      authUsers = memoryStore.users || [];
+      dbAssignments = (memoryStore.clubLeadAssignments || []).filter(a => a.is_active);
+      profiles = memoryStore.users || [];
+    }
+
+    // 3. Map each club to its assigned lead
+    const directory = clubs.map((club) => {
+      // Find active assignment in table
+      let assignment = dbAssignments.find((a) => a.club_id === club.id);
+      let leadUser = null;
+
+      if (assignment) {
+        leadUser = authUsers.find((u) => u.id === assignment.user_id);
+      }
+
+      // Fallback: check if an auth user has assigned_club_id in user_metadata
+      if (!leadUser) {
+        leadUser = authUsers.find(
+          (u) =>
+            u.user_metadata?.role === 'club_lead' &&
+            u.user_metadata?.assigned_club_id === club.id &&
+            u.user_metadata?.account_status !== 'deactivated'
+        );
+      }
+
+      const userProfile = leadUser ? profiles.find((p) => p.id === leadUser.id) : null;
+      const isAssigned = Boolean(leadUser);
+      const isDeactivated = leadUser?.user_metadata?.account_status === 'deactivated';
+
+      return {
+        club: {
+          id: club.id,
+          name: club.name,
+          slug: club.slug,
+          logo_url: club.logo_url,
+          cover_image_url: club.cover_image_url,
+          member_count: club.member_count || 0,
+          categories: club.categories || null,
+          category_id: club.category_id,
+        },
+        assignmentStatus: isAssigned ? 'assigned' : 'unassigned',
+        accountStatus: !isAssigned ? null : isDeactivated ? 'deactivated' : 'active',
+        lead: isAssigned
+          ? {
+              id: leadUser.id,
+              full_name: userProfile?.full_name || leadUser.user_metadata?.full_name || 'Club Lead',
+              email: leadUser.email,
+              department: userProfile?.department || leadUser.user_metadata?.department || '',
+              student_id: userProfile?.student_id || leadUser.user_metadata?.student_id || '',
+              role: 'club_lead',
+              avatar_url:
+                userProfile?.avatar_url ||
+                `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(leadUser.email)}`,
+              created_at: leadUser.created_at,
+              last_sign_in_at: leadUser.last_sign_in_at || null,
+            }
+          : null,
+        assignment: assignment
+          ? {
+              id: assignment.id,
+              is_active: assignment.is_active,
+              created_at: assignment.created_at,
+            }
+          : null,
+      };
+    });
+
+    // 4. Identify unassigned club lead accounts
+    const assignedUserIds = new Set(
+      directory.filter((d) => d.lead).map((d) => d.lead.id)
+    );
+
+    const unassignedLeads = authUsers
+      .filter((u) => {
+        const isLead = u.user_metadata?.role === 'club_lead' || u.role === 'club_lead';
+        return isLead && !assignedUserIds.has(u.id);
+      })
+      .map((u) => {
+        const p = profiles.find((prof) => prof.id === u.id);
+        return {
+          id: u.id,
+          full_name: p?.full_name || u.user_metadata?.full_name || 'Club Lead',
+          email: u.email,
+          department: p?.department || u.user_metadata?.department || '',
+          student_id: p?.student_id || u.user_metadata?.student_id || '',
+          role: 'club_lead',
+          account_status: u.user_metadata?.account_status || 'active',
+          created_at: u.created_at,
+          last_sign_in_at: u.last_sign_in_at || null,
+        };
+      });
+
+    // 5. Summary metrics
+    const totalClubs = clubs.length;
+    const assignedClubs = directory.filter((d) => d.assignmentStatus === 'assigned').length;
+    const unassignedClubs = totalClubs - assignedClubs;
+    const totalActiveLeads = directory.filter(
+      (d) => d.assignmentStatus === 'assigned' && d.accountStatus === 'active'
+    ).length + unassignedLeads.filter(l => l.account_status !== 'deactivated').length;
+
+    return {
+      directory,
+      unassignedLeads,
+      stats: {
+        totalClubs,
+        assignedClubs,
+        unassignedClubs,
+        totalActiveLeads,
+      },
+    };
+  },
+
+  /**
+   * Provision a brand-new Club Lead account securely via Supabase Admin API
+   * Sets role to club_lead, assigns to club, and returns verified login credentials.
+   */
+  async createClubLeadAccount({
+    fullName,
+    email,
+    password,
+    clubId,
+    department,
+    studentId,
+    assignedBy,
+  }) {
+    if (!email || !fullName) {
+      throw new Error('Full Name and Email Address are required.');
+    }
+
+    const cleanEmail = email.toLowerCase().trim();
+    const cleanName = fullName.trim();
+    const generatedPass = password || 'lead123';
+
+    // 1. Verify target club exists if specified
+    if (clubId) {
+      const club = await this.getClubByIdOrSlug(clubId);
+      if (!club) throw new Error('Selected club does not exist.');
+    }
+
+    let authUser = null;
+
+    if (isSupabaseConfigured && supabaseAdmin) {
+      // Check existing auth users
+      const { data: { users } } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
+      authUser = users.find((u) => u.email.toLowerCase() === cleanEmail);
+
+      if (!authUser) {
+        // Create new user in Supabase Auth
+        const { data: created, error: createErr } = await supabaseAdmin.auth.admin.createUser({
+          email: cleanEmail,
+          password: generatedPass,
+          email_confirm: true,
+          user_metadata: {
+            full_name: cleanName,
+            role: 'club_lead',
+            assigned_club_id: clubId || null,
+            department: department || null,
+            student_id: studentId || null,
+            account_status: 'active',
+          },
+        });
+
+        if (createErr) throw createErr;
+        authUser = created.user;
+
+        // Upsert into public.profiles
+        const profilePayload = {
+          id: authUser.id,
+          email: cleanEmail,
+          full_name: cleanName,
+          department: department || null,
+          student_id: studentId || null,
+          avatar_url: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(cleanName)}`,
+          updated_at: new Date().toISOString(),
+        };
+
+        try {
+          await supabaseAdmin.from('profiles').upsert({ ...profilePayload, role: 'club_lead' });
+        } catch (profErr) {
+          // Fallback if role check constraint rejects 'club_lead'
+          await supabaseAdmin.from('profiles').upsert({ ...profilePayload, role: 'student' });
+        }
+      } else {
+        // User already exists
+        if (authUser.user_metadata?.role === 'admin') {
+          throw new Error('Cannot designate an Administrator account as a Club Lead.');
+        }
+
+        // Elevate to club_lead
+        await supabaseAdmin.auth.admin.updateUserById(authUser.id, {
+          password: password ? password : undefined,
+          user_metadata: {
+            ...authUser.user_metadata,
+            full_name: cleanName,
+            role: 'club_lead',
+            assigned_club_id: clubId || authUser.user_metadata?.assigned_club_id,
+            account_status: 'active',
+          },
+        });
+
+        try {
+          await supabaseAdmin
+            .from('profiles')
+            .update({
+              full_name: cleanName,
+              department: department || undefined,
+              student_id: studentId || undefined,
+              updated_at: new Date().toISOString(),
+            })
+            .eq('id', authUser.id);
+        } catch {}
+      }
+    } else {
+      // Memory Store fallback
+      authUser = memoryStore.users.find((u) => u.email.toLowerCase() === cleanEmail);
+      if (!authUser) {
+        authUser = {
+          id: 'u-' + Math.random().toString(36).substring(2, 11),
+          email: cleanEmail,
+          full_name: cleanName,
+          role: 'club_lead',
+          department: department || '',
+          student_id: studentId || '',
+          password_hash: await bcrypt.hash(generatedPass, 10),
+          assigned_club_id: clubId || null,
+          account_status: 'active',
+          created_at: new Date().toISOString(),
+        };
+        memoryStore.users.push(authUser);
+      } else {
+        if (authUser.role === 'admin') {
+          throw new Error('Cannot designate an Administrator account as a Club Lead.');
+        }
+        authUser.role = 'club_lead';
+        authUser.full_name = cleanName;
+        authUser.account_status = 'active';
+        if (clubId) authUser.assigned_club_id = clubId;
+      }
+    }
+
+    // 2. Assign to club if specified
+    let assignment = null;
+    if (clubId) {
+      assignment = await this.assignClubLead({
+        userId: authUser.id,
+        clubId,
+        assignedBy,
+      });
+    }
+
+    return {
+      success: true,
+      user: {
+        id: authUser.id,
+        email: authUser.email,
+        full_name: cleanName,
+        role: 'club_lead',
+      },
+      assignment,
+      initialPassword: generatedPass,
+    };
+  },
+
+  /**
+   * Toggle Club Lead account active status (Active / Deactivated)
+   */
+  async updateClubLeadStatus(userId, status) {
+    const isDeactivated = status === 'deactivated';
+
+    if (isSupabaseConfigured && supabaseAdmin) {
+      const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(userId);
+      if (user) {
+        await supabaseAdmin.auth.admin.updateUserById(userId, {
+          user_metadata: {
+            ...user.user_metadata,
+            account_status: isDeactivated ? 'deactivated' : 'active',
+          },
+        });
+      }
+
+      try {
+        await supabaseAdmin
+          .from('club_lead_assignments')
+          .update({ is_active: !isDeactivated, updated_at: new Date().toISOString() })
+          .eq('user_id', userId);
+      } catch {}
+    } else {
+      const user = memoryStore.users.find((u) => u.id === userId);
+      if (user) user.account_status = isDeactivated ? 'deactivated' : 'active';
+      const ass = (memoryStore.clubLeadAssignments || []).find((a) => a.user_id === userId);
+      if (ass) ass.is_active = !isDeactivated;
+    }
+
+    return {
+      success: true,
+      message: `Club Lead account successfully ${isDeactivated ? 'deactivated' : 'activated'}.`,
+    };
+  },
+
+  /**
+   * Reset Club Lead password securely
+   */
+  async resetClubLeadPassword(userId, newPassword) {
+    const passToSet = newPassword || 'lead' + Math.floor(1000 + Math.random() * 9000);
+
+    if (isSupabaseConfigured && supabaseAdmin) {
+      const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
+        password: passToSet,
+      });
+      if (error) throw error;
+    } else {
+      const user = memoryStore.users.find((u) => u.id === userId);
+      if (!user) throw new Error('User not found');
+      user.password_hash = await bcrypt.hash(passToSet, 10);
+    }
+
+    return {
+      success: true,
+      message: 'Password successfully reset.',
+      temporaryPassword: passToSet,
+    };
+  },
+
+  /**
+   * Update permitted profile fields for a Club Lead
+   */
+  async updateClubLeadProfile(userId, { fullName, department, studentId }) {
+    if (isSupabaseConfigured && supabaseAdmin) {
+      const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(userId);
+      if (user) {
+        await supabaseAdmin.auth.admin.updateUserById(userId, {
+          user_metadata: {
+            ...user.user_metadata,
+            full_name: fullName || user.user_metadata?.full_name,
+            department: department !== undefined ? department : user.user_metadata?.department,
+            student_id: studentId !== undefined ? studentId : user.user_metadata?.student_id,
+          },
+        });
+      }
+
+      try {
+        await supabaseAdmin
+          .from('profiles')
+          .update({
+            full_name: fullName,
+            department,
+            student_id: studentId,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', userId);
+      } catch {}
+    } else {
+      const user = memoryStore.users.find((u) => u.id === userId);
+      if (user) {
+        if (fullName) user.full_name = fullName;
+        if (department !== undefined) user.department = department;
+        if (studentId !== undefined) user.student_id = studentId;
+      }
+    }
+
+    return { success: true, message: 'Club Lead profile updated successfully.' };
+  },
+
+  /**
+   * Safely delete a Club Lead account after confirmation
+   */
+  async deleteClubLeadAccount(userId) {
+    if (isSupabaseConfigured && supabaseAdmin) {
+      try {
+        await supabaseAdmin.from('club_lead_assignments').delete().eq('user_id', userId);
+      } catch {}
+      try {
+        await supabaseAdmin.from('profiles').delete().eq('id', userId);
+      } catch {}
+
+      const { error } = await supabaseAdmin.auth.admin.deleteUser(userId);
+      if (error) throw error;
+    } else {
+      const uIdx = memoryStore.users.findIndex((u) => u.id === userId);
+      if (uIdx !== -1) memoryStore.users.splice(uIdx, 1);
+      const aIdx = (memoryStore.clubLeadAssignments || []).findIndex((a) => a.user_id === userId);
+      if (aIdx !== -1) memoryStore.clubLeadAssignments.splice(aIdx, 1);
+    }
+
+    return { success: true, message: 'Club Lead account successfully deleted.' };
+  },
+
   // -------------------------------------------------------------
   // DEDICATED CLUB LEAD DASHBOARD DATA & OPERATIONS
   // -------------------------------------------------------------

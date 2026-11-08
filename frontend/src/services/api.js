@@ -116,10 +116,16 @@ export const apiService = {
     getStats: () => api.get('/admin/stats'),
     getStudents: () => api.get('/admin/students'),
     getClubLeads: () => api.get('/admin/club-leads'),
+    getClubLeadDirectory: () => api.get('/admin/club-leads/directory'),
     getEligibleUsers: (search = '') => api.get('/admin/club-leads/eligible-users', { params: { search } }),
+    createClubLeadAccount: (data) => api.post('/admin/club-leads/create-account', data),
     assignClubLead: (data) => api.post('/admin/club-leads/assign', data),
     reassignClubLead: (id, data) => api.put(`/admin/club-leads/${id}/reassign`, data),
+    updateClubLeadStatus: (id, status) => api.put(`/admin/club-leads/${id}/status`, { status }),
+    resetClubLeadPassword: (id, new_password) => api.post(`/admin/club-leads/${id}/reset-password`, { new_password }),
+    updateClubLeadProfile: (id, data) => api.put(`/admin/club-leads/${id}/profile`, data),
     removeClubLead: (id) => api.delete(`/admin/club-leads/${id}/remove`),
+    deleteClubLeadAccount: (id) => api.delete(`/admin/club-leads/${id}/account`),
   },
 
   // Club Lead API (Restricted & Isolated to Assigned Club)

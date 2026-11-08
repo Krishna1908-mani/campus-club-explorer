@@ -68,19 +68,49 @@ export const ClubController = {
 
   async createClub(req, res, next) {
     try {
-      const { name, short_description, full_description, category_id } = req.body;
-      if (!name || !short_description || !full_description) {
+      const {
+        lead_full_name,
+        lead_email,
+        lead_password,
+        lead_department,
+        provision_lead,
+        ...clubData
+      } = req.body;
+
+      if (!clubData.name || !clubData.short_description || !clubData.full_description) {
         return res.status(400).json({
           success: false,
           message: 'Club name, short description, and full description are required.',
         });
       }
 
-      const club = await SupabaseService.createClub(req.body);
+      // 1. Create the club with pure club fields
+      const club = await SupabaseService.createClub(clubData);
+
+      // 2. If Admin provided optional Club Lead account details, provision it immediately
+      let createdLead = null;
+      if (lead_full_name && lead_email) {
+        try {
+          createdLead = await SupabaseService.createClubLeadAccount({
+            fullName: lead_full_name,
+            email: lead_email,
+            password: lead_password || 'lead123',
+            clubId: club.id,
+            department: lead_department || null,
+            assignedBy: req.user?.id || null,
+          });
+        } catch (leadErr) {
+          console.warn('Optional integrated lead creation notice:', leadErr.message);
+        }
+      }
+
       res.status(201).json({
         success: true,
-        message: 'Club created successfully!',
+        message: createdLead
+          ? 'Club and Club Lead account created successfully!'
+          : 'Club created successfully!',
         data: club,
+        lead: createdLead,
       });
     } catch (error) {
       next(error);

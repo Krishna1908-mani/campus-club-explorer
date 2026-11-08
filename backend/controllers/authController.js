@@ -221,6 +221,13 @@ export const AuthController = {
               });
             }
 
+            if (user.user_metadata?.account_status === 'deactivated') {
+              return res.status(403).json({
+                success: false,
+                message: 'This Club Lead account has been deactivated by the administrator.',
+              });
+            }
+
             // Verify active club assignment for Club Lead
             let assignedClubId = user.user_metadata?.assigned_club_id;
             const client = supabaseAdmin || supabase;
