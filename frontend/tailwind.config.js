@@ -8,18 +8,27 @@ export default {
   theme: {
     extend: {
       colors: {
+        palette: {
+          burgundy: '#800020',
+          deepBurgundy: '#5C001A',
+          darkBurgundy: '#3B0010',
+          charcoal: '#151515',
+          white: '#FFFFFF',
+          softBg: '#F8F7F8',
+          lightRose: '#F4E7EC',
+        },
         brand: {
-          50: '#FAF9F7',
-          100: '#FCE7EF', // Soft Pink
-          200: '#F6C1D0',
+          50: '#F8F7F8',
+          100: '#F4E7EC', // Light Rose
+          200: '#FCE7EF', // Soft Pink
           300: '#D9A0AE', // Muted Rose
           400: '#C2185B', // Accent Rose
           500: '#990033', // Rich Maroon
           600: '#800020', // Primary Burgundy
           700: '#6B001B',
           800: '#5C001A', // Deep Burgundy
-          900: '#3B0010', // Dark Wine
-          950: '#26000B',
+          900: '#3B0010', // Dark Burgundy
+          950: '#151515', // Charcoal
         },
         burgundy: {
           DEFAULT: '#800020',
@@ -28,26 +37,26 @@ export default {
           deep: '#3B0010',
           rich: '#990033',
           rose: '#C2185B',
-          soft: '#FCE7EF',
+          soft: '#F4E7EC',
           muted: '#D9A0AE',
         },
         luxury: {
-          black: '#111111',
+          black: '#151515',
           charcoal: '#1C1C1C',
-          darkgrey: '#292929',
+          darkgrey: '#242424',
           grey: '#737373',
           lightgrey: '#E5E5E5',
-          offwhite: '#FAF9F7',
+          offwhite: '#F8F7F8',
           gold: '#C5A46D',
           'gold-light': '#E6D3B1',
-          softpink: '#FCE7EF',
+          softpink: '#F4E7EC',
           mutedrose: '#D9A0AE',
         },
         dark: {
-          bg: '#111111',       // Pure Black / deep dark
-          card: '#1C1C1C',     // Charcoal surface
-          surface: '#292929',  // Dark grey secondary surface
-          border: '#383838',   // Accessible border
+          bg: '#111111',       // Deep Charcoal/Dark
+          card: '#181818',     // Card surface
+          surface: '#222222',  // Secondary surface
+          border: '#2E2E2E',   // Accessible border
           subtle: '#737373',   // Medium grey
         }
       },

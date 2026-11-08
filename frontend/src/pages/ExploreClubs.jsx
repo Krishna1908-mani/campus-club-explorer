@@ -268,7 +268,7 @@ export const ExploreClubs = () => {
             className={`px-3.5 py-1.5 rounded-[10px] text-xs font-semibold whitespace-nowrap transition-all border ${
               category === 'all'
                 ? 'bg-[#800020] text-white border-[#5C001A] shadow-xs'
-                : 'bg-white dark:bg-[#1C1C1C] border-[#E5E5E5] dark:border-[#383838] text-[#111111] dark:text-[#FAF9F7] hover:bg-[#FCE7EF] dark:hover:bg-[#800020]/25'
+                : 'bg-white dark:bg-[#1C1C1C] border-[#E5E5E5] dark:border-[#383838] text-[#111111] dark:text-[#FAF9F7] hover:bg-[#F4E7EC] dark:hover:bg-[#800020]/25'
             }`}
           >
             All Categories
@@ -280,7 +280,7 @@ export const ExploreClubs = () => {
               className={`px-3.5 py-1.5 rounded-[10px] text-xs font-semibold whitespace-nowrap transition-all border ${
                 category === cat.slug || category === cat.id
                   ? 'bg-[#800020] text-white border-[#5C001A] shadow-xs'
-                  : 'bg-white dark:bg-[#1C1C1C] border-[#E5E5E5] dark:border-[#383838] text-[#111111] dark:text-[#FAF9F7] hover:bg-[#FCE7EF] dark:hover:bg-[#800020]/25'
+                  : 'bg-white dark:bg-[#1C1C1C] border-[#E5E5E5] dark:border-[#383838] text-[#111111] dark:text-[#FAF9F7] hover:bg-[#F4E7EC] dark:hover:bg-[#800020]/25'
               }`}
             >
               {cat.name}

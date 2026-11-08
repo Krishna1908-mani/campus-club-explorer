@@ -314,25 +314,25 @@ export const ClubDetails = () => {
           {activeTab === 'about' && (
             <div className="space-y-6">
               {/* Full Description */}
-              <div className="bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 rounded-3xl p-6 sm:p-8 space-y-4 shadow-sm">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+              <div className="bg-white dark:bg-[#181818] border border-charcoal/10 dark:border-white/10 rounded-3xl p-6 sm:p-8 space-y-4 shadow-xs">
+                <h3 className="text-xl font-serif font-bold text-charcoal dark:text-white">
                   About {club.name}
                 </h3>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+                <p className="text-sm sm:text-base text-charcoal/70 dark:text-gray-300 leading-relaxed whitespace-pre-line">
                   {club.full_description}
                 </p>
               </div>
 
               {/* Mission & Objectives */}
               {club.mission && (
-                <div className="bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 rounded-3xl p-6 sm:p-8 space-y-3 shadow-sm">
-                  <div className="flex items-center gap-2 text-[#800020] dark:text-[#D9A0AE]">
+                <div className="bg-white dark:bg-[#181818] border border-charcoal/10 dark:border-white/10 rounded-3xl p-6 sm:p-8 space-y-3 shadow-xs">
+                  <div className="flex items-center gap-2 text-burgundy dark:text-[#D9A0AE]">
                     <Sparkles className="w-5 h-5 text-[#C5A46D]" />
-                    <h3 className="font-serif text-lg font-bold text-gray-900 dark:text-white">
+                    <h3 className="font-serif text-lg font-bold text-charcoal dark:text-white">
                       Mission & Core Objectives
                     </h3>
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                  <p className="text-sm text-charcoal/70 dark:text-gray-300 leading-relaxed">
                     {club.mission}
                   </p>
                 </div>
@@ -340,14 +340,14 @@ export const ClubDetails = () => {
 
               {/* Activities & Achievements */}
               {club.activities_and_achievements && (
-                <div className="bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 rounded-3xl p-6 sm:p-8 space-y-3 shadow-sm">
+                <div className="bg-white dark:bg-[#181818] border border-charcoal/10 dark:border-white/10 rounded-3xl p-6 sm:p-8 space-y-3 shadow-xs">
                   <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
                     <Award className="w-5 h-5" />
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                    <h3 className="text-lg font-serif font-bold text-charcoal dark:text-white">
                       Key Activities & Achievements
                     </h3>
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                  <p className="text-sm text-charcoal/70 dark:text-gray-300 leading-relaxed">
                     {club.activities_and_achievements}
                   </p>
                 </div>
@@ -398,11 +398,11 @@ export const ClubDetails = () => {
 
           {activeTab === 'events' && (
             <div className="space-y-6">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+              <h3 className="text-xl font-serif font-bold text-charcoal dark:text-white">
                 Club Events & Meetups
               </h3>
               {club.events?.length === 0 ? (
-                <div className="p-8 text-center bg-white dark:bg-dark-card border border-gray-200 dark:border-gray-800 rounded-3xl text-sm text-gray-500">
+                <div className="p-8 text-center bg-white dark:bg-[#181818] border border-[#E5E5E5] dark:border-[#2A2A2A] rounded-3xl text-sm text-[#737373]">
                   No events scheduled at the moment. Check back soon!
                 </div>
               ) : (
@@ -417,27 +417,27 @@ export const ClubDetails = () => {
 
           {activeTab === 'announcements' && (
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+              <h3 className="text-xl font-serif font-bold text-charcoal dark:text-white">
                 Recent Announcements
               </h3>
               {club.announcements?.length === 0 ? (
-                <div className="p-8 text-center bg-white dark:bg-dark-card border border-gray-200 dark:border-gray-800 rounded-3xl text-sm text-gray-500">
+                <div className="p-8 text-center bg-white dark:bg-[#181818] border border-[#E5E5E5] dark:border-[#2A2A2A] rounded-3xl text-sm text-[#737373]">
                   No announcements published yet.
                 </div>
               ) : (
                 club.announcements.map((ann) => (
                   <div
                     key={ann.id}
-                    className="p-6 rounded-3xl bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 shadow-sm space-y-2"
+                    className="p-6 rounded-3xl bg-white dark:bg-[#181818] border border-[#E5E5E5] dark:border-[#2A2A2A] shadow-xs space-y-2"
                   >
-                    <div className="flex items-center justify-between text-xs text-gray-400">
-                      <span className="font-semibold text-[#800020] dark:text-[#D9A0AE]">Official Notice</span>
+                    <div className="flex items-center justify-between text-xs text-[#737373]">
+                      <span className="font-semibold text-burgundy dark:text-[#D9A0AE]">Official Notice</span>
                       <span>{new Date(ann.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                     </div>
-                    <h4 className="font-bold text-base text-gray-900 dark:text-white">
+                    <h4 className="font-bold text-base text-charcoal dark:text-white">
                       {ann.title}
                     </h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                    <p className="text-sm text-charcoal/70 dark:text-gray-300 leading-relaxed">
                       {ann.content}
                     </p>
                   </div>
@@ -448,33 +448,33 @@ export const ClubDetails = () => {
 
           {activeTab === 'leadership' && (
             <div className="space-y-6">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+              <h3 className="text-xl font-serif font-bold text-charcoal dark:text-white">
                 Club Leadership & Coordination
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="p-6 rounded-3xl bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 shadow-sm space-y-3">
-                  <div className="w-12 h-12 rounded-2xl bg-[#FCE7EF] dark:bg-[#800020]/30 flex items-center justify-center text-[#800020] dark:text-[#D9A0AE]">
+                <div className="p-6 rounded-3xl bg-white dark:bg-[#181818] border border-[#E5E5E5] dark:border-[#2A2A2A] shadow-xs space-y-3">
+                  <div className="w-12 h-12 rounded-2xl bg-[#F4E7EC] dark:bg-burgundy/30 flex items-center justify-center text-burgundy dark:text-[#D9A0AE]">
                     <Building className="w-6 h-6" />
                   </div>
                   <div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#737373]">
                       Faculty Advisor
                     </span>
-                    <h4 className="font-bold text-base text-gray-900 dark:text-white mt-0.5">
+                    <h4 className="font-bold text-base text-charcoal dark:text-white mt-0.5">
                       {club.faculty_coordinator || 'Faculty Coordinator Not Specified'}
                     </h4>
                   </div>
                 </div>
 
-                <div className="p-6 rounded-3xl bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 shadow-sm space-y-3">
+                <div className="p-6 rounded-3xl bg-white dark:bg-[#181818] border border-[#E5E5E5] dark:border-[#2A2A2A] shadow-xs space-y-3">
                   <div className="w-12 h-12 rounded-2xl bg-[#FAF5EC] dark:bg-[#C5A46D]/20 flex items-center justify-center text-[#8F6B2A] dark:text-[#E6D3B1]">
                     <UserCheck className="w-6 h-6" />
                   </div>
                   <div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#737373]">
                       Student Lead Coordinator
                     </span>
-                    <h4 className="font-bold text-base text-gray-900 dark:text-white mt-0.5">
+                    <h4 className="font-bold text-base text-charcoal dark:text-white mt-0.5">
                       {club.student_coordinator || 'Student Coordinator Not Specified'}
                     </h4>
                   </div>
@@ -487,7 +487,7 @@ export const ClubDetails = () => {
         {/* Right Sidebar */}
         <div className="space-y-6">
           {/* Contact & Social Card */}
-          <div className="bg-white dark:bg-dark-card border border-gray-200/90 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-5">
+          <div className="bg-white dark:bg-[#181818] border border-[#E5E5E5] dark:border-[#2A2A2A] rounded-3xl p-6 shadow-xs space-y-5">
             <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400">
               Connect & Reach Out
             </h4>
