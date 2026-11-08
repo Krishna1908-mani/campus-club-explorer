@@ -13,7 +13,6 @@ import {
   ArrowRight,
   Trash2,
   ExternalLink,
-  ShieldAlert,
   ShieldCheck,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';

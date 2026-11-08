@@ -93,6 +93,7 @@ export const AuthProvider = ({ children }) => {
   const isAuthenticated = Boolean(token && user);
   const isAdmin = Boolean(profile?.role === 'admin');
   const isClubLead = Boolean(profile?.role === 'club_lead');
+  const isStudent = Boolean(profile?.role === 'student' || (!isAdmin && !isClubLead && isAuthenticated));
 
   return (
     <AuthContext.Provider
@@ -104,6 +105,7 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated,
         isAdmin,
         isClubLead,
+        isStudent,
         login,
         register,
         logout,

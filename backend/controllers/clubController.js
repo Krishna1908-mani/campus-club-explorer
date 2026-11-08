@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { SupabaseService } from '../services/supabaseService.js';
 
 export const ClubController = {
@@ -94,7 +95,7 @@ export const ClubController = {
           createdLead = await SupabaseService.createClubLeadAccount({
             fullName: lead_full_name,
             email: lead_email,
-            password: lead_password || 'lead123',
+            password: lead_password || ('Ld!' + crypto.randomBytes(6).toString('base64url')),
             clubId: club.id,
             department: lead_department || null,
             assignedBy: req.user?.id || null,

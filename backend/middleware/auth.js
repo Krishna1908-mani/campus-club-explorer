@@ -163,7 +163,7 @@ export const optionalAuth = async (req, res, next) => {
 
         if (req.profile.role === 'club_lead') {
           const { assignedClubId, assignedClub } = await fetchAssignedClub(user.id);
-          req.assignedClubId = assignedClubId;
+          req.assignedClubId = assignedClubId || user.user_metadata?.assigned_club_id || null;
           req.assignedClub = assignedClub;
         }
       }

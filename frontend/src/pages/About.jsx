@@ -1,5 +1,5 @@
 import React from 'react';
-import { GraduationCap, ShieldCheck, Users, Sparkles, HeartHandshake, Database, Code2 } from 'lucide-react';
+import { ShieldCheck, Users, Sparkles, Database, Code2 } from 'lucide-react';
 import Badge from '../components/common/Badge.jsx';
 
 export const About = () => {

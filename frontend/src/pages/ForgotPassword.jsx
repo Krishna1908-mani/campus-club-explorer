@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, ArrowLeft, GraduationCap, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, GraduationCap, CheckCircle2 } from 'lucide-react';
 import Input from '../components/common/Input.jsx';
 import Button from '../components/common/Button.jsx';
 import { apiService } from '../services/api.js';

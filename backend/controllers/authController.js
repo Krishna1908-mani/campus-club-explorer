@@ -388,8 +388,12 @@ export const AuthController = {
       }
 
       if (isSupabaseConfigured && supabase) {
+        const frontendBaseUrl = (process.env.FRONTEND_URL || 'http://localhost:5173')
+          .split(',')[0]
+          .trim()
+          .replace(/\/+$/, '');
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password`,
+          redirectTo: `${frontendBaseUrl}/reset-password`,
         });
         if (error) {
           return res.status(400).json({ success: false, message: error.message });

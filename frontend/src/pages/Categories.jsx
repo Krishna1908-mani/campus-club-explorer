@@ -8,7 +8,6 @@ import {
   Sparkles,
   Music,
   Camera,
-  HeartHandshake,
   ArrowRight,
   Grid,
   BookOpen,

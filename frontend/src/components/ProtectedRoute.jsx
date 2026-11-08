@@ -37,20 +37,17 @@ export const ProtectedRoute = ({ children, requireAdmin = false, requireClubLead
               Administrator Access Required
             </h1>
             <p className="text-xs text-[#737373] dark:text-[#A3A3A3] leading-relaxed">
-              The <strong>Admin Console & Management Module</strong> is restricted to campus administrators. You are currently logged in as a <strong>student</strong> (<span className="text-[#800020] dark:text-[#D9A0AE] font-semibold">{user?.email || profile?.email}</span>).
+              The <strong>Admin Console & Management Module</strong> is restricted to campus administrators. You are currently signed in as <span className="text-[#800020] dark:text-[#D9A0AE] font-semibold">{user?.email || profile?.email}</span>.
             </p>
           </div>
 
           <div className="p-4 rounded-2xl bg-[#FCE7EF]/50 dark:bg-[#800020]/20 border border-[#D9A0AE]/50 dark:border-[#800020]/50 text-left text-xs space-y-1">
             <div className="font-bold text-[#800020] dark:text-[#D9A0AE]">
-              Administrator Credentials:
+              Administrative Authorization Required
             </div>
-            <div className="text-[#111111] dark:text-[#FAF9F7]">
-              Email: <code className="px-1.5 py-0.5 rounded bg-white dark:bg-[#111111] font-mono font-semibold">admin@campus.edu</code>
-            </div>
-            <div className="text-[#111111] dark:text-[#FAF9F7]">
-              Password: <code className="px-1.5 py-0.5 rounded bg-white dark:bg-[#111111] font-mono font-semibold">admin123</code>
-            </div>
+            <p className="text-xs text-[#525252] dark:text-[#A3A3A3] leading-relaxed">
+              If you require administrative privileges to oversee campus clubs, memberships, and announcements, please contact your institution's system administrator.
+            </p>
           </div>
 
           <div className="space-y-2 pt-2">
@@ -60,10 +57,10 @@ export const ProtectedRoute = ({ children, requireAdmin = false, requireClubLead
               leftIcon={<LogIn className="w-4 h-4 text-white" />}
               onClick={async () => {
                 await logout();
-                window.location.href = '/login';
+                window.location.href = '/admin/login';
               }}
             >
-              Sign In as Administrator
+              Sign In with Administrator Account
             </Button>
 
             <Link to="/dashboard" className="block">
@@ -115,10 +112,10 @@ export const ProtectedRoute = ({ children, requireAdmin = false, requireClubLead
               leftIcon={<LogIn className="w-4 h-4 text-white" />}
               onClick={async () => {
                 await logout();
-                window.location.href = '/login';
+                window.location.href = '/club-lead/login';
               }}
             >
-              Sign In with Another Account
+              Sign In with Club Lead Account
             </Button>
 
             <Link to="/dashboard" className="block">

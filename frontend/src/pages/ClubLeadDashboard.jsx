@@ -12,22 +12,15 @@ import {
   Edit3,
   Trash2,
   CheckCircle,
-  XCircle,
   Clock,
   Search,
   Filter,
   ExternalLink,
   ChevronRight,
   ShieldAlert,
-  ArrowRight,
-  Upload,
-  UserX,
   FileText,
-  Mail,
   MapPin,
   Sparkles,
-  LogOut,
-  ChevronDown,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';

@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import {
   GraduationCap,
-  Calendar,
-  Grid,
-  Info,
   LogIn,
   UserPlus,
   Sun,
