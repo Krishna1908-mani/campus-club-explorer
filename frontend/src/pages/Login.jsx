@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Shield,
@@ -6,20 +6,11 @@ import {
   User,
   GraduationCap,
   ArrowRight,
-  Sparkles,
   CheckCircle,
-  Lock,
-  Compass,
 } from 'lucide-react';
-import Button from '../components/common/Button.jsx';
-import { useAuth } from '../context/AuthContext.jsx';
-import { useToast } from '../context/ToastContext.jsx';
 
 export const Login = () => {
-  const { login } = useAuth();
-  const { success, error } = useToast();
   const navigate = useNavigate();
-  const [quickLoadingRole, setQuickLoadingRole] = useState(null);
 
   const loginCards = [
     {
@@ -33,9 +24,6 @@ export const Login = () => {
       badgeClass: 'bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800',
       buttonText: 'Admin Sign In',
       route: '/admin/login',
-      targetDashboard: '/admin',
-      demoEmail: 'admin@campus.edu',
-      demoPassword: 'admin123',
       features: [
         'Platform metrics & audit logs',
         '35 verified clubs oversight',
@@ -54,11 +42,8 @@ export const Login = () => {
       badgeClass: 'bg-rose-100 text-[#800020] border-rose-300 dark:bg-[#800020]/30 dark:text-rose-200 dark:border-[#800020]/60',
       buttonText: 'Club Lead Sign In',
       route: '/club-lead/login',
-      targetDashboard: '/club-lead/dashboard',
-      demoEmail: 'lead@campus.edu',
-      demoPassword: 'lead123',
       features: [
-        'AI & ML Club scoped portal',
+        'Assigned club scoped portal',
         'Approve or reject memberships',
         'Create & schedule club events',
         'Post club-specific notices',
@@ -75,9 +60,6 @@ export const Login = () => {
       badgeClass: 'bg-emerald-100 text-emerald-900 border-emerald-300 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800',
       buttonText: 'Student Sign In',
       route: '/student/login',
-      targetDashboard: '/dashboard',
-      demoEmail: 'student@campus.edu',
-      demoPassword: 'password123',
       features: [
         'Discover 35 campus clubs',
         'Apply for club memberships',
@@ -86,26 +68,6 @@ export const Login = () => {
       ],
     },
   ];
-
-  const handle1ClickLogin = async (e, card) => {
-    e.stopPropagation();
-    setQuickLoadingRole(card.role);
-    try {
-      const res = await login({
-        email: card.demoEmail,
-        password: card.demoPassword,
-        expectedRole: card.role,
-      });
-      if (res.success) {
-        success(`Welcome back, ${res.profile?.full_name || 'User'}!`);
-        navigate(card.targetDashboard);
-      }
-    } catch (err) {
-      error(err.message || 'Login failed.');
-    } finally {
-      setQuickLoadingRole(null);
-    }
-  };
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 bg-[#FAF9F7] dark:bg-[#111111] transition-colors">
@@ -125,11 +87,10 @@ export const Login = () => {
           </p>
         </div>
 
-        {/* 3 Visually Distinct Login Cards */}
+        {/* Exactly 3 Visually Distinct Login Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           {loginCards.map((card) => {
             const Icon = card.icon;
-            const isLoggingIn = quickLoadingRole === card.role;
 
             return (
               <div
@@ -176,8 +137,7 @@ export const Login = () => {
                 </div>
 
                 {/* Bottom Actions */}
-                <div className="pt-6 space-y-3 mt-4">
-                  {/* Primary Button */}
+                <div className="pt-6 mt-4">
                   <Link
                     to={card.route}
                     onClick={(e) => e.stopPropagation()}
@@ -186,17 +146,6 @@ export const Login = () => {
                     <span>{card.buttonText}</span>
                     <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
                   </Link>
-
-                  {/* Quick 1-Click Demo Shortcut */}
-                  <button
-                    type="button"
-                    disabled={isLoggingIn}
-                    onClick={(e) => handle1ClickLogin(e, card)}
-                    className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border border-[#E5E5E5] dark:border-[#383838] bg-[#FAF9F7] dark:bg-[#242424] hover:border-[#800020]/40 text-[11px] font-semibold text-[#800020] dark:text-[#D9A0AE] transition-all disabled:opacity-50"
-                  >
-                    <Sparkles className="w-3.5 h-3.5 text-[#800020] dark:text-[#D9A0AE]" />
-                    <span>{isLoggingIn ? 'Signing in...' : `1-Click Demo (${card.demoEmail.split('@')[0]})`}</span>
-                  </button>
                 </div>
               </div>
             );

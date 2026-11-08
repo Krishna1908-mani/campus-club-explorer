@@ -122,7 +122,7 @@ campus-club-explorer/
 │   │   │   ├── Events.jsx       # Campus event calendar & RSVP
 │   │   │   ├── Categories.jsx   # Interest categories directory
 │   │   │   ├── About.jsx        # Mission & architecture
-│   │   │   ├── Login.jsx        # Sign in with 1-click Demo quick-fills
+│   │   │   ├── Login.jsx        # Role selection portal (Admin, Club Lead, Student)
 │   │   │   ├── Register.jsx     # Student onboarding with validation
 │   │   │   ├── ForgotPassword.jsx
 │   │   │   ├── StudentDashboard.jsx # Personalized student workspace
@@ -251,14 +251,19 @@ Open your browser to [http://localhost:5173](http://localhost:5173).
 
 ---
 
-## 🔑 Demo Evaluation Accounts
+## 🔐 Three Dedicated Authentication Portals
 
-On the `/login` screen, use the **1-click quick-fill buttons** or the credentials below:
+Campus Club Explorer enforces strict role-based access control with three official sign-in options:
 
-| Role | Email | Password | Access Level |
+| Role | Login Portal | Target Dashboard | Access Scope |
 | :--- | :--- | :--- | :--- |
-| **Student** | `student@campus.edu` | `password123` | Student Dashboard, apply to clubs, RSVP for events, bookmark favorites |
-| **Administrator** | `admin@campus.edu` | `admin123` | Administrative Console, Club CRUD, Membership Approvals, Announcements |
+| **Administrator** | `/admin/login` | `/admin` | Campus-wide administration, 35 clubs oversight, Club Lead provisioning & directory, announcements |
+| **Club Lead** | `/club-lead/login` | `/club-lead/dashboard` | Assigned club scoped portal, member management, club events & announcements |
+| **Student** | `/student/login` | `/dashboard` | Club discovery, membership applications, RSVP for events, bookmarks |
+
+- **Login Hub**: `/login` provides a selection page directing users to their dedicated portal.
+- **Student Registration**: Public onboarding available via `/register` or from `/student/login`.
+- **Club Lead Accounts**: Securely provisioned by Administrators via the Admin Dashboard.
 
 ---
 

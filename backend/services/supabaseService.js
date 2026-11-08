@@ -1034,7 +1034,7 @@ export const SupabaseService = {
       return { publicUrl, path };
     }
 
-    // In local demo mode, return a reliable Unsplash or data URL placeholder
+    // In local fallback mode, return a reliable Unsplash or data URL placeholder
     return {
       publicUrl: `https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&auto=format&fit=crop&q=80`,
       path: `${folder}/${filename}`,

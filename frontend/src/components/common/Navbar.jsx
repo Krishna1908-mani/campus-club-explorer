@@ -14,7 +14,6 @@ import {
   User,
   ShieldCheck,
   LogOut,
-  Sparkles,
   Compass,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.jsx';
@@ -194,13 +193,6 @@ export const Navbar = () => {
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <Link
-                to="/login"
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#800020] dark:text-[#D9A0AE] bg-[#FCE7EF]/60 dark:bg-[#800020]/20 hover:bg-[#FCE7EF] border border-[#800020]/20 transition-all"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-[#800020] dark:text-[#D9A0AE]" />
-                <span>Demo Logins</span>
-              </Link>
               <Link to="/login">
                 <Button variant="outline" size="sm" leftIcon={<LogIn className="w-4 h-4 text-[#800020]" />}>
                   Sign In
