@@ -236,11 +236,10 @@ export const StudentDashboard = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`py-3.5 px-3 text-sm font-semibold border-b-2 whitespace-nowrap transition-colors ${
-                activeTab === tab.id
+              className={`py-3.5 px-3 text-sm font-semibold border-b-2 whitespace-nowrap transition-colors ${activeTab === tab.id
                   ? 'border-[#800020] text-[#800020] dark:border-[#C2185B] dark:text-[#FAF9F7]'
                   : 'border-transparent text-[#737373] hover:text-[#111111] dark:text-[#A3A3A3] dark:hover:text-[#FAF9F7]'
-              }`}
+                }`}
             >
               {tab.label}
             </button>

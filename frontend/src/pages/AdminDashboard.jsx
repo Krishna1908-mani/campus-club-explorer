@@ -619,11 +619,10 @@ export const AdminDashboard = () => {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`py-2.5 px-4 text-xs font-semibold rounded-[10px] whitespace-nowrap transition-all ${
-              activeTab === tab.id
+            className={`py-2.5 px-4 text-xs font-semibold rounded-[10px] whitespace-nowrap transition-all ${activeTab === tab.id
                 ? 'bg-[#800020] text-white shadow-xs'
                 : 'text-[#111111] dark:text-[#FAF9F7] hover:bg-[#FCE7EF]/60 dark:hover:bg-[#800020]/20'
-            }`}
+              }`}
           >
             {tab.label}
           </button>
@@ -757,11 +756,10 @@ export const AdminDashboard = () => {
                     {/* Approved slice (Burgundy) */}
                     <path
                       className="text-[#800020]"
-                      strokeDasharray={`${
-                        memberships.length
+                      strokeDasharray={`${memberships.length
                           ? (memberships.filter((m) => m.status === 'approved').length / memberships.length) * 100
                           : 70
-                      }, 100`}
+                        }, 100`}
                       strokeWidth="3.8"
                       strokeLinecap="round"
                       stroke="currentColor"
@@ -773,8 +771,8 @@ export const AdminDashboard = () => {
                     <span className="text-2xl font-serif font-bold text-[#111111] dark:text-[#FAF9F7]">
                       {memberships.length
                         ? Math.round(
-                            (memberships.filter((m) => m.status === 'approved').length / memberships.length) * 100
-                          )
+                          (memberships.filter((m) => m.status === 'approved').length / memberships.length) * 100
+                        )
                         : 0}
                       %
                     </span>
@@ -1089,9 +1087,8 @@ export const AdminDashboard = () => {
                         return (
                           <tr
                             key={club.id}
-                            className={`hover:bg-gray-50/70 dark:hover:bg-[#222222]/60 transition-colors ${
-                              !isAssigned ? 'bg-amber-50/20 dark:bg-amber-950/10' : ''
-                            }`}
+                            className={`hover:bg-gray-50/70 dark:hover:bg-[#222222]/60 transition-colors ${!isAssigned ? 'bg-amber-50/20 dark:bg-amber-950/10' : ''
+                              }`}
                           >
                             {/* Club Column */}
                             <td className="py-3.5 px-4">
@@ -1225,8 +1222,8 @@ export const AdminDashboard = () => {
                               {isAssigned && lead?.last_sign_in_at
                                 ? new Date(lead.last_sign_in_at).toLocaleDateString()
                                 : isAssigned
-                                ? 'Never'
-                                : '-'}
+                                  ? 'Never'
+                                  : '-'}
                             </td>
 
                             {/* Actions Column */}
@@ -1275,11 +1272,10 @@ export const AdminDashboard = () => {
                                   <button
                                     type="button"
                                     onClick={() => handleToggleLeadStatus(item)}
-                                    className={`p-1.5 rounded-lg transition-colors ${
-                                      accountStatus === 'deactivated'
+                                    className={`p-1.5 rounded-lg transition-colors ${accountStatus === 'deactivated'
                                         ? 'text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/30'
                                         : 'text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-950/30'
-                                    }`}
+                                      }`}
                                     title={accountStatus === 'deactivated' ? 'Reactivate Account' : 'Deactivate Account'}
                                   >
                                     {accountStatus === 'deactivated' ? (
